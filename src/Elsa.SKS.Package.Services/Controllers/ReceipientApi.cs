@@ -58,7 +58,7 @@ namespace IO.Swagger.Controllers
         /// <summary>
         /// Report that a Parcel has arrived at a certain hop either warehouse or Truck. 
         /// </summary>
-        /// <param name="trackingId">The tracking ID of the parcel. E.g. PYJRB4HZ6 </param>
+        /// <param name="trackingId">The tracking ID of the parcel.</param>
         /// <param name="code">The Code of the hop (Warehouse or Truck).</param>
         /// <response code="200">Successfully reported hop.</response>
         /// <response code="500">An error occurred.</response>

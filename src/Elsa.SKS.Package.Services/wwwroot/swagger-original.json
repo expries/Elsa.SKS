@@ -169,7 +169,7 @@
         "parameters" : [ {
           "name" : "trackingId",
           "in" : "path",
-          "description" : "The tracking ID of the parcel.\nE.g. PYJRB4HZ6\n",
+          "description" : "The tracking ID of the parcel.",
           "required" : true,
           "style" : "simple",
           "explode" : false,

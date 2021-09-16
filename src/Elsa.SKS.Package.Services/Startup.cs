@@ -78,7 +78,7 @@ namespace IO.Swagger
                            Url = new Uri("http://www.technikum-wien.at/"),
                            Email = ""
                         },
-                        TermsOfService = new Uri("")
+                        //TermsOfService = new Uri("")
                     });
                     c.CustomSchemaIds(type => type.FullName);
                     c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{_hostingEnv.ApplicationName}.xml");
@@ -87,6 +87,9 @@ namespace IO.Swagger
                     // Use [ValidateModelState] on Actions to actually validate it in C# as well!
                     c.OperationFilter<GeneratePathParamsValidationFilter>();
                 });
+
+            services
+                .AddSwaggerGenNewtonsoftSupport();
         }
 
         /// <summary>

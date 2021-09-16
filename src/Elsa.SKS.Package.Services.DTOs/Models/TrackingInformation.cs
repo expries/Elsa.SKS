@@ -11,8 +11,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json.Converters;
 
 namespace Elsa.SKS.Package.Services.DTOs.Models
 { 
@@ -26,7 +24,6 @@ namespace Elsa.SKS.Package.Services.DTOs.Models
         /// State of the parcel.
         /// </summary>
         /// <value>State of the parcel.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
         public enum StateEnum
         {
             /// <summary>
