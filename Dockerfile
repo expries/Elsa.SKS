@@ -7,6 +7,7 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
 COPY *.sln ./
 COPY /src/Elsa.SKS.Package.Services/*.csproj ./src/Elsa.SKS.Package.Services/
 COPY /src/Elsa.SKS.Package.Services.DTOs/*.csproj ./src/Elsa.SKS.Package.Services.DTOs/
+COPY /src/Elsa.SKS.Package.Services.Interfaces/*.csproj ./src/Elsa.SKS.Package.Services.Interfaces/
 
 RUN dotnet restore
 
