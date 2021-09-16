@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Services", "src\Elsa.SKS.Package.Services\Elsa.SKS.Package.Services.csproj", "{223F9551-51BD-4DEE-B6E7-B09052E39510}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Services.DTOs", "Elsa.SKS.Package.Services.DTOs\Elsa.SKS.Package.Services.DTOs.csproj", "{7D32C915-C2D1-4F19-8B5D-832F1C287809}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Services.DTOs", "src\Elsa.SKS.Package.Services.DTOs\Elsa.SKS.Package.Services.DTOs.csproj", "{7D32C915-C2D1-4F19-8B5D-832F1C287809}"
 EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
