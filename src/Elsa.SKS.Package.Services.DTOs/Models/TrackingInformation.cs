@@ -50,7 +50,8 @@ namespace Elsa.SKS.Package.Services.DTOs.Models
             /// Enum DeliveredEnum for Delivered
             /// </summary>
             [EnumMember(Value = "Delivered")]
-            DeliveredEnum = 4        }
+            DeliveredEnum = 4        
+        }
 
         /// <summary>
         /// State of the parcel.
