@@ -19,40 +19,7 @@ namespace Elsa.SKS.Package.Services.DTOs
     /// </summary>
     [DataContract]
     public class TrackingInformation
-    { 
-        /// <summary>
-        /// State of the parcel.
-        /// </summary>
-        /// <value>State of the parcel.</value>
-        public enum StateEnum
-        {
-            /// <summary>
-            /// Enum PickupEnum for Pickup
-            /// </summary>
-            [EnumMember(Value = "Pickup")]
-            PickupEnum = 0,
-            /// <summary>
-            /// Enum InTransportEnum for InTransport
-            /// </summary>
-            [EnumMember(Value = "InTransport")]
-            InTransportEnum = 1,
-            /// <summary>
-            /// Enum InTruckDeliveryEnum for InTruckDelivery
-            /// </summary>
-            [EnumMember(Value = "InTruckDelivery")]
-            InTruckDeliveryEnum = 2,
-            /// <summary>
-            /// Enum TransferredEnum for Transferred
-            /// </summary>
-            [EnumMember(Value = "Transferred")]
-            TransferredEnum = 3,
-            /// <summary>
-            /// Enum DeliveredEnum for Delivered
-            /// </summary>
-            [EnumMember(Value = "Delivered")]
-            DeliveredEnum = 4        
-        }
-
+    {
         /// <summary>
         /// State of the parcel.
         /// </summary>
@@ -60,7 +27,7 @@ namespace Elsa.SKS.Package.Services.DTOs
         [Required]
 
         [DataMember(Name="state")]
-        public StateEnum? State { get; set; }
+        public ParcelState? State { get; set; }
 
         /// <summary>
         /// Hops visited in the past.
