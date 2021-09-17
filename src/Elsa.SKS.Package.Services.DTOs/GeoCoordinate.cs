@@ -11,29 +11,31 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace Elsa.SKS.Package.Services.DTOs.Models
+namespace Elsa.SKS.Package.Services.DTOs
 { 
     /// <summary>
     /// 
     /// </summary>
     [DataContract]
-    public class WarehouseNextHops
+    public class GeoCoordinate
     { 
         /// <summary>
-        /// Gets or Sets TraveltimeMins
+        /// Latitude of the coordinate.
         /// </summary>
+        /// <value>Latitude of the coordinate.</value>
         [Required]
 
-        [DataMember(Name="traveltimeMins")]
-        public int? TraveltimeMins { get; set; }
+        [DataMember(Name="lat")]
+        public double? Lat { get; set; }
 
         /// <summary>
-        /// Gets or Sets Hop
+        /// Longitude of the coordinate.
         /// </summary>
+        /// <value>Longitude of the coordinate.</value>
         [Required]
 
-        [DataMember(Name="hop")]
-        public Hop Hop { get; set; }
+        [DataMember(Name="lon")]
+        public double? Lon { get; set; }
         
     }
 }

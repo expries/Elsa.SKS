@@ -10,7 +10,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using Elsa.SKS.Attributes;
-using Elsa.SKS.Package.Services.DTOs.Models;
+using Elsa.SKS.Package.Services.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;

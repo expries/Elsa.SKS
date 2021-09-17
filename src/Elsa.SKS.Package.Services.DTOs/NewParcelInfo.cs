@@ -11,22 +11,21 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace Elsa.SKS.Package.Services.DTOs.Models
+namespace Elsa.SKS.Package.Services.DTOs
 { 
     /// <summary>
     /// 
     /// </summary>
     [DataContract]
-    public class Error
+    public class NewParcelInfo
     { 
         /// <summary>
-        /// The error message.
+        /// The tracking ID of the parcel. 
         /// </summary>
-        /// <value>The error message.</value>
-        [Required]
-
-        [DataMember(Name="errorMessage")]
-        public string ErrorMessage { get; set; }
-
+        /// <value>The tracking ID of the parcel. </value>
+        [RegularExpression("/^[A-Z0-9]{9}$/")]
+        [DataMember(Name="trackingId")]
+        public string TrackingId { get; set; }
+        
     }
 }

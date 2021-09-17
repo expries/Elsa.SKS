@@ -12,7 +12,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace Elsa.SKS.Package.Services.DTOs.Models
+namespace Elsa.SKS.Package.Services.DTOs
 { 
     /// <summary>
     /// 

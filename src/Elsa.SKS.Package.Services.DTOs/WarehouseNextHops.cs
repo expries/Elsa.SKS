@@ -11,31 +11,29 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace Elsa.SKS.Package.Services.DTOs.Models
+namespace Elsa.SKS.Package.Services.DTOs
 { 
     /// <summary>
     /// 
     /// </summary>
     [DataContract]
-    public class Truck : Hop
+    public class WarehouseNextHops
     { 
         /// <summary>
-        /// GeoJSON of the are covered by the truck.
+        /// Gets or Sets TraveltimeMins
         /// </summary>
-        /// <value>GeoJSON of the are covered by the truck.</value>
         [Required]
 
-        [DataMember(Name="regionGeoJson")]
-        public string RegionGeoJson { get; set; }
+        [DataMember(Name="traveltimeMins")]
+        public int? TraveltimeMins { get; set; }
 
         /// <summary>
-        /// The truck&#x27;s number plate.
+        /// Gets or Sets Hop
         /// </summary>
-        /// <value>The truck&#x27;s number plate.</value>
         [Required]
 
-        [DataMember(Name="numberPlate")]
-        public string NumberPlate { get; set; }
+        [DataMember(Name="hop")]
+        public Hop Hop { get; set; }
         
     }
 }
