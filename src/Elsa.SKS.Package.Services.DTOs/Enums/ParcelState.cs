@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Elsa.SKS.Package.Services.DTOs
+namespace Elsa.SKS.Package.Services.DTOs.Enums
 {
     /// <summary>
     /// State of the parcel.
