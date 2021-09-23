@@ -11,6 +11,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text;
+using Elsa.SKS.Package.Services.DTOs.Enums;
 using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.Services.DTOs
@@ -38,6 +39,11 @@ namespace Elsa.SKS.Package.Services.DTOs
 
         [DataMember(Name="numberPlate")]
         public string NumberPlate { get; set; }
+
+        public Truck()
+        {
+            HopType = HopType.Truck;
+        }
 
         /// <summary>
         /// Returns the string presentation of the object

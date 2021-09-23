@@ -11,6 +11,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text;
+using Elsa.SKS.Package.Services.DTOs.Enums;
 using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.Services.DTOs
@@ -19,7 +20,7 @@ namespace Elsa.SKS.Package.Services.DTOs
     /// 
     /// </summary>
     [DataContract]
-    public class Transferwarehouse : Hop
+    public class TransferWarehouse : Hop
     { 
         /// <summary>
         /// GeoJSON of the are covered by the logistics partner.
@@ -47,6 +48,11 @@ namespace Elsa.SKS.Package.Services.DTOs
 
         [DataMember(Name="logisticsPartnerUrl")]
         public string LogisticsPartnerUrl { get; set; }
+        
+        public TransferWarehouse()
+        {
+            HopType = HopType.TransferWarehouse;
+        }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -81,7 +87,7 @@ namespace Elsa.SKS.Package.Services.DTOs
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Transferwarehouse)obj);
+            return obj.GetType() == GetType() && Equals((TransferWarehouse)obj);
         }
 
         /// <summary>
@@ -89,7 +95,7 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// </summary>
         /// <param name="other">Instance of Transferwarehouse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(Transferwarehouse other)
+        public bool Equals(TransferWarehouse other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -135,12 +141,12 @@ namespace Elsa.SKS.Package.Services.DTOs
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(Transferwarehouse left, Transferwarehouse right)
+        public static bool operator ==(TransferWarehouse left, TransferWarehouse right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(Transferwarehouse left, Transferwarehouse right)
+        public static bool operator !=(TransferWarehouse left, TransferWarehouse right)
         {
             return !Equals(left, right);
         }

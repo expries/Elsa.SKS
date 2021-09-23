@@ -13,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using Elsa.SKS.Package.Services.DTOs.Enums;
 using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.Services.DTOs
@@ -39,6 +40,11 @@ namespace Elsa.SKS.Package.Services.DTOs
 
         [DataMember(Name="nextHops")]
         public List<WarehouseNextHops> NextHops { get; set; }
+
+        public Warehouse()
+        {
+            HopType = HopType.Warehouse;
+        }
 
         /// <summary>
         /// Returns the string presentation of the object

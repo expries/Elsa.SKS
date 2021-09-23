@@ -11,6 +11,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text;
+using Elsa.SKS.Package.Services.DTOs.Enums;
 using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.Services.DTOs
@@ -19,7 +20,7 @@ namespace Elsa.SKS.Package.Services.DTOs
     /// 
     /// </summary>
     [DataContract]
-    public class Hop 
+    public abstract class Hop 
     { 
         /// <summary>
         /// Gets or Sets HopType
@@ -27,7 +28,7 @@ namespace Elsa.SKS.Package.Services.DTOs
         [Required]
 
         [DataMember(Name="hopType")]
-        public string HopType { get; set; }
+        public HopType HopType { get; set; }
 
         /// <summary>
         /// Unique CODE of the hop.
@@ -197,4 +198,5 @@ namespace Elsa.SKS.Package.Services.DTOs
         #pragma warning restore 1591
         #endregion Operators
     }
+    
 }
