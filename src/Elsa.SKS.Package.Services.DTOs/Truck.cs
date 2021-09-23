@@ -10,9 +10,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using System.Text;
 using Elsa.SKS.Package.Services.DTOs.Enums;
-using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.Services.DTOs
 { 
@@ -27,7 +25,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// </summary>
         /// <value>GeoJSON of the are covered by the truck.</value>
         [Required]
-
         [DataMember(Name="regionGeoJson")]
         public string RegionGeoJson { get; set; }
 
@@ -36,7 +33,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// </summary>
         /// <value>The truck&#x27;s number plate.</value>
         [Required]
-
         [DataMember(Name="numberPlate")]
         public string NumberPlate { get; set; }
 
@@ -44,97 +40,5 @@ namespace Elsa.SKS.Package.Services.DTOs
         {
             HopType = HopType.Truck;
         }
-
-        /// <summary>
-        /// Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("class Truck {\n");
-            sb.Append("  RegionGeoJson: ").Append(RegionGeoJson).Append("\n");
-            sb.Append("  NumberPlate: ").Append(NumberPlate).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Returns the JSON string presentation of the object
-        /// </summary>
-        /// <returns>JSON string presentation of the object</returns>
-        public  new string ToJson()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
-        /// <summary>
-        /// Returns true if objects are equal
-        /// </summary>
-        /// <param name="obj">Object to be compared</param>
-        /// <returns>Boolean</returns>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Truck)obj);
-        }
-
-        /// <summary>
-        /// Returns true if Truck instances are equal
-        /// </summary>
-        /// <param name="other">Instance of Truck to be compared</param>
-        /// <returns>Boolean</returns>
-        public bool Equals(Truck other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-
-            return 
-                (
-                    RegionGeoJson == other.RegionGeoJson ||
-                    RegionGeoJson != null &&
-                    RegionGeoJson.Equals(other.RegionGeoJson)
-                ) && 
-                (
-                    NumberPlate == other.NumberPlate ||
-                    NumberPlate != null &&
-                    NumberPlate.Equals(other.NumberPlate)
-                );
-        }
-
-        /// <summary>
-        /// Gets the hash code
-        /// </summary>
-        /// <returns>Hash code</returns>
-        public override int GetHashCode()
-        {
-            unchecked // Overflow is fine, just wrap
-            {
-                var hashCode = 41;
-                // Suitable nullity checks etc, of course :)
-                    if (RegionGeoJson != null)
-                    hashCode = hashCode * 59 + RegionGeoJson.GetHashCode();
-                    if (NumberPlate != null)
-                    hashCode = hashCode * 59 + NumberPlate.GetHashCode();
-                return hashCode;
-            }
-        }
-
-        #region Operators
-        #pragma warning disable 1591
-
-        public static bool operator ==(Truck left, Truck right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(Truck left, Truck right)
-        {
-            return !Equals(left, right);
-        }
-
-        #pragma warning restore 1591
-        #endregion Operators
     }
 }

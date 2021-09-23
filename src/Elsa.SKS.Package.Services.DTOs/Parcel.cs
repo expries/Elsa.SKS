@@ -10,8 +10,6 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using System.Text;
-using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.Services.DTOs
 { 
@@ -25,7 +23,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// Gets or Sets Weight
         /// </summary>
         [Required]
-
         [DataMember(Name="weight")]
         public float? Weight { get; set; }
 
@@ -33,7 +30,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// Gets or Sets Recipient
         /// </summary>
         [Required]
-
         [DataMember(Name="recipient")]
         public Recipient Recipient { get; set; }
 
@@ -41,108 +37,7 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// Gets or Sets Sender
         /// </summary>
         [Required]
-
         [DataMember(Name="sender")]
         public Recipient Sender { get; set; }
-
-        /// <summary>
-        /// Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("class Parcel {\n");
-            sb.Append("  Weight: ").Append(Weight).Append("\n");
-            sb.Append("  Recipient: ").Append(Recipient).Append("\n");
-            sb.Append("  Sender: ").Append(Sender).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Returns the JSON string presentation of the object
-        /// </summary>
-        /// <returns>JSON string presentation of the object</returns>
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
-        /// <summary>
-        /// Returns true if objects are equal
-        /// </summary>
-        /// <param name="obj">Object to be compared</param>
-        /// <returns>Boolean</returns>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Parcel)obj);
-        }
-
-        /// <summary>
-        /// Returns true if Parcel instances are equal
-        /// </summary>
-        /// <param name="other">Instance of Parcel to be compared</param>
-        /// <returns>Boolean</returns>
-        public bool Equals(Parcel other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-
-            return 
-                (
-                    Weight == other.Weight ||
-                    Weight != null &&
-                    Weight.Equals(other.Weight)
-                ) && 
-                (
-                    Recipient == other.Recipient ||
-                    Recipient != null &&
-                    Recipient.Equals(other.Recipient)
-                ) && 
-                (
-                    Sender == other.Sender ||
-                    Sender != null &&
-                    Sender.Equals(other.Sender)
-                );
-        }
-
-        /// <summary>
-        /// Gets the hash code
-        /// </summary>
-        /// <returns>Hash code</returns>
-        public override int GetHashCode()
-        {
-            unchecked // Overflow is fine, just wrap
-            {
-                var hashCode = 41;
-                // Suitable nullity checks etc, of course :)
-                    if (Weight != null)
-                    hashCode = hashCode * 59 + Weight.GetHashCode();
-                    if (Recipient != null)
-                    hashCode = hashCode * 59 + Recipient.GetHashCode();
-                    if (Sender != null)
-                    hashCode = hashCode * 59 + Sender.GetHashCode();
-                return hashCode;
-            }
-        }
-
-        #region Operators
-        #pragma warning disable 1591
-
-        public static bool operator ==(Parcel left, Parcel right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(Parcel left, Parcel right)
-        {
-            return !Equals(left, right);
-        }
-
-        #pragma warning restore 1591
-        #endregion Operators
     }
 }
