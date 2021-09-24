@@ -24,7 +24,18 @@ namespace Elsa.SKS.Controllers
     /// </summary>
     [ApiController]
     public class WarehouseManagementApiController : ControllerBase
-    { 
+    {
+        private Warehouse _rootWarehouse;
+        private bool _hierarchyLoaded;
+
+        public WarehouseManagementApiController() { }
+
+        public WarehouseManagementApiController(Warehouse rootWarehouse)
+        {
+            _hierarchyLoaded = true;
+            _rootWarehouse = rootWarehouse;
+        }
+
         /// <summary>
         /// Exports the hierarchy of Warehouse and Truck objects. 
         /// </summary>
@@ -38,22 +49,19 @@ namespace Elsa.SKS.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(Warehouse), description: "Successful response")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "An error occurred loading.")]
         public virtual IActionResult ExportWarehouses()
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(Warehouse));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400, default(Error));
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-            string exampleJson = null;
-            exampleJson = "\"\"";
+        {
+            if (!_hierarchyLoaded)
+            {
+                return NotFound();
+            }
             
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<Warehouse>(exampleJson)
-                        : default(Warehouse);            //TODO: Change the data returned
-            return new ObjectResult(example);
+            if (_rootWarehouse is null)
+            {
+                var error = new Error();
+                return BadRequest(error);
+            }
+
+            return Ok(_rootWarehouse);
         }
 
         /// <summary>

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Elsa.SKS.Package.Services.DTOs;
+
 namespace Elsa.SKS
 {
     public static class TestConstants
@@ -16,6 +19,15 @@ namespace Elsa.SKS
         
         public const string TrackingIdOfParcelThatCanNotBeDelivered = "XXXXXXXXX";
 
-        
+        public static Warehouse ExistingWarehouses = new Warehouse
+        {
+            NextHops = new List<WarehouseNextHops>
+            {
+                new WarehouseNextHops() { Hop = new Truck() },
+                new WarehouseNextHops() { Hop = new Truck() }
+            }
+        };
+
+
     }
 }
