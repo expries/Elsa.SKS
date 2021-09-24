@@ -12,6 +12,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Elsa.SKS.Attributes;
 using Elsa.SKS.Package.Services.DTOs;
+using Elsa.SKS.Package.Services.DTOs.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -77,23 +78,21 @@ namespace Elsa.SKS.Controllers
         [SwaggerOperation("GetWarehouse")]
         [SwaggerResponse(statusCode: 200, type: typeof(Warehouse), description: "Successful response")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "An error occurred loading.")]
-        public virtual IActionResult GetWarehouse([FromRoute][Required]string code)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(Warehouse));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400, default(Error));
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-            string exampleJson = null;
-            exampleJson = "\"\"";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<Warehouse>(exampleJson)
-                        : default(Warehouse);            //TODO: Change the data returned
-            return new ObjectResult(example);
+        public virtual IActionResult GetWarehouse([FromRoute][Required] string code)
+        {
+            switch (code)
+            {
+                case TestConstants.NonExistentWarehouseCode:
+                    return NotFound();
+                
+                case TestConstants.FaultyWarehouseCode:
+                    var error = new Error();
+                    return BadRequest(error);
+                
+                default:
+                    var warehouse = new Warehouse();
+                    return Ok(warehouse);
+            } 
         }
 
         /// <summary>
@@ -109,13 +108,13 @@ namespace Elsa.SKS.Controllers
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult ImportWarehouses([FromBody] Warehouse body)
         {
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            return StatusCode(200);
+            if (body.HopType is not HopType.Warehouse)
+            {
+                var error = new Error();
+                return BadRequest(error);
+            }
 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400, default(Error));
-
-            throw new NotImplementedException();
+            return Ok();
         }
     }
 }
