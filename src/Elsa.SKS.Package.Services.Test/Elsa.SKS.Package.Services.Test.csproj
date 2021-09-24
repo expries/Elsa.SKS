@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\Elsa.SKS.Package.Services\Elsa.SKS.Package.Services.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Package.Services\Elsa.SKS.Package.Services.csproj" />
     </ItemGroup>
 
 </Project>

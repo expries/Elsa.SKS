@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Services.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Services.Interfaces", "src\Elsa.SKS.Package.Services.Interfaces\Elsa.SKS.Package.Services.Interfaces.csproj", "{FA16CC9E-169B-4435-A030-647F5179F580}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Services.Test", "Elsa.SKS.Package.Services.Test\Elsa.SKS.Package.Services.Test.csproj", "{C0468991-989F-4E98-ABF1-334838DD667E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Services.Test", "src\Elsa.SKS.Package.Services.Test\Elsa.SKS.Package.Services.Test.csproj", "{C0468991-989F-4E98-ABF1-334838DD667E}"
 EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
