@@ -37,5 +37,41 @@ namespace Elsa.SKS.Package.Services.Test
             var actionResult = _controller.ReportParcelDelivery(trackingId);
             Assert.IsType<BadRequestObjectResult>(actionResult);
         }
+
+        [Fact]
+        public void GivenAParcelDoesNotExist_WhenParcelHopIsReported_ThenReturn404()
+        {
+            const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
+            const string code = TestConstants.ExistentHopCode;
+            var actionResult = _controller.ReportParcelHop(trackingId, code);
+            Assert.IsType<NotFoundResult>(actionResult);
+        }
+        
+        [Fact]
+        public void GivenAHopCodeDoesNotExist_WhenParcelHopIsReported_ThenReturn404()
+        {
+            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
+            const string code = TestConstants.NonExistentHopCode;
+            var actionResult = _controller.ReportParcelHop(trackingId, code);
+            Assert.IsType<NotFoundResult>(actionResult);
+        }
+        
+        [Fact]
+        public void GivenAParcelCanNotBeReported_WhenParcelHopIsReported_ThenReturn400()
+        {
+            const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeReported;
+            const string code = TestConstants.ExistentHopCode;
+            var actionResult = _controller.ReportParcelHop(trackingId, code);
+            Assert.IsType<BadRequestObjectResult>(actionResult);
+        }
+        
+        [Fact]
+        public void GivenAParcelExists_WhenParcelHopIsReported_ThenReturn200()
+        {
+            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
+            const string code = TestConstants.ExistentHopCode;
+            var actionResult = _controller.ReportParcelHop(trackingId, code);
+            Assert.IsType<OkResult>(actionResult);
+        }
     }
 }

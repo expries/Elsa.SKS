@@ -25,6 +25,12 @@ namespace Elsa.SKS
 
         public const string FaultyWarehouseCode = "XXXXXXXXX";
 
+        public const string NonExistentHopCode = "000000000";
+
+        public const string ExistentHopCode = "ABCDEF123";
+
+        public const string TrackingIdOfParcelThatCanNotBeReported = "XXXXXXXXX";
+
         public static Warehouse ExistingWarehouses = new Warehouse
         {
             NextHops = new List<WarehouseNextHops>

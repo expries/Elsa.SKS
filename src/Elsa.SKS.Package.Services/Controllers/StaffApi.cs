@@ -13,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using Elsa.SKS.Attributes;
 using Elsa.SKS.Package.Services.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Elsa.SKS.Controllers
@@ -65,18 +66,22 @@ namespace Elsa.SKS.Controllers
         [ValidateModelState]
         [SwaggerOperation("ReportParcelHop")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
-        public virtual IActionResult ReportParcelHop([FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")]string trackingId, [FromRoute][Required][RegularExpression("^[A-Z]{4}\\d{1,4}$")]string code)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+        public virtual IActionResult ReportParcelHop(
+            [FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")] string trackingId, 
+            [FromRoute][Required][RegularExpression("^[A-Z]{4}\\d{1,4}$")] string code)
+        {
+            if (trackingId == TestConstants.TrackingIdOfNonExistentParcel || code == TestConstants.NonExistentHopCode)
+            {
+                return NotFound();
+            }
 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400, default(Error));
+            if (trackingId == TestConstants.TrackingIdOfParcelThatCanNotBeReported)
+            {
+                var error = new Error();
+                return BadRequest(error);
+            }
 
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            throw new NotImplementedException();
+            return Ok();
         }
     }
 }
