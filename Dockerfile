@@ -8,6 +8,7 @@ COPY *.sln ./
 COPY /src/Elsa.SKS.Package.Services/*.csproj ./src/Elsa.SKS.Package.Services/
 COPY /src/Elsa.SKS.Package.Services.DTOs/*.csproj ./src/Elsa.SKS.Package.Services.DTOs/
 COPY /src/Elsa.SKS.Package.Services.Interfaces/*.csproj ./src/Elsa.SKS.Package.Services.Interfaces/
+COPY /src/Elsa.SKS.Package.Services.Test/*.csproj ./src/Elsa.SKS.Package.Services.Test/
 
 RUN dotnet restore
 
