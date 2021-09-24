@@ -40,10 +40,12 @@ namespace Elsa.SKS.Controllers
         {
             if (trackingId == TestConstants.TrackingIdOfParcelThatIsTransferred)
             {
-                return StatusCode(200);
+                var result = new NewParcelInfo();
+                return Ok(result);
             }
 
-            return StatusCode(400);
+            var error = new Error();
+            return BadRequest(error);
         }
     }
 }

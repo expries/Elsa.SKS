@@ -26,8 +26,7 @@ namespace Elsa.SKS.Package.Services.Test
             var actionResult = _controller.TransitionParcel(parcel, trackingId);
             
             // assert
-            var statusCodeResult = Assert.IsType<StatusCodeResult>(actionResult);
-            Assert.Equal(200, statusCodeResult.StatusCode);
+            Assert.IsType<OkObjectResult>(actionResult);
         }
         
         [Fact]
@@ -41,8 +40,7 @@ namespace Elsa.SKS.Package.Services.Test
             var actionResult = _controller.TransitionParcel(parcel, trackingId);
             
             // assert
-            var statusCodeResult = Assert.IsType<StatusCodeResult>(actionResult);
-            Assert.Equal(400, statusCodeResult.StatusCode);
+            Assert.IsType<BadRequestObjectResult>(actionResult);
         }
     }
 }
