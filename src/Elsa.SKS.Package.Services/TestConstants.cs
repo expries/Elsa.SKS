@@ -11,5 +11,7 @@ namespace Elsa.SKS
         public const string TrackingIdOfNonExistentParcel = "000000000";
 
         public const string TrackingIdOfParcelThatCanNotBeTracked = "XXXXXXXXX";
+        
+        public const string TrackingIdOfSubmittedParcel = "ABCDEF123";
     }
 }
