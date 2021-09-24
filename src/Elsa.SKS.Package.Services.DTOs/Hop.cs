@@ -10,7 +10,9 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using Elsa.SKS.Package.Services.DTOs.Converters;
 using Elsa.SKS.Package.Services.DTOs.Enums;
+using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.Services.DTOs
 { 
@@ -18,6 +20,7 @@ namespace Elsa.SKS.Package.Services.DTOs
     /// 
     /// </summary>
     [DataContract]
+    [JsonConverter(typeof(HopConverter))]
     public abstract class Hop 
     { 
         /// <summary>

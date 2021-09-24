@@ -2,8 +2,12 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Elsa.SKS.Converters
+namespace Elsa.SKS.Package.Services.DTOs.Converters
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class JsonCreationConverter<T> : JsonConverter
     {
         public override bool CanWrite => false;
