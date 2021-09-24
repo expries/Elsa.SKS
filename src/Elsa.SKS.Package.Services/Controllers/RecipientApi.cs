@@ -36,23 +36,21 @@ namespace Elsa.SKS.Controllers
         [SwaggerOperation("TrackParcel")]
         [SwaggerResponse(statusCode: 200, type: typeof(TrackingInformation), description: "Parcel exists, here&#x27;s the tracking information.")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
-        public virtual IActionResult TrackParcel([FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")]string trackingId)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(TrackingInformation));
+        public virtual IActionResult TrackParcel([FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")] string trackingId)
+        {
+            if (trackingId == TestConstants.TrackingIdOfNonExistentParcel)
+            {
+                return NotFound();
+            }
 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400, default(Error));
+            if (trackingId == TestConstants.TrackingIdOfParcelThatCanNotBeTracked)
+            {
+                var error = new Error();
+                return BadRequest(error);
+            }
 
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-            string exampleJson = null;
-            exampleJson = "{\n  \"visitedHops\" : [ {\n    \"dateTime\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"code\" : \"code\",\n    \"description\" : \"description\"\n  }, {\n    \"dateTime\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"code\" : \"code\",\n    \"description\" : \"description\"\n  } ],\n  \"futureHops\" : [ null, null ],\n  \"state\" : \"Pickup\"\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<TrackingInformation>(exampleJson)
-                        : default(TrackingInformation);            //TODO: Change the data returned
-            return new ObjectResult(example);
+            var result = new TrackingInformation();
+            return Ok(result);
         }
     }
 }
