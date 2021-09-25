@@ -9,6 +9,7 @@
  */
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Elsa.SKS.Package.Services.DTOs.Converters;
 using Elsa.SKS.Package.Services.DTOs.Enums;
@@ -20,6 +21,7 @@ namespace Elsa.SKS.Package.Services.DTOs
     /// 
     /// </summary>
     [DataContract]
+    [ExcludeFromCodeCoverage]
     [JsonConverter(typeof(HopConverter))]
     public abstract class Hop 
     { 

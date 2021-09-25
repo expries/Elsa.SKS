@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Elsa.SKS.Filters;
 using Microsoft.AspNetCore.Builder;
@@ -26,6 +27,7 @@ namespace Elsa.SKS
     /// <summary>
     /// Startup
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         private readonly IWebHostEnvironment _hostingEnv;

@@ -9,6 +9,7 @@
  */
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace Elsa.SKS.Package.Services.DTOs
@@ -24,6 +25,7 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// </summary>
         /// <value>The error message.</value>
         [Required]
+        [ExcludeFromCodeCoverage]
         [DataMember(Name="errorMessage")]
         public string ErrorMessage { get; set; }
     }

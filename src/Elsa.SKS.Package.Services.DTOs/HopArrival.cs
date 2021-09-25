@@ -10,6 +10,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace Elsa.SKS.Package.Services.DTOs
@@ -18,6 +19,7 @@ namespace Elsa.SKS.Package.Services.DTOs
     /// 
     /// </summary>
     [DataContract]
+    [ExcludeFromCodeCoverage]
     public class HopArrival 
     { 
         /// <summary>
