@@ -1,4 +1,5 @@
 using Elsa.SKS.Controllers;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
@@ -18,7 +19,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
             var actionResult = _controller.TrackParcel(trackingId);
-            Assert.IsType<OkObjectResult>(actionResult);
+            actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
@@ -26,7 +27,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
             var actionResult = _controller.TrackParcel(trackingId);
-            Assert.IsType<NotFoundResult>(actionResult);
+            actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
@@ -34,7 +35,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeTracked;
             var actionResult = _controller.TrackParcel(trackingId);
-            Assert.IsType<BadRequestObjectResult>(actionResult);
+            actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
     }
 }

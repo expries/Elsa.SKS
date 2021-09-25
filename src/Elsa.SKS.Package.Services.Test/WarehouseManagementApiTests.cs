@@ -1,6 +1,7 @@
 ﻿using Elsa.SKS.Controllers;
 using Elsa.SKS.Package.Services.DTOs;
 using Elsa.SKS.Package.Services.DTOs.Enums;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
@@ -20,7 +21,7 @@ namespace Elsa.SKS.Package.Services.Test
         public void GivenWarehousesExist_WhenExportWarehouses_ThenReturn200()
         {
             var actionResult = _controller.ExportWarehouses();
-            Assert.IsType<OkObjectResult>(actionResult);
+            actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
@@ -28,7 +29,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             var controller = new WarehouseManagementApiController();
             var actionResult = controller.ExportWarehouses();
-            Assert.IsType<NotFoundResult>(actionResult);
+            actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
@@ -36,7 +37,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             var controller = new WarehouseManagementApiController(null);
             var actionResult = controller.ExportWarehouses();
-            Assert.IsType<BadRequestObjectResult>(actionResult);
+            actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         
         [Fact]
@@ -44,7 +45,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             const string warehouseCode = TestConstants.ExistentWareHouseCode;
             var actionResult = _controller.GetWarehouse(warehouseCode);
-            Assert.IsType<OkObjectResult>(actionResult);
+            actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
@@ -52,7 +53,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             const string warehouseCode = TestConstants.NonExistentWarehouseCode;
             var actionResult = _controller.GetWarehouse(warehouseCode);
-            Assert.IsType<NotFoundResult>(actionResult);
+            actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
@@ -60,7 +61,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             const string warehouseCode = TestConstants.FaultyWarehouseCode;
             var actionResult = _controller.GetWarehouse(warehouseCode);
-            Assert.IsType<BadRequestObjectResult>(actionResult);
+            actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         
         [Fact]
@@ -68,7 +69,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             var warehouse = new Warehouse();
             var actionResult = _controller.ImportWarehouses(warehouse);
-            Assert.IsType<OkResult>(actionResult);
+            actionResult.Should().BeOfType<OkResult>();
         }
         
         [Fact]
@@ -76,7 +77,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             var warehouse = new Warehouse { HopType = HopType.Truck };
             var actionResult = _controller.ImportWarehouses(warehouse);
-            Assert.IsType<BadRequestObjectResult>(actionResult);
+            actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
     }
 }

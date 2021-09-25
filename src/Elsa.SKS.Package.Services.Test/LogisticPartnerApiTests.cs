@@ -1,5 +1,6 @@
 using Elsa.SKS.Controllers;
 using Elsa.SKS.Package.Services.DTOs;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
@@ -17,29 +18,19 @@ namespace Elsa.SKS.Package.Services.Test
         [Fact]
         public void GivenAParcelIsExpected_WhenTransitioningTheParcel_ThenReturn200()
         {
-            // arrange
             const string trackingId = TestConstants.TrackingIdOfParcelThatIsTransferred;
             var parcel = new Parcel();
-            
-            // act
             var actionResult = _controller.TransitionParcel(parcel, trackingId);
-            
-            // assert
-            Assert.IsType<OkObjectResult>(actionResult);
+            actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
         public void GivenAParcelIsNotExpected_WhenTransitioningTheParcel_ThenReturn400()
         {
-            // arrange
             const string trackingId = TestConstants.TrackingIdOfParcelThatIsNotTransferred;
             var parcel = new Parcel();
-            
-            // act
             var actionResult = _controller.TransitionParcel(parcel, trackingId);
-            
-            // assert
-            Assert.IsType<BadRequestObjectResult>(actionResult);
+            actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
     }
 }

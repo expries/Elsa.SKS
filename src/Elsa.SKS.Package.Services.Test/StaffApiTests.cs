@@ -1,4 +1,5 @@
 ﻿using Elsa.SKS.Controllers;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
@@ -18,7 +19,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
             var actionResult = _controller.ReportParcelDelivery(trackingId);
-            Assert.IsType<OkObjectResult>(actionResult);
+            actionResult.Should().BeOfType<OkObjectResult>();
         }
 
         [Fact]
@@ -26,7 +27,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
             var actionResult = _controller.ReportParcelDelivery(trackingId);
-            Assert.IsType<NotFoundResult>(actionResult);
+            actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
@@ -34,7 +35,7 @@ namespace Elsa.SKS.Package.Services.Test
         {
             const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeDelivered;
             var actionResult = _controller.ReportParcelDelivery(trackingId);
-            Assert.IsType<BadRequestObjectResult>(actionResult);
+            actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
 
         [Fact]
@@ -43,7 +44,7 @@ namespace Elsa.SKS.Package.Services.Test
             const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
             const string code = TestConstants.ExistentHopCode;
             var actionResult = _controller.ReportParcelHop(trackingId, code);
-            Assert.IsType<NotFoundResult>(actionResult);
+            actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
@@ -52,7 +53,7 @@ namespace Elsa.SKS.Package.Services.Test
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
             const string code = TestConstants.NonExistentHopCode;
             var actionResult = _controller.ReportParcelHop(trackingId, code);
-            Assert.IsType<NotFoundResult>(actionResult);
+            actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
@@ -61,7 +62,7 @@ namespace Elsa.SKS.Package.Services.Test
             const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeReported;
             const string code = TestConstants.ExistentHopCode;
             var actionResult = _controller.ReportParcelHop(trackingId, code);
-            Assert.IsType<BadRequestObjectResult>(actionResult);
+            actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         
         [Fact]
@@ -70,7 +71,7 @@ namespace Elsa.SKS.Package.Services.Test
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
             const string code = TestConstants.ExistentHopCode;
             var actionResult = _controller.ReportParcelHop(trackingId, code);
-            Assert.IsType<OkResult>(actionResult);
+            actionResult.Should().BeOfType<OkResult>();
         }
     }
 }
