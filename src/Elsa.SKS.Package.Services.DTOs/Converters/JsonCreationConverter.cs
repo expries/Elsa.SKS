@@ -20,16 +20,25 @@ namespace Elsa.SKS.Package.Services.DTOs.Converters
             return typeof(T).IsAssignableFrom(objectType);
         }
 
-
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (reader == null) throw new ArgumentNullException("reader");
-            if (serializer == null) throw new ArgumentNullException("serializer");
-            if (reader.TokenType == JsonToken.Null)
-                return null;
+            if (reader is null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
 
-            JObject jObject = JObject.Load(reader);
-            T target = Create(objectType, jObject);
+            if (serializer is null)
+            {
+                throw new ArgumentException(null, nameof(serializer));
+            }
+
+            if (reader.TokenType is JsonToken.Null)
+            {
+                return null;
+            }
+
+            var jObject = JObject.Load(reader);
+            var target = Create(objectType, jObject);
             serializer.Populate(jObject.CreateReader(), target);
             return target;
         }

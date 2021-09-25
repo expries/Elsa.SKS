@@ -18,7 +18,7 @@ namespace Elsa.SKS.Package.Services.DTOs.Converters
         /// <exception cref="Exception"></exception>
         protected override Hop Create(Type objectType, JObject jObject)
         {
-            if (jObject == null)
+            if (jObject is null)
             {
                 throw new ArgumentNullException(nameof(jObject));
             }
@@ -45,7 +45,7 @@ namespace Elsa.SKS.Package.Services.DTOs.Converters
             {
                 HopType.Truck => new Truck(),
                 HopType.Warehouse => new Warehouse(),
-                HopType.TransferWarehouse => new Warehouse(),
+                HopType.TransferWarehouse => new TransferWarehouse(),
                 _ => throw new Exception("Invalid operation. Unknown hopType.")
             };
 
