@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Elsa.SKS.Filters;
 using Microsoft.AspNetCore.Builder;
@@ -26,6 +27,7 @@ namespace Elsa.SKS
     /// <summary>
     /// Startup
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         private readonly IWebHostEnvironment _hostingEnv;
@@ -67,9 +69,9 @@ namespace Elsa.SKS
             services
                 .AddSwaggerGen(c =>
                 {
-                    c.SwaggerDoc("1.20.0", new OpenApiInfo
+                    c.SwaggerDoc("1.20.1", new OpenApiInfo
                     {
-                        Version = "1.20.0",
+                        Version = "1.20.1",
                         Title = "Parcel Logistics Service",
                         Description = "Parcel Logistics Service (ASP.NET Core 3.1)",
                         Contact = new OpenApiContact()
@@ -111,7 +113,7 @@ namespace Elsa.SKS
             app.UseSwaggerUI(c =>
             {
                 //TODO: Either use the SwaggerGen generated Swagger contract (generated from C# classes)
-                c.SwaggerEndpoint("/swagger/1.20.0/swagger.json", "Parcel Logistics Service");
+                c.SwaggerEndpoint("/swagger/1.20.1/swagger.json", "Parcel Logistics Service");
 
                 //TODO: Or alternatively use the original Swagger contract that's included in the static files
                 // c.SwaggerEndpoint("/swagger-original.json", "Parcel Logistics Service Original");
