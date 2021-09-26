@@ -10,11 +10,10 @@ namespace Elsa.SKS.Package.Services.Test
     public class WarehouseManagementApiTests
     {
         private WarehouseManagementApiController _controller;
-        private Warehouse _warehouse = TestConstants.ExistingWarehouses;
 
         public WarehouseManagementApiTests()
         {
-            _controller = new WarehouseManagementApiController(_warehouse);
+            _controller = new WarehouseManagementApiController();
         }
         
         [Fact]
@@ -27,7 +26,7 @@ namespace Elsa.SKS.Package.Services.Test
         [Fact]
         public void GivenHierarchyNotLoaded_WhenExportWarehouses_ThenReturn404()
         {
-            var controller = new WarehouseManagementApiController();
+            var controller = WarehouseManagementApiController.Create(loadHierarchy: false);
             var actionResult = controller.ExportWarehouses();
             actionResult.Should().BeOfType<NotFoundResult>();
         }
@@ -35,7 +34,7 @@ namespace Elsa.SKS.Package.Services.Test
         [Fact]
         public void GivenHierarchyIsNull_WhenExportWarehouses_ThenReturn400()
         {
-            var controller = new WarehouseManagementApiController(null);
+            var controller = WarehouseManagementApiController.Create(null);
             var actionResult = controller.ExportWarehouses();
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }

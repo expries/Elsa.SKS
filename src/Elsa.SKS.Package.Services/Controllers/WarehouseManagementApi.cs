@@ -24,14 +24,30 @@ namespace Elsa.SKS.Controllers
     public class WarehouseManagementApiController : ControllerBase
     {
         private Warehouse _rootWarehouse;
+        
         private bool _hierarchyLoaded;
-
-        public WarehouseManagementApiController() { }
-
-        public WarehouseManagementApiController(Warehouse rootWarehouse)
+        
+        public WarehouseManagementApiController()
         {
             _hierarchyLoaded = true;
-            _rootWarehouse = rootWarehouse;
+            _rootWarehouse = TestConstants.ExistingWarehouses;
+        }
+        
+        public static WarehouseManagementApiController Create(bool loadHierarchy = true)
+        {
+            return new WarehouseManagementApiController
+            {
+                _hierarchyLoaded = loadHierarchy
+            };
+        }
+        
+        public static WarehouseManagementApiController Create(Warehouse rootWarehouse)
+        {
+            return new WarehouseManagementApiController
+            {
+                _hierarchyLoaded = true,
+                _rootWarehouse = rootWarehouse
+            };
         }
 
         /// <summary>
