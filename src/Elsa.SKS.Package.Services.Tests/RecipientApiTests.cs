@@ -3,7 +3,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
-namespace Elsa.SKS.Package.Services.Test
+namespace Elsa.SKS.Package.Services.Tests
 {
     public class RecipientApiTests
     {

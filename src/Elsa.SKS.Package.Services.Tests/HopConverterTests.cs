@@ -5,7 +5,7 @@ using FluentAssertions;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Elsa.SKS.Package.Services.Test
+namespace Elsa.SKS.Package.Services.Tests
 {
     public class HopConverterTests : HopConverter
     {

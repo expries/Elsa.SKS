@@ -5,7 +5,7 @@
 
         <IsPackable>false</IsPackable>
 
-        <RootNamespace>Elsa.SKS.Package.Services.Test</RootNamespace>
+        <RootNamespace>Elsa.SKS.Package.Services.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
