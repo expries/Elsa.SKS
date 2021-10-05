@@ -1,4 +1,6 @@
-﻿namespace Elsa.SKS.Package.BusinessLogic
+﻿using System;
+
+namespace Elsa.SKS.Package.BusinessLogic
 {
     public class Class1
     {

@@ -11,13 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Services.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Services.Tests", "src\Elsa.SKS.Package.Services.Tests\Elsa.SKS.Package.Services.Tests.csproj", "{C0468991-989F-4E98-ABF1-334838DD667E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.BusinessLogic.Entities", "src\Elsa.SKS.Package.BusinessLogic.Entities\Elsa.SKS.Package.BusinessLogic.Entities.csproj", "{EA7C5C1D-6945-4017-8163-65AEB585E837}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.BusinessLogic", "src\Elsa.SKS.Package.BusinessLogic\Elsa.SKS.Package.BusinessLogic.csproj", "{C7CB0914-C2AF-4B21-9CE1-9C4F0519646F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.BusinessLogic.Interfaces", "src\Elsa.SKS.Package.BusinessLogic.Interfaces\Elsa.SKS.Package.BusinessLogic.Interfaces.csproj", "{87A82889-02D3-4F1D-A837-AD71CC1AA5C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.BusinessLogic.Entities", "src\Elsa.SKS.Package.BusinessLogic.Entities\Elsa.SKS.Package.BusinessLogic.Entities.csproj", "{7175189B-9A15-4922-97AF-D38C488113CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.BusinessLogic", "src\Elsa.SKS.Package.BusinessLogic\Elsa.SKS.Package.BusinessLogic.csproj", "{9182A627-9B24-42EE-AC95-5A16603DD8D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.BusinessLogic.Interfaces", "src\Elsa.SKS.Package.BusinessLogic.Interfaces\Elsa.SKS.Package.BusinessLogic.Interfaces.csproj", "{D24C49E9-BF66-49B6-AF63-FF90B2EFD5EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.BusinessLogic.Tests", "src\Elsa.SKS.Package.BusinessLogic.Tests\Elsa.SKS.Package.BusinessLogic.Tests.csproj", "{83E29D77-03EF-4491-B172-0D764970B97C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.BusinessLogic.Tests", "src\Elsa.SKS.Package.BusinessLogic.Tests\Elsa.SKS.Package.BusinessLogic.Tests.csproj", "{13194EAA-BF19-4CD8-81E2-42A57CFBCF0C}"
 EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,22 +41,22 @@ Global
 					{C0468991-989F-4E98-ABF1-334838DD667E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 					{C0468991-989F-4E98-ABF1-334838DD667E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 					{C0468991-989F-4E98-ABF1-334838DD667E}.Release|Any CPU.Build.0 = Release|Any CPU
-					{EA7C5C1D-6945-4017-8163-65AEB585E837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-					{EA7C5C1D-6945-4017-8163-65AEB585E837}.Debug|Any CPU.Build.0 = Debug|Any CPU
-					{EA7C5C1D-6945-4017-8163-65AEB585E837}.Release|Any CPU.ActiveCfg = Release|Any CPU
-					{EA7C5C1D-6945-4017-8163-65AEB585E837}.Release|Any CPU.Build.0 = Release|Any CPU
-					{87A82889-02D3-4F1D-A837-AD71CC1AA5C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-					{87A82889-02D3-4F1D-A837-AD71CC1AA5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-					{87A82889-02D3-4F1D-A837-AD71CC1AA5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-					{87A82889-02D3-4F1D-A837-AD71CC1AA5C4}.Release|Any CPU.Build.0 = Release|Any CPU
-					{9182A627-9B24-42EE-AC95-5A16603DD8D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-					{9182A627-9B24-42EE-AC95-5A16603DD8D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-					{9182A627-9B24-42EE-AC95-5A16603DD8D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-					{9182A627-9B24-42EE-AC95-5A16603DD8D8}.Release|Any CPU.Build.0 = Release|Any CPU
-					{83E29D77-03EF-4491-B172-0D764970B97C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-					{83E29D77-03EF-4491-B172-0D764970B97C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-					{83E29D77-03EF-4491-B172-0D764970B97C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-					{83E29D77-03EF-4491-B172-0D764970B97C}.Release|Any CPU.Build.0 = Release|Any CPU
+					{C7CB0914-C2AF-4B21-9CE1-9C4F0519646F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{C7CB0914-C2AF-4B21-9CE1-9C4F0519646F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{C7CB0914-C2AF-4B21-9CE1-9C4F0519646F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{C7CB0914-C2AF-4B21-9CE1-9C4F0519646F}.Release|Any CPU.Build.0 = Release|Any CPU
+					{7175189B-9A15-4922-97AF-D38C488113CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{7175189B-9A15-4922-97AF-D38C488113CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{7175189B-9A15-4922-97AF-D38C488113CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{7175189B-9A15-4922-97AF-D38C488113CA}.Release|Any CPU.Build.0 = Release|Any CPU
+					{D24C49E9-BF66-49B6-AF63-FF90B2EFD5EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{D24C49E9-BF66-49B6-AF63-FF90B2EFD5EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{D24C49E9-BF66-49B6-AF63-FF90B2EFD5EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{D24C49E9-BF66-49B6-AF63-FF90B2EFD5EA}.Release|Any CPU.Build.0 = Release|Any CPU
+					{13194EAA-BF19-4CD8-81E2-42A57CFBCF0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{13194EAA-BF19-4CD8-81E2-42A57CFBCF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{13194EAA-BF19-4CD8-81E2-42A57CFBCF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{13194EAA-BF19-4CD8-81E2-42A57CFBCF0C}.Release|Any CPU.Build.0 = Release|Any CPU
 				EndGlobalSection
 				GlobalSection(SolutionProperties) = preSolution
 								HideSolutionNode = FALSE
