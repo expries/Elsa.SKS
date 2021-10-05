@@ -21,7 +21,7 @@ namespace Elsa.SKS.Package.Services.DTOs
     /// </summary>
     [DataContract]
     [ExcludeFromCodeCoverage]
-    public class TrackingInformation 
+    public class TrackingInformation
     {
         /// <summary>
         /// State of the parcel.

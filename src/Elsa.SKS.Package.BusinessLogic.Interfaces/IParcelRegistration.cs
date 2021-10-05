@@ -1,4 +1,4 @@
-﻿using Elsa.SKS.Package.Services.DTOs;
+﻿using Elsa.SKS.Package.BusinessLogic.Entities;
 
 namespace Elsa.SKS.Package.BusinessLogic.Interfaces
 {
