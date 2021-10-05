@@ -9,6 +9,8 @@
  */
 
 using Elsa.SKS.Attributes;
+using Elsa.SKS.Package.BusinessLogic.Exceptions;
+using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -20,7 +22,14 @@ namespace Elsa.SKS.Controllers
     /// </summary>
     [ApiController]
     public class SenderApiController : ControllerBase
-    { 
+    {
+        private readonly IParcelRegistration _parcelRegistration;
+        
+        public SenderApiController(IParcelRegistration parcelRegistration)
+        {
+            _parcelRegistration = parcelRegistration;
+        }
+        
         /// <summary>
         /// Submit a new parcel to the logistics service. 
         /// </summary>
@@ -35,15 +44,27 @@ namespace Elsa.SKS.Controllers
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult SubmitParcel([FromBody]Parcel body)
         {
+            try
+            {
+                var entity = new Elsa.SKS.Package.BusinessLogic.Entities.Parcel();
+                var parcelEntity = _parcelRegistration.SubmitParcel(entity);
+                // TODO: Mapping
+                var result = new TrackingInformation();
+                return Created("/" + parcelEntity.TrackingId, result);
+            }
+            catch (BusinessException)
+            {
+                var error = new Error();
+                return BadRequest(error);
+            }
+            
+            /*
             if (body.Weight <= 0)
             {
                 var error = new Error();
                 return BadRequest(error);
             }
-
-            var result = new NewParcelInfo();
-            var trackingId = TestConstants.TrackingIdOfSubmittedParcel;
-            return Created("/" + trackingId, result);
+            */
         }
     }
 }

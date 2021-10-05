@@ -10,9 +10,12 @@
 
 using System.ComponentModel.DataAnnotations;
 using Elsa.SKS.Attributes;
+using Elsa.SKS.Package.BusinessLogic.Exceptions;
+using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
 using Elsa.SKS.Package.Services.DTOs.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Elsa.SKS.Controllers
@@ -26,6 +29,13 @@ namespace Elsa.SKS.Controllers
         private Warehouse _rootWarehouse;
         
         private bool _hierarchyLoaded;
+
+        private readonly IWarehouseLogic _warehouseLogic;
+
+        public WarehouseManagementApiController(IWarehouseLogic warehouseLogic)
+        {
+            _warehouseLogic = warehouseLogic;
+        }
         
         public WarehouseManagementApiController()
         {
@@ -64,6 +74,24 @@ namespace Elsa.SKS.Controllers
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "An error occurred loading.")]
         public virtual IActionResult ExportWarehouses()
         {
+            try
+            {
+                var warehouseEntity = _warehouseLogic.ExportWarehouses();
+                // TODO: Mapping
+                var warehouse = new Warehouse();
+                return Ok(warehouse);
+            }
+            catch (WarehouseHierarchyNotLoadedException)
+            {
+                return NotFound();
+            }
+            catch (BusinessException)
+            {
+                var error = new Error();
+                return BadRequest(error);
+            }
+            
+            /*
             if (!_hierarchyLoaded)
             {
                 return NotFound();
@@ -76,6 +104,7 @@ namespace Elsa.SKS.Controllers
             }
 
             return Ok(_rootWarehouse);
+            */
         }
 
         /// <summary>
@@ -93,6 +122,24 @@ namespace Elsa.SKS.Controllers
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "An error occurred loading.")]
         public virtual IActionResult GetWarehouse([FromRoute][Required] string code)
         {
+            try
+            {
+                var warehouseEntity = _warehouseLogic.GetWarehouse(code);
+                // TODO: Mapping
+                var result = new Warehouse();
+                return Ok(result);
+            }
+            catch (WarehouseNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (BusinessException)
+            {
+                var error = new Error();
+                return BadRequest(error);
+            }
+            
+            /*
             switch (code)
             {
                 case TestConstants.NonExistentWarehouseCode:
@@ -106,6 +153,7 @@ namespace Elsa.SKS.Controllers
                     var warehouse = new Warehouse();
                     return Ok(warehouse);
             } 
+            */
         }
 
         /// <summary>
@@ -121,6 +169,19 @@ namespace Elsa.SKS.Controllers
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult ImportWarehouses([FromBody] Warehouse body)
         {
+            try
+            {
+                var entity = new Elsa.SKS.Package.BusinessLogic.Entities.Warehouse();
+                _warehouseLogic.ImportWarehouses(entity);
+                return Ok();
+            }
+            catch (BusinessException)
+            {
+                var error = new Error();
+                return BadRequest(error); 
+            }
+            
+            /*
             if (body.HopType is not HopType.Warehouse)
             {
                 var error = new Error();
@@ -128,6 +189,7 @@ namespace Elsa.SKS.Controllers
             }
 
             return Ok();
+            */
         }
     }
 }

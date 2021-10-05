@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Elsa.SKS.Package.BusinessLogic\Elsa.SKS.Package.BusinessLogic.csproj" />
       <ProjectReference Include="..\Elsa.SKS.Package.Services\Elsa.SKS.Package.Services.csproj" />
     </ItemGroup>
 

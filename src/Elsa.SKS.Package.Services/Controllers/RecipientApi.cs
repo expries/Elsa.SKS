@@ -10,6 +10,8 @@
 
 using System.ComponentModel.DataAnnotations;
 using Elsa.SKS.Attributes;
+using Elsa.SKS.Package.BusinessLogic.Exceptions;
+using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -21,7 +23,14 @@ namespace Elsa.SKS.Controllers
     /// </summary>
     [ApiController]
     public class RecipientApiController : ControllerBase
-    { 
+    {
+        private readonly IParcelTracking _parcelTracking;
+        
+        public RecipientApiController(IParcelTracking parcelTracking)
+        {
+            _parcelTracking = parcelTracking;
+        }
+        
         /// <summary>
         /// Find the latest state of a parcel by its tracking ID. 
         /// </summary>
@@ -37,19 +46,22 @@ namespace Elsa.SKS.Controllers
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult TrackParcel([FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")] string trackingId)
         {
-            if (trackingId == TestConstants.TrackingIdOfNonExistentParcel)
+            try
+            {
+                var parcelEntity = _parcelTracking.TrackParcel(trackingId);
+                // TODO: Mapping
+                var result = new TrackingInformation();
+                return Ok(result);
+            }
+            catch (ParcelNotFoundException)
             {
                 return NotFound();
             }
-
-            if (trackingId == TestConstants.TrackingIdOfParcelThatCanNotBeTracked)
+            catch (BusinessException)
             {
                 var error = new Error();
                 return BadRequest(error);
             }
-
-            var result = new TrackingInformation();
-            return Ok(result);
         }
     }
 }

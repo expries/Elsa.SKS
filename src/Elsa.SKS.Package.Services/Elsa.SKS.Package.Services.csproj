@@ -19,6 +19,8 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Elsa.SKS.Package.BusinessLogic.Interfaces\Elsa.SKS.Package.BusinessLogic.Interfaces.csproj" />
+    <ProjectReference Include="..\Elsa.SKS.Package.BusinessLogic\Elsa.SKS.Package.BusinessLogic.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.Services.DTOs\Elsa.SKS.Package.Services.DTOs.csproj" />
   </ItemGroup>
 </Project>
