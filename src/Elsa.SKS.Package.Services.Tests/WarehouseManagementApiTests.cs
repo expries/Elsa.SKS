@@ -1,4 +1,5 @@
 ﻿using Elsa.SKS.Controllers;
+using Elsa.SKS.Package.BusinessLogic;
 using Elsa.SKS.Package.Services.DTOs;
 using Elsa.SKS.Package.Services.DTOs.Enums;
 using FluentAssertions;
@@ -13,7 +14,8 @@ namespace Elsa.SKS.Package.Services.Tests
 
         public WarehouseManagementApiTests()
         {
-            _controller = new WarehouseManagementApiController();
+            var warehouseLogic = new WarehouseLogic();
+            _controller = new WarehouseManagementApiController(warehouseLogic);
         }
         
         [Fact]
@@ -26,7 +28,8 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenHierarchyNotLoaded_WhenExportWarehouses_ThenReturn404()
         {
-            var controller = WarehouseManagementApiController.Create(loadHierarchy: false);
+            var warehouseLogic = WarehouseLogic.CreateWithoutLoadedHierarchy();
+            var controller = new WarehouseManagementApiController(warehouseLogic);
             var actionResult = controller.ExportWarehouses();
             actionResult.Should().BeOfType<NotFoundResult>();
         }
@@ -34,7 +37,8 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenHierarchyIsNull_WhenExportWarehouses_ThenReturn400()
         {
-            var controller = WarehouseManagementApiController.Create(null);
+            var warehouseLogic = WarehouseLogic.CreateWithFaultyWarehouse();
+            var controller = new WarehouseManagementApiController(warehouseLogic);
             var actionResult = controller.ExportWarehouses();
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
@@ -66,7 +70,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenWarehousesIsValid_WhenWarehouseIsImported_ThenReturn200()
         {
-            var warehouse = new Warehouse();
+            var warehouse = new Warehouse { Code = TestConstants.ExistingWarehouses.Code };
             var actionResult = _controller.ImportWarehouses(warehouse);
             actionResult.Should().BeOfType<OkResult>();
         }
@@ -74,7 +78,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenWarehousesIsNotValid_WhenWarehouseIsImported_ThenReturn400()
         {
-            var warehouse = new Warehouse { HopType = HopType.Truck };
+            var warehouse = new Warehouse { Code = null };
             var actionResult = _controller.ImportWarehouses(warehouse);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }

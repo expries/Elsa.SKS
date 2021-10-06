@@ -46,7 +46,7 @@ namespace Elsa.SKS.Controllers
         {
             try
             {
-                var entity = new Elsa.SKS.Package.BusinessLogic.Entities.Parcel();
+                var entity = new Elsa.SKS.Package.BusinessLogic.Entities.Parcel { Weight =  body.Weight };
                 var parcelEntity = _parcelRegistration.SubmitParcel(entity);
                 // TODO: Mapping
                 var result = new TrackingInformation();

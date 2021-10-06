@@ -113,7 +113,7 @@ namespace Elsa.SKS.Controllers
         {
             try
             {
-                var entity = new Elsa.SKS.Package.BusinessLogic.Entities.Warehouse();
+                var entity = new Elsa.SKS.Package.BusinessLogic.Entities.Warehouse { Code = body.Code };
                 _warehouseLogic.ImportWarehouses(entity);
                 return Ok();
             }

@@ -1,4 +1,5 @@
 ﻿using Elsa.SKS.Controllers;
+using Elsa.SKS.Package.BusinessLogic;
 using Elsa.SKS.Package.Services.DTOs;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,8 @@ namespace Elsa.SKS.Package.Services.Tests
 
         public SenderApiTests()
         {
-            _controller = new SenderApiController();
+            var parcelRegistration = new ParcelRegistration();
+            _controller = new SenderApiController(parcelRegistration);
         }
 
         [Fact]
@@ -27,7 +29,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenANewInvalidParcel_WhenSubmittingTheParcel_ThenReturn400()
         {
-            var actionResult = _controller.SubmitParcel(new Parcel(){ Weight = -1 });
+            var actionResult = _controller.SubmitParcel(new Parcel { Weight = -1 });
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
     }

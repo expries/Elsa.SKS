@@ -1,4 +1,5 @@
 using Elsa.SKS.Controllers;
+using Elsa.SKS.Package.BusinessLogic;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -11,7 +12,8 @@ namespace Elsa.SKS.Package.Services.Tests
 
         public RecipientApiTests()
         {
-            _controller = new RecipientApiController();
+            var parcelTracking = new ParcelTracking();
+            _controller = new RecipientApiController(parcelTracking);
         }
 
         [Fact]

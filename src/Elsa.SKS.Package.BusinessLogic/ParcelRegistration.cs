@@ -23,6 +23,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                 throw new InvalidParcelWeightException("Parcel weight has to be greater than 0");
             }
 
+            parcel.TrackingId = TestConstants.TrackingIdOfSubmittedParcel;
             return parcel;
         }
     }

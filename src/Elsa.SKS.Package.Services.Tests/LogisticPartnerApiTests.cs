@@ -1,4 +1,5 @@
 using Elsa.SKS.Controllers;
+using Elsa.SKS.Package.BusinessLogic;
 using Elsa.SKS.Package.Services.DTOs;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,8 @@ namespace Elsa.SKS.Package.Services.Tests
 
         public LogisticPartnerApiTests()
         {
-            _controller = new LogisticsPartnerApiController();
+            var parcelRegistration = new ParcelRegistration();
+            _controller = new LogisticsPartnerApiController(parcelRegistration);
         }
 
         [Fact]

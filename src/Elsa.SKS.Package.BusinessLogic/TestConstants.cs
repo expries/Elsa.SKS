@@ -33,6 +33,7 @@ namespace Elsa.SKS
 
         public static Warehouse ExistingWarehouses = new Warehouse
         {
+            Code = "W123456789",
             NextHops = new List<WarehouseNextHops>
             {
                 new WarehouseNextHops() { Hop = new Truck() },
