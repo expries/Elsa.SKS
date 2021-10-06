@@ -8,6 +8,6 @@ namespace Elsa.SKS.Package.BusinessLogic.Interfaces
         
         public Warehouse GetWarehouse(string code);
         
-        public void ImportWarehouses(Warehouse body);
+        public void ImportWarehouses(Warehouse warehouse);
     }
 }

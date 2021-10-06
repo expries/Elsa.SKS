@@ -26,38 +26,11 @@ namespace Elsa.SKS.Controllers
     [ApiController]
     public class WarehouseManagementApiController : ControllerBase
     {
-        private Warehouse _rootWarehouse;
-        
-        private bool _hierarchyLoaded;
-
         private readonly IWarehouseLogic _warehouseLogic;
 
         public WarehouseManagementApiController(IWarehouseLogic warehouseLogic)
         {
             _warehouseLogic = warehouseLogic;
-        }
-        
-        public WarehouseManagementApiController()
-        {
-            _hierarchyLoaded = true;
-            _rootWarehouse = TestConstants.ExistingWarehouses;
-        }
-        
-        public static WarehouseManagementApiController Create(bool loadHierarchy = true)
-        {
-            return new WarehouseManagementApiController
-            {
-                _hierarchyLoaded = loadHierarchy
-            };
-        }
-        
-        public static WarehouseManagementApiController Create(Warehouse rootWarehouse)
-        {
-            return new WarehouseManagementApiController
-            {
-                _hierarchyLoaded = true,
-                _rootWarehouse = rootWarehouse
-            };
         }
 
         /// <summary>
@@ -90,21 +63,6 @@ namespace Elsa.SKS.Controllers
                 var error = new Error();
                 return BadRequest(error);
             }
-            
-            /*
-            if (!_hierarchyLoaded)
-            {
-                return NotFound();
-            }
-            
-            if (_rootWarehouse is null)
-            {
-                var error = new Error();
-                return BadRequest(error);
-            }
-
-            return Ok(_rootWarehouse);
-            */
         }
 
         /// <summary>
@@ -138,22 +96,6 @@ namespace Elsa.SKS.Controllers
                 var error = new Error();
                 return BadRequest(error);
             }
-            
-            /*
-            switch (code)
-            {
-                case TestConstants.NonExistentWarehouseCode:
-                    return NotFound();
-                
-                case TestConstants.FaultyWarehouseCode:
-                    var error = new Error();
-                    return BadRequest(error);
-                
-                default:
-                    var warehouse = new Warehouse();
-                    return Ok(warehouse);
-            } 
-            */
         }
 
         /// <summary>
@@ -180,16 +122,6 @@ namespace Elsa.SKS.Controllers
                 var error = new Error();
                 return BadRequest(error); 
             }
-            
-            /*
-            if (body.HopType is not HopType.Warehouse)
-            {
-                var error = new Error();
-                return BadRequest(error);
-            }
-
-            return Ok();
-            */
         }
     }
 }

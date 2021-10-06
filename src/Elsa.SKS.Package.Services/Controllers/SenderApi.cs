@@ -42,7 +42,7 @@ namespace Elsa.SKS.Controllers
         [SwaggerOperation("SubmitParcel")]
         [SwaggerResponse(statusCode: 201, type: typeof(NewParcelInfo), description: "Successfully submitted the new parcel")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
-        public virtual IActionResult SubmitParcel([FromBody]Parcel body)
+        public virtual IActionResult SubmitParcel([FromBody] Parcel body)
         {
             try
             {
@@ -57,14 +57,6 @@ namespace Elsa.SKS.Controllers
                 var error = new Error();
                 return BadRequest(error);
             }
-            
-            /*
-            if (body.Weight <= 0)
-            {
-                var error = new Error();
-                return BadRequest(error);
-            }
-            */
         }
     }
 }

@@ -50,6 +50,7 @@ namespace Elsa.SKS.Controllers
             try
             {
                 var parcelEntity = _parcelTracking.TrackParcel(trackingId);
+                // TODO: Mapping
                 var result = new TrackingInformation();
                 return Ok(result);
             }
@@ -62,22 +63,6 @@ namespace Elsa.SKS.Controllers
                 var error = new Error();
                 return BadRequest(error);
             }
-            
-            /*
-            if (trackingId == TestConstants.TrackingIdOfNonExistentParcel)
-            {
-                return NotFound();
-            }
-
-            if (trackingId == TestConstants.TrackingIdOfParcelThatCanNotBeTracked)
-            {
-                var error = new Error();
-                return BadRequest(error);
-            }
-            
-                var result = new TrackingInformation();
-                return Ok(result);
-            */
         }
 
         /// <summary>
@@ -111,21 +96,6 @@ namespace Elsa.SKS.Controllers
                 var error = new Error();
                 return BadRequest(error);
             }
-            
-            /*
-            if (trackingId == TestConstants.TrackingIdOfNonExistentParcel || code == TestConstants.NonExistentHopCode)
-            {
-                return NotFound();
-            }
-
-            if (trackingId == TestConstants.TrackingIdOfParcelThatCanNotBeReported)
-            {
-                var error = new Error();
-                return BadRequest(error);
-            }
-
-            return Ok();
-            */
         }
     }
 }

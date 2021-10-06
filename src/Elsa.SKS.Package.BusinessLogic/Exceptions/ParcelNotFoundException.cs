@@ -4,15 +4,15 @@ namespace Elsa.SKS.Package.BusinessLogic.Exceptions
 {
     public class ParcelNotFoundException : BusinessException
     {
-        protected ParcelNotFoundException()
+        public ParcelNotFoundException()
         {
         }
 
-        protected ParcelNotFoundException(string message) : base(message)
+        public ParcelNotFoundException(string message) : base(message)
         {
         }
 
-        protected ParcelNotFoundException(string message, Exception inner) : base(message, inner)
+        public ParcelNotFoundException(string message, Exception inner) : base(message, inner)
         {
         }
     }

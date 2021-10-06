@@ -12,13 +12,18 @@ namespace Elsa.SKS.Package.BusinessLogic
             {
                 throw new TransferException("Parcel cannot be transferred");
             }
-
+            
             return parcel;
         }
 
         public Parcel SubmitParcel(Parcel parcel)
         {
-            throw new System.NotImplementedException();
+            if (parcel.Weight <= 0)
+            {
+                throw new InvalidParcelWeightException("Parcel weight has to be greater than 0");
+            }
+
+            return parcel;
         }
     }
 }
