@@ -8,7 +8,19 @@ namespace Elsa.SKS.Package.BusinessLogic
     {
         public Parcel ReportParcelDelivery(string trackingId)
         {
-            throw new System.NotImplementedException();
+            if (trackingId == TestConstants.TrackingIdOfNonExistentParcel)
+            {
+                throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
+            }
+
+            if (trackingId == TestConstants.TrackingIdOfParcelThatCanNotBeReported)
+            {
+                throw new ReportParcelHopException("Parcel delivery cannot be reported for parcel with " +
+                                                   $"tracking id {trackingId}");
+            }
+
+            var parcel = new Parcel { TrackingId = trackingId };
+            return parcel;
         }
 
         public void ReportParcelHop(string trackingId, string code)
