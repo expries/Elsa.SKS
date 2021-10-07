@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Elsa.SKS.Package.Services.DTOs;
 
-namespace Elsa.SKS
+namespace Elsa.SKS.Package.BusinessLogic
 {
     public static class TestConstants
     {

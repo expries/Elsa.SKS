@@ -8,4 +8,8 @@
       <ProjectReference Include="..\Elsa.SKS.Package.BusinessLogic.Interfaces\Elsa.SKS.Package.BusinessLogic.Interfaces.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="10.3.3" />
+    </ItemGroup>
+
 </Project>
