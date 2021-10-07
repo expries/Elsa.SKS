@@ -4,6 +4,7 @@ using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
 using FakeItEasy;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -21,8 +22,9 @@ namespace Elsa.SKS.Package.Services.Tests
                 .Returns(new BusinessLogic.Entities.Parcel { TrackingId = TestConstants.TrackingIdOfSubmittedParcel });
 
             var controller = new SenderApiController(parcelRegistration);
+            var parcel = Builder<Parcel>.CreateNew().Build();
             
-            var actionResult = controller.SubmitParcel(new Parcel());
+            var actionResult = controller.SubmitParcel(parcel);
             var typeAssertion = actionResult.Should().BeOfType<CreatedResult>();
             var creationResult = typeAssertion.Subject;
             creationResult.Location.Should().Be($"/{TestConstants.TrackingIdOfSubmittedParcel}");
@@ -37,7 +39,9 @@ namespace Elsa.SKS.Package.Services.Tests
                 .Throws<BusinessException>();
 
             var controller = new SenderApiController(parcelRegistration);
-            var actionResult = controller.SubmitParcel(new Parcel());
+            var parcel = Builder<Parcel>.CreateNew().Build();
+            
+            var actionResult = controller.SubmitParcel(parcel);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
     }

@@ -3,8 +3,8 @@ using Elsa.SKS.Package.BusinessLogic;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
-using Elsa.SKS.Package.Services.DTOs.Enums;
 using FakeItEasy;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -13,14 +13,6 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class WarehouseManagementApiTests
     {
-        private WarehouseManagementApiController _controller;
-
-        public WarehouseManagementApiTests()
-        {
-            var warehouseLogic = new WarehouseLogic();
-            _controller = new WarehouseManagementApiController(warehouseLogic);
-        }
-        
         [Fact]
         public void GivenWarehousesExist_WhenExportWarehouses_ThenReturn200()
         {
@@ -117,7 +109,7 @@ namespace Elsa.SKS.Package.Services.Tests
                 .DoesNothing();
 
             var controller = new WarehouseManagementApiController(warehouseLogic);
-            var warehouse = new Warehouse();
+            var warehouse = Builder<Warehouse>.CreateNew().Build();
             
             var actionResult = controller.ImportWarehouses(warehouse);
             actionResult.Should().BeOfType<OkResult>();
@@ -132,7 +124,7 @@ namespace Elsa.SKS.Package.Services.Tests
                 .Throws<BusinessException>();
 
             var controller = new WarehouseManagementApiController(warehouseLogic);
-            var warehouse = new Warehouse();
+            var warehouse = Builder<Warehouse>.CreateNew().Build();
             
             var actionResult = controller.ImportWarehouses(warehouse);
             actionResult.Should().BeOfType<BadRequestObjectResult>();

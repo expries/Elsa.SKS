@@ -4,6 +4,7 @@ using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
 using FakeItEasy;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -21,9 +22,9 @@ namespace Elsa.SKS.Package.Services.Tests
                 .Returns(new BusinessLogic.Entities.Parcel());
             
             var controller = new LogisticsPartnerApiController(parcelRegistration);
+            var parcel = Builder<Parcel>.CreateNew().Build();
             const string trackingId = TestConstants.TrackingIdOfParcelThatIsTransferred;
-            var parcel = new Parcel();
-            
+
             var actionResult = controller.TransitionParcel(parcel, trackingId);
             actionResult.Should().BeOfType<OkObjectResult>();
         }
@@ -37,8 +38,8 @@ namespace Elsa.SKS.Package.Services.Tests
                 .Throws<TransferException>();
             
             var controller = new LogisticsPartnerApiController(parcelRegistration);
+            var parcel = Builder<Parcel>.CreateNew().Build();
             const string trackingId = TestConstants.TrackingIdOfParcelThatIsNotTransferred;
-            var parcel = new Parcel();
             
             var actionResult = controller.TransitionParcel(parcel, trackingId);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
