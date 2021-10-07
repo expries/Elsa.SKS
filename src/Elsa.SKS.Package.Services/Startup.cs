@@ -56,7 +56,7 @@ namespace Elsa.SKS
             services.AddTransient<IWarehouseLogic, WarehouseLogic>();
             services.AddTransient<IParcelTracking, ParcelTracking>();
             services.AddTransient<IParcelRegistration, ParcelRegistration>();
-            
+
             // Add framework services.
             services
                 .AddMvc(options =>

@@ -14,7 +14,8 @@ namespace Elsa.SKS.Package.Services.Tests
         public LogisticPartnerApiTests()
         {
             var parcelRegistration = new ParcelRegistration();
-            _controller = new LogisticsPartnerApiController(parcelRegistration);
+            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
+            _controller = new LogisticsPartnerApiController(parcelRegistration, mapper);
         }
 
         [Fact]
