@@ -1,7 +1,10 @@
 ﻿using Elsa.SKS.Controllers;
 using Elsa.SKS.Package.BusinessLogic;
+using Elsa.SKS.Package.BusinessLogic.Exceptions;
+using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
 using Elsa.SKS.Package.Services.DTOs.Enums;
+using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -21,65 +24,117 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenWarehousesExist_WhenExportWarehouses_ThenReturn200()
         {
-            var actionResult = _controller.ExportWarehouses();
+            var warehouseLogic = A.Fake<IWarehouseLogic>();
+            
+            A.CallTo(() => warehouseLogic.ExportWarehouses())
+                .Returns(new Elsa.SKS.Package.BusinessLogic.Entities.Warehouse());
+
+            var controller = new WarehouseManagementApiController(warehouseLogic);
+            
+            var actionResult = controller.ExportWarehouses();
             actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
-        public void GivenHierarchyNotLoaded_WhenExportWarehouses_ThenReturn404()
+        public void GivenAWarehouseHierarchyNotLoadedExceptionIsThrown_WhenExportingWarehouses_ThenReturn404()
         {
-            var warehouseLogic = WarehouseLogic.CreateWithoutLoadedHierarchy();
+            var warehouseLogic = A.Fake<IWarehouseLogic>();
+            
+            A.CallTo(() => warehouseLogic.ExportWarehouses())
+                .Throws<WarehouseHierarchyNotLoadedException>();
+
             var controller = new WarehouseManagementApiController(warehouseLogic);
+
             var actionResult = controller.ExportWarehouses();
             actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
-        public void GivenHierarchyIsNull_WhenExportWarehouses_ThenReturn400()
+        public void GivenABusinessExceptionIsThrown_WhenExportingWarehouses_ThenReturn400()
         {
-            var warehouseLogic = WarehouseLogic.CreateWithFaultyWarehouse();
+            var warehouseLogic = A.Fake<IWarehouseLogic>();
+            
+            A.CallTo(() => warehouseLogic.ExportWarehouses())
+                .Throws<BusinessException>();
+
             var controller = new WarehouseManagementApiController(warehouseLogic);
+            
             var actionResult = controller.ExportWarehouses();
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         
         [Fact]
-        public void GivenWarehousesExist_WhenWarehouseIsRequested_ThenReturn200()
+        public void GivenWarehousesExist_WhenAWarehouseIsRequested_ThenReturn200()
         {
+            var warehouseLogic = A.Fake<IWarehouseLogic>();
+
+            A.CallTo(() => warehouseLogic.GetWarehouse(A<string>._))
+                .Returns(new BusinessLogic.Entities.Warehouse());
+
+            var controller = new WarehouseManagementApiController(warehouseLogic);
+            
             const string warehouseCode = TestConstants.ExistentWareHouseCode;
-            var actionResult = _controller.GetWarehouse(warehouseCode);
+            var actionResult = controller.GetWarehouse(warehouseCode);
             actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
-        public void GivenWarehousesDoesNotExist_WhenWarehouseIsRequested_ThenReturn404()
+        public void GivenAWarehouseNotFoundExceptionIsThrown_WhenAWarehouseIsRequested_ThenReturn404()
         {
+            var warehouseLogic = A.Fake<IWarehouseLogic>();
+
+            A.CallTo(() => warehouseLogic.GetWarehouse(A<string>._))
+                .Throws<WarehouseNotFoundException>();
+
+            var controller = new WarehouseManagementApiController(warehouseLogic);
             const string warehouseCode = TestConstants.NonExistentWarehouseCode;
-            var actionResult = _controller.GetWarehouse(warehouseCode);
+            
+            var actionResult = controller.GetWarehouse(warehouseCode);
             actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
-        public void GivenWarehousesIsFaulty_WhenWarehouseIsRequested_ThenReturn400()
+        public void GivenAInvalidWarehouseExceptionIsThrown_WhenAWarehouseIsRequested_ThenReturn400()
         {
+            var warehouseLogic = A.Fake<IWarehouseLogic>();
+
+            A.CallTo(() => warehouseLogic.GetWarehouse(A<string>._))
+                .Throws<BusinessException>();
+
+            var controller = new WarehouseManagementApiController(warehouseLogic);
             const string warehouseCode = TestConstants.FaultyWarehouseCode;
-            var actionResult = _controller.GetWarehouse(warehouseCode);
+            
+            var actionResult = controller.GetWarehouse(warehouseCode);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         
         [Fact]
-        public void GivenWarehousesIsValid_WhenWarehouseIsImported_ThenReturn200()
+        public void GivenWarehousesIsValid_WhenAWarehouseIsImported_ThenReturn200()
         {
-            var warehouse = new Warehouse { Code = TestConstants.ExistingWarehouses.Code };
-            var actionResult = _controller.ImportWarehouses(warehouse);
+            var warehouseLogic = A.Fake<IWarehouseLogic>();
+
+            A.CallTo(() => warehouseLogic.ImportWarehouses(A<BusinessLogic.Entities.Warehouse>._))
+                .DoesNothing();
+
+            var controller = new WarehouseManagementApiController(warehouseLogic);
+            var warehouse = new Warehouse();
+            
+            var actionResult = controller.ImportWarehouses(warehouse);
             actionResult.Should().BeOfType<OkResult>();
         }
         
         [Fact]
-        public void GivenWarehousesIsNotValid_WhenWarehouseIsImported_ThenReturn400()
+        public void GivenABusinessExceptionIsThrown_WhenAWarehouseIsImported_ThenReturn400()
         {
-            var warehouse = new Warehouse { Code = null };
-            var actionResult = _controller.ImportWarehouses(warehouse);
+            var warehouseLogic = A.Fake<IWarehouseLogic>();
+
+            A.CallTo(() => warehouseLogic.ImportWarehouses(A<BusinessLogic.Entities.Warehouse>._))
+                .Throws<BusinessException>();
+
+            var controller = new WarehouseManagementApiController(warehouseLogic);
+            var warehouse = new Warehouse();
+            
+            var actionResult = controller.ImportWarehouses(warehouse);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
     }

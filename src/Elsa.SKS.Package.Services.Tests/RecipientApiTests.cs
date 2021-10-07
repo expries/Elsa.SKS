@@ -1,5 +1,8 @@
 using Elsa.SKS.Controllers;
 using Elsa.SKS.Package.BusinessLogic;
+using Elsa.SKS.Package.BusinessLogic.Exceptions;
+using Elsa.SKS.Package.BusinessLogic.Interfaces;
+using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -8,35 +11,48 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class RecipientApiTests
     {
-        private readonly RecipientApiController _controller;
-
-        public RecipientApiTests()
-        {
-            var parcelTracking = new ParcelTracking();
-            _controller = new RecipientApiController(parcelTracking);
-        }
-
         [Fact]
         public void GivenAParcelExists_WhenTrackingTheParcel_ThenReturn200()
         {
+            var parcelTracking = A.Fake<IParcelTracking>();
+            
+            A.CallTo(() => parcelTracking.TrackParcel(A<string>._))
+                .Returns(new BusinessLogic.Entities.Parcel());
+
+            var controller = new RecipientApiController(parcelTracking);
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
-            var actionResult = _controller.TrackParcel(trackingId);
+            
+            var actionResult = controller.TrackParcel(trackingId);
             actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
-        public void GivenAParcelDoesNotExist_WhenTrackingTheParcel_ThenReturn404()
+        public void GivenAParcelNotFoundExceptionsIsThrown_WhenTrackingAParcel_ThenReturn404()
         {
+            var parcelTracking = A.Fake<IParcelTracking>();
+            
+            A.CallTo(() => parcelTracking.TrackParcel(A<string>._))
+                .Throws<ParcelNotFoundException>();
+
+            var controller = new RecipientApiController(parcelTracking);
             const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
-            var actionResult = _controller.TrackParcel(trackingId);
+            
+            var actionResult = controller.TrackParcel(trackingId);
             actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
-        public void GivenAParcelCanNotBeTracked_WhenTrackingTheParcel_ThenReturn400()
+        public void GivenABusinessExceptionIsThrown_WhenTrackingAParcel_ThenReturn400()
         {
+            var parcelTracking = A.Fake<IParcelTracking>();
+            
+            A.CallTo(() => parcelTracking.TrackParcel(A<string>._))
+                .Throws<BusinessException>();
+
+            var controller = new RecipientApiController(parcelTracking);
             const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeTracked;
-            var actionResult = _controller.TrackParcel(trackingId);
+            
+            var actionResult = controller.TrackParcel(trackingId);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
     }
