@@ -98,6 +98,9 @@ namespace Elsa.SKS
 
             services
                 .AddSwaggerGenNewtonsoftSupport();
+            
+            services
+                .AddAutoMapper(typeof(Startup));
         }
 
         /// <summary>

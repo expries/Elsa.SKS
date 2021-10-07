@@ -1,3 +1,4 @@
+using AutoMapper;
 using Elsa.SKS.Controllers;
 using Elsa.SKS.Package.BusinessLogic;
 using Elsa.SKS.Package.Services.DTOs;
@@ -10,7 +11,6 @@ namespace Elsa.SKS.Package.Services.Tests
     public class LogisticPartnerApiTests
     {
         private readonly LogisticsPartnerApiController _controller;
-
         public LogisticPartnerApiTests()
         {
             var parcelRegistration = new ParcelRegistration();
@@ -33,6 +33,15 @@ namespace Elsa.SKS.Package.Services.Tests
             var parcel = new Parcel();
             var actionResult = _controller.TransitionParcel(parcel, trackingId);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
+        }
+        
+        [Fact]
+        public void AutomapperConfigurationTester()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+                cfg.AddProfile(new ParcelProfile()));
+
+            configuration.AssertConfigurationIsValid();
         }
     }
 }

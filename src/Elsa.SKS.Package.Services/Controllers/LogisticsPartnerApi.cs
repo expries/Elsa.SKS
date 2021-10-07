@@ -10,6 +10,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Elsa.SKS.Attributes;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
@@ -26,10 +27,18 @@ namespace Elsa.SKS.Controllers
     public class LogisticsPartnerApiController : ControllerBase
     {
         private readonly IParcelRegistration _parcelRegistration;
+
+        private readonly IMapper _mapper;
         
         public LogisticsPartnerApiController(IParcelRegistration parcelRegistration)
         {
             _parcelRegistration = parcelRegistration;
+        }
+        
+        public LogisticsPartnerApiController(IParcelRegistration parcelRegistration, IMapper mapper)
+        {
+            _parcelRegistration = parcelRegistration;
+            _mapper = mapper;
         }
         
         /// <summary>
@@ -54,6 +63,7 @@ namespace Elsa.SKS.Controllers
                 var entity = new Elsa.SKS.Package.BusinessLogic.Entities.Parcel();
                 var parcelEntity = _parcelRegistration.TransitionParcel(entity, trackingId);
                 // TODO: Mapping
+                var newEntity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Parcel>(parcelEntity);
                 var result = new NewParcelInfo();
                 return Ok(result);
             }

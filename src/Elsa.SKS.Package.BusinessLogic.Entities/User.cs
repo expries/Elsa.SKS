@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Elsa.SKS.Package.Services.DTOs;
 
 namespace Elsa.SKS.Package.BusinessLogic.Entities
 {
@@ -38,6 +39,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
         /// <value>Country</value>
         [Required]
         public string Country { get; set; }
+        
     }
 
 }

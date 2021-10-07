@@ -1,0 +1,18 @@
+﻿using System.Reflection;
+using AutoMapper;
+using Elsa.SKS.Package.BusinessLogic.Entities;
+using Elsa.SKS.Package.Services.DTOs;
+using Parcel = Elsa.SKS.Package.Services.DTOs.Parcel;
+
+namespace Elsa.SKS
+{
+    public class ParcelProfile : Profile
+    {
+        public ParcelProfile()
+        {
+            CreateMap<Parcel, Package.BusinessLogic.Entities.Parcel>(MemberList.Source);
+            CreateMap<Recipient, User>();
+        }
+    }
+
+}
