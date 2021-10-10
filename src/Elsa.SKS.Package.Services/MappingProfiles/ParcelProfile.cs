@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.Services.DTOs;
-using Hop = Elsa.SKS.Package.Services.DTOs.Hop;
-using HopArrival = Elsa.SKS.Package.Services.DTOs.HopArrival;
-using Parcel = Elsa.SKS.Package.Services.DTOs.Parcel;
+using HopArrivalDto = Elsa.SKS.Package.Services.DTOs.HopArrival;
+using HopArrivalEntity = Elsa.SKS.Package.BusinessLogic.Entities.HopArrival; 
+using ParcelDto = Elsa.SKS.Package.Services.DTOs.Parcel;
+using ParcelEntity = Elsa.SKS.Package.BusinessLogic.Entities.Parcel;
+using HopEntity = Elsa.SKS.Package.BusinessLogic.Entities.Hop;
 
 namespace Elsa.SKS.MappingProfiles
 {
@@ -12,20 +13,16 @@ namespace Elsa.SKS.MappingProfiles
     {
         public ParcelProfile()
         {
-            CreateMap<Parcel, Package.BusinessLogic.Entities.Parcel>(MemberList.Source).ReverseMap();
+            CreateMap<ParcelDto, ParcelEntity>(MemberList.Source).ReverseMap();
             CreateMap<Recipient, User>().ReverseMap();
-            CreateMap<Package.BusinessLogic.Entities.Parcel, TrackingInformation>().ReverseMap();
+            CreateMap<ParcelEntity, TrackingInformation>().ReverseMap();
             
-            CreateMap<HopArrival, Package.BusinessLogic.Entities.HopArrival>()
-                .ForMember(
-                    h => h.Hop, 
-                    o => o.MapFrom(dto 
-                        => dto));
-
-            CreateMap<HopArrival, Package.BusinessLogic.Entities.Hop>();
+            CreateMap<HopArrivalDto, HopArrivalEntity>(MemberList.None)
+                .ForMember(h => h.Hop, o => o.MapFrom(dto => dto));
+            CreateMap<HopArrivalDto, HopEntity>(MemberList.None);
             
-            CreateMap<Package.BusinessLogic.Entities.Hop, HopArrival>();
-            CreateMap<Package.BusinessLogic.Entities.HopArrival, HopArrival>().IncludeMembers(h => h.Hop);
+            CreateMap<HopArrivalEntity, HopArrivalDto>().IncludeMembers(h => h.Hop);
+            CreateMap<HopEntity, HopArrivalDto>(MemberList.None);
         }
     }
 
