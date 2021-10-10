@@ -7,7 +7,7 @@ namespace Elsa.SKS.MappingProfiles
     {
         public HopArrivalProfile()
         {
-            CreateMap<HopArrival, Package.BusinessLogic.Entities.HopArrival>();
+            CreateMap<HopArrival, Package.BusinessLogic.Entities.HopArrival>().ReverseMap();
         }
     }
 

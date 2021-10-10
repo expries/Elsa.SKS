@@ -7,12 +7,11 @@ namespace Elsa.SKS.MappingProfiles
     {
         public HopProfile()
         {
-            CreateMap<Hop, Package.BusinessLogic.Entities.Hop>()
-                .IncludeAllDerived();
+            CreateMap<Hop, Package.BusinessLogic.Entities.Hop>().IncludeAllDerived().ReverseMap();
             
-            CreateMap<Truck, Package.BusinessLogic.Entities.Truck>();
-            CreateMap<Warehouse, Package.BusinessLogic.Entities.Warehouse>();
-            CreateMap<TransferWarehouse, Package.BusinessLogic.Entities.TransferWarehouse>();
+            CreateMap<Truck, Package.BusinessLogic.Entities.Truck>().ReverseMap();
+            CreateMap<Warehouse, Package.BusinessLogic.Entities.Warehouse>().ReverseMap();
+            CreateMap<TransferWarehouse, Package.BusinessLogic.Entities.TransferWarehouse>().ReverseMap();
         }
     }
 }

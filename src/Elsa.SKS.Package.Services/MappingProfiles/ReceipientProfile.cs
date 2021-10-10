@@ -7,7 +7,7 @@ namespace Elsa.SKS.MappingProfiles
     {
         public ReceipientProfile()
         {
-            CreateMap<Recipient, Package.BusinessLogic.Entities.User>();
+            CreateMap<Recipient, Package.BusinessLogic.Entities.User>().ReverseMap();
         }
     }
 

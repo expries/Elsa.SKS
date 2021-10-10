@@ -9,8 +9,8 @@ namespace Elsa.SKS.MappingProfiles
     {
         public ParcelProfile()
         {
-            CreateMap<Parcel, Package.BusinessLogic.Entities.Parcel>(MemberList.Source);
-            CreateMap<Recipient, User>();
+            CreateMap<Parcel, Package.BusinessLogic.Entities.Parcel>(MemberList.Source).ReverseMap();
+            CreateMap<Recipient, User>().ReverseMap();;
         }
     }
 

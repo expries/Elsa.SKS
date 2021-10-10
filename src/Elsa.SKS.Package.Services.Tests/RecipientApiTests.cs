@@ -15,7 +15,8 @@ namespace Elsa.SKS.Package.Services.Tests
         public RecipientApiTests()
         {
             var parcelTracking = new ParcelTracking();
-            _controller = new RecipientApiController(parcelTracking);
+            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
+            _controller = new RecipientApiController(parcelTracking, mapper);
         }
 
         [Fact]

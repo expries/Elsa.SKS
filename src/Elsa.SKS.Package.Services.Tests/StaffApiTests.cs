@@ -1,4 +1,6 @@
-﻿using Elsa.SKS.Controllers;
+﻿using AutoMapper;
+using Elsa.SKS.Controllers;
+using Elsa.SKS.MappingProfiles;
 using Elsa.SKS.Package.BusinessLogic;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +15,8 @@ namespace Elsa.SKS.Package.Services.Tests
         public StaffApiTests()
         {
             var parcelTracking = new ParcelTracking();
-            _controller = new StaffApiController(parcelTracking);
+            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
+            _controller = new StaffApiController(parcelTracking, mapper);
         }
 
         [Fact]

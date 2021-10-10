@@ -10,6 +10,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Elsa.SKS.Attributes;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
@@ -27,9 +28,12 @@ namespace Elsa.SKS.Controllers
     {
         private readonly IParcelTracking _parcelTracking;
         
-        public StaffApiController(IParcelTracking parcelTracking)
+        private readonly IMapper _mapper;
+
+        public StaffApiController(IParcelTracking parcelTracking, IMapper mapper)
         {
             _parcelTracking = parcelTracking;
+            _mapper = mapper;
         }
         
         /// <summary>
@@ -50,6 +54,7 @@ namespace Elsa.SKS.Controllers
             try
             {
                 var parcelEntity = _parcelTracking.TrackParcel(trackingId);
+                var parcelDto = _mapper.Map<Parcel>(parcelEntity);
                 var result = new TrackingInformation();
                 return Ok(result);
             }

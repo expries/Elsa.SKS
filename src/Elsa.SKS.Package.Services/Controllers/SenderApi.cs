@@ -52,6 +52,7 @@ namespace Elsa.SKS.Controllers
             {
                 var entity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Parcel>(body);
                 var parcelEntity = _parcelRegistration.SubmitParcel(entity);
+                var parcelDto = _mapper.Map<Parcel>(parcelEntity);
                 var result = new TrackingInformation();
                 return Created("/" + parcelEntity.TrackingId, result);
             }
