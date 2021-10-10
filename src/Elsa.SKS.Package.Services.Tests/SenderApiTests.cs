@@ -17,13 +17,6 @@ namespace Elsa.SKS.Package.Services.Tests
     {
         private readonly SenderApiController _controller;
 
-        public SenderApiTests()
-        {
-            var parcelRegistration = new ParcelRegistration();
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            _controller = new SenderApiController(parcelRegistration, mapper);
-        }
-
         [Fact]
         public void GivenANewParcel_WhenSubmittingTheParcel_ThenReturn201()
         {

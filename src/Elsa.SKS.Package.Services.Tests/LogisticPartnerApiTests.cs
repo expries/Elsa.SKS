@@ -16,12 +16,6 @@ namespace Elsa.SKS.Package.Services.Tests
     public class LogisticPartnerApiTests
     {
         private readonly LogisticsPartnerApiController _controller;
-        public LogisticPartnerApiTests()
-        {
-            var parcelRegistration = new ParcelRegistration();
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            _controller = new LogisticsPartnerApiController(parcelRegistration, mapper);
-        }
 
         [Fact]
         public void GivenAParcelIsExpected_WhenTransitioningTheParcel_ThenReturn200()

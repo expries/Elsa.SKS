@@ -15,13 +15,6 @@ namespace Elsa.SKS.Package.Services.Tests
     {
         private readonly StaffApiController _controller;
 
-        public StaffApiTests()
-        {
-            var parcelTracking = new ParcelTracking();
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            _controller = new StaffApiController(parcelTracking, mapper);
-        }
-
         [Fact]
         public void GivenAParcelExists_WhenParcelDeliveryIsReported_ThenReturn200()
         {

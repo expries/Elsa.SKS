@@ -19,13 +19,6 @@ namespace Elsa.SKS.Package.Services.Tests
         private WarehouseManagementApiController _controller;
         private Mapper _mapper;
 
-        public WarehouseManagementApiTests()
-        {
-            var warehouseLogic = new WarehouseLogic();
-            _mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<WarehouseProfile>()));
-            _controller = new WarehouseManagementApiController(warehouseLogic, _mapper);
-        }
-        
         [Fact]
         public void GivenWarehousesExist_WhenExportWarehouses_ThenReturn200()
         {
