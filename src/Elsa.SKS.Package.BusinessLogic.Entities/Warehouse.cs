@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Elsa.SKS.Package.BusinessLogic.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class Warehouse : Hop
     {
         /// <summary>

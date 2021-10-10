@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Elsa.SKS.Package.BusinessLogic.Entities.Enums;
 
 namespace Elsa.SKS.Package.BusinessLogic.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class Parcel
     {
         /// <summary>
