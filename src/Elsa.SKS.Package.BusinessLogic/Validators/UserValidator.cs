@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Elsa.SKS.Package.BusinessLogic.Validators
 {
-    public class AddressValidator : AbstractValidator<User>
+    public class UserValidator : AbstractValidator<User>
     {
-        public AddressValidator()
+        public UserValidator()
         {
             RuleFor(address => address.Country)
                 .Must(country => country is "Austria" or "Österreich");

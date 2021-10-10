@@ -59,8 +59,7 @@ namespace Elsa.SKS.Controllers
                 body.Recipient = new Recipient { Country = "Austria" };
                 var entity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Parcel>(body);
                 var parcelEntity = _parcelRegistration.TransitionParcel(entity, trackingId);
-                var parcelDto = _mapper.Map<Parcel>(parcelEntity);
-                var result = new TrackingInformation();
+                var result = _mapper.Map<TrackingInformation>(parcelEntity);
                 return Ok(result);
             }
             catch (BusinessException)

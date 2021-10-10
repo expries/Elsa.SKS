@@ -101,6 +101,7 @@ namespace Elsa.SKS
             
             services
                 .AddAutoMapper(typeof(Startup));
+
         }
 
         /// <summary>
