@@ -1,4 +1,7 @@
-﻿using Elsa.SKS.Controllers;
+﻿using System.Collections.Generic;
+using AutoMapper;
+using Elsa.SKS.Controllers;
+using Elsa.SKS.MappingProfiles;
 using Elsa.SKS.Package.BusinessLogic;
 using Elsa.SKS.Package.Services.DTOs;
 using Elsa.SKS.Package.Services.DTOs.Enums;
@@ -11,11 +14,13 @@ namespace Elsa.SKS.Package.Services.Tests
     public class WarehouseManagementApiTests
     {
         private WarehouseManagementApiController _controller;
+        private Mapper _mapper;
 
         public WarehouseManagementApiTests()
         {
             var warehouseLogic = new WarehouseLogic();
-            _controller = new WarehouseManagementApiController(warehouseLogic);
+            _mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<WarehouseProfile>()));
+            _controller = new WarehouseManagementApiController(warehouseLogic, _mapper);
         }
         
         [Fact]
@@ -29,7 +34,7 @@ namespace Elsa.SKS.Package.Services.Tests
         public void GivenHierarchyNotLoaded_WhenExportWarehouses_ThenReturn404()
         {
             var warehouseLogic = WarehouseLogic.CreateWithoutLoadedHierarchy();
-            var controller = new WarehouseManagementApiController(warehouseLogic);
+            var controller = new WarehouseManagementApiController(warehouseLogic, _mapper);
             var actionResult = controller.ExportWarehouses();
             actionResult.Should().BeOfType<NotFoundResult>();
         }
@@ -38,7 +43,7 @@ namespace Elsa.SKS.Package.Services.Tests
         public void GivenHierarchyIsNull_WhenExportWarehouses_ThenReturn400()
         {
             var warehouseLogic = WarehouseLogic.CreateWithFaultyWarehouse();
-            var controller = new WarehouseManagementApiController(warehouseLogic);
+            var controller = new WarehouseManagementApiController(warehouseLogic, _mapper);
             var actionResult = controller.ExportWarehouses();
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
@@ -81,6 +86,15 @@ namespace Elsa.SKS.Package.Services.Tests
             var warehouse = new Warehouse { Code = null };
             var actionResult = _controller.ImportWarehouses(warehouse);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
+        }
+        
+        [Fact]
+        public void AutomapperConfigurationTester()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+                cfg.AddProfile(new WarehouseProfile()));
+
+            configuration.AssertConfigurationIsValid();
         }
     }
 }

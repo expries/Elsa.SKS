@@ -56,10 +56,9 @@ namespace Elsa.SKS.Controllers
             try
             {
                 body.Weight = 12;
-                body.Recipient = new Recipient {Country = "Austria"};
+                body.Recipient = new Recipient { Country = "Austria" };
                 var entity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Parcel>(body);
                 var parcelEntity = _parcelRegistration.TransitionParcel(entity, trackingId);
-                // TODO: Mapping
                 var result = new NewParcelInfo();
                 return Ok(result);
             }

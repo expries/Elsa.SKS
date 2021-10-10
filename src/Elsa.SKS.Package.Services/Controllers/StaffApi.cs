@@ -50,7 +50,6 @@ namespace Elsa.SKS.Controllers
             try
             {
                 var parcelEntity = _parcelTracking.TrackParcel(trackingId);
-                // TODO: Mapping
                 var result = new TrackingInformation();
                 return Ok(result);
             }

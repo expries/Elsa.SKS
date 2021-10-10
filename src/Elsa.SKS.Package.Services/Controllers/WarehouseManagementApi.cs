@@ -9,6 +9,7 @@
  */
 
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Elsa.SKS.Attributes;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
@@ -27,10 +28,13 @@ namespace Elsa.SKS.Controllers
     public class WarehouseManagementApiController : ControllerBase
     {
         private readonly IWarehouseLogic _warehouseLogic;
+        
+        private readonly IMapper _mapper;
 
-        public WarehouseManagementApiController(IWarehouseLogic warehouseLogic)
+        public WarehouseManagementApiController(IWarehouseLogic warehouseLogic, IMapper mapper)
         {
             _warehouseLogic = warehouseLogic;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -50,7 +54,6 @@ namespace Elsa.SKS.Controllers
             try
             {
                 var warehouseEntity = _warehouseLogic.ExportWarehouses();
-                // TODO: Mapping
                 var warehouse = new Warehouse();
                 return Ok(warehouse);
             }
@@ -83,7 +86,6 @@ namespace Elsa.SKS.Controllers
             try
             {
                 var warehouseEntity = _warehouseLogic.GetWarehouse(code);
-                // TODO: Mapping
                 var result = new Warehouse();
                 return Ok(result);
             }

@@ -9,6 +9,7 @@
  */
 
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Elsa.SKS.Attributes;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
@@ -50,7 +51,6 @@ namespace Elsa.SKS.Controllers
             try
             {
                 var parcelEntity = _parcelTracking.TrackParcel(trackingId);
-                // TODO: Mapping
                 var result = new TrackingInformation();
                 return Ok(result);
             }

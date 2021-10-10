@@ -1,4 +1,6 @@
-﻿using Elsa.SKS.Controllers;
+﻿using AutoMapper;
+using Elsa.SKS.Controllers;
+using Elsa.SKS.MappingProfiles;
 using Elsa.SKS.Package.BusinessLogic;
 using Elsa.SKS.Package.Services.DTOs;
 using FluentAssertions;
@@ -14,7 +16,8 @@ namespace Elsa.SKS.Package.Services.Tests
         public SenderApiTests()
         {
             var parcelRegistration = new ParcelRegistration();
-            _controller = new SenderApiController(parcelRegistration);
+            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
+            _controller = new SenderApiController(parcelRegistration, mapper);
         }
 
         [Fact]
@@ -31,6 +34,15 @@ namespace Elsa.SKS.Package.Services.Tests
         {
             var actionResult = _controller.SubmitParcel(new Parcel { Weight = -1 });
             actionResult.Should().BeOfType<BadRequestObjectResult>();
+        }
+        
+        [Fact]
+        public void AutomapperConfigurationTester()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+                cfg.AddProfile(new ParcelProfile()));
+
+            configuration.AssertConfigurationIsValid();
         }
     }
 }

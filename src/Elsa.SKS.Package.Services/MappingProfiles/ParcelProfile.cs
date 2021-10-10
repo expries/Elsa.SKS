@@ -1,10 +1,9 @@
-﻿using System.Reflection;
-using AutoMapper;
+﻿using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.Services.DTOs;
 using Parcel = Elsa.SKS.Package.Services.DTOs.Parcel;
 
-namespace Elsa.SKS
+namespace Elsa.SKS.MappingProfiles
 {
     public class ParcelProfile : Profile
     {

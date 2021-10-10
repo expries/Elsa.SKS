@@ -1,5 +1,6 @@
 using AutoMapper;
 using Elsa.SKS.Controllers;
+using Elsa.SKS.MappingProfiles;
 using Elsa.SKS.Package.BusinessLogic;
 using Elsa.SKS.Package.Services.DTOs;
 using FluentAssertions;
@@ -44,5 +45,6 @@ namespace Elsa.SKS.Package.Services.Tests
 
             configuration.AssertConfigurationIsValid();
         }
+
     }
 }

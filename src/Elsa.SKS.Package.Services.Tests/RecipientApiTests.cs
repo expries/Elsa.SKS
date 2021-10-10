@@ -1,4 +1,6 @@
+using AutoMapper;
 using Elsa.SKS.Controllers;
+using Elsa.SKS.MappingProfiles;
 using Elsa.SKS.Package.BusinessLogic;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -39,5 +41,6 @@ namespace Elsa.SKS.Package.Services.Tests
             var actionResult = _controller.TrackParcel(trackingId);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
+        
     }
 }
