@@ -9,13 +9,6 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class HopConverterTests : HopConverter
     {
-        private readonly HopConverter _converter;
-        
-        public HopConverterTests()
-        {
-            _converter = this;
-        }
-
         [Fact]
         public void GivenAJObjectWithHopTypeWareHouse_WhenConvertingToHop_ThenReturnAWarehouse()
         {

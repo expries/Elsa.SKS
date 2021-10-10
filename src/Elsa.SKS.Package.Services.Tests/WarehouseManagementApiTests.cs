@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Elsa.SKS.Controllers;
 using Elsa.SKS.MappingProfiles;
 using Elsa.SKS.Package.BusinessLogic;
@@ -16,9 +15,6 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class WarehouseManagementApiTests
     {
-        private WarehouseManagementApiController _controller;
-        private Mapper _mapper;
-
         [Fact]
         public void GivenWarehousesExist_WhenExportWarehouses_ThenReturn200()
         {

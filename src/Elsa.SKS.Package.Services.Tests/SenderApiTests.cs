@@ -15,8 +15,6 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class SenderApiTests
     {
-        private readonly SenderApiController _controller;
-
         [Fact]
         public void GivenANewParcel_WhenSubmittingTheParcel_ThenReturn201()
         {

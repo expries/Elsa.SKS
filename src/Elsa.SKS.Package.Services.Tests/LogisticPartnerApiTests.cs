@@ -15,8 +15,6 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class LogisticPartnerApiTests
     {
-        private readonly LogisticsPartnerApiController _controller;
-
         [Fact]
         public void GivenAParcelIsExpected_WhenTransitioningTheParcel_ThenReturn200()
         {
@@ -24,6 +22,7 @@ namespace Elsa.SKS.Package.Services.Tests
             
             A.CallTo(() => parcelRegistration.TransitionParcel(A<BusinessLogic.Entities.Parcel>._, A<string>._))
                 .Returns(new BusinessLogic.Entities.Parcel());
+            
             var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
             var controller = new LogisticsPartnerApiController(parcelRegistration, mapper);
             var parcel = Builder<Parcel>.CreateNew().Build();

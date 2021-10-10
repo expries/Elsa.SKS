@@ -13,8 +13,6 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class RecipientApiTests
     {
-        private readonly RecipientApiController _controller;
-
         [Fact]
         public void GivenAParcelExists_WhenTrackingTheParcel_ThenReturn200()
         {
