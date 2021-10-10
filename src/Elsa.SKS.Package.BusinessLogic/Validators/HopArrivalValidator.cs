@@ -1,4 +1,4 @@
-﻿using Elsa.SKS.Package.BusinessLogic.Entities;
+using Elsa.SKS.Package.BusinessLogic.Entities;
 using FluentValidation;
 
 namespace Elsa.SKS.Package.BusinessLogic.Validators
@@ -8,7 +8,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Validators
         public HopArrivalValidator()
         {
             RuleFor(hopArrival => hopArrival.Hop.Code).Matches("(^[A-Z]{4}\\d{1,4}$");
+            RuleFor(a => a.Hop).NotNull();
         }
-
     }
 }
