@@ -3,8 +3,14 @@ using Elsa.SKS.Package.Services.DTOs;
 
 namespace Elsa.SKS.MappingProfiles
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class WarehouseProfile : Profile
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public WarehouseProfile()
         {
             CreateMap<Warehouse, Package.BusinessLogic.Entities.Warehouse>().ReverseMap();

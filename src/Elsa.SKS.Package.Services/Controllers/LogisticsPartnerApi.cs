@@ -29,7 +29,12 @@ namespace Elsa.SKS.Controllers
         private readonly IParcelRegistration _parcelRegistration;
 
         private readonly IMapper _mapper;
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parcelRegistration"></param>
+        /// <param name="mapper"></param>
         public LogisticsPartnerApiController(IParcelRegistration parcelRegistration, IMapper mapper)
         {
             _parcelRegistration = parcelRegistration;
@@ -55,8 +60,6 @@ namespace Elsa.SKS.Controllers
         {
             try
             {
-                body.Weight = 12;
-                body.Recipient = new Recipient { Country = "Austria" };
                 var entity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Parcel>(body);
                 var parcelEntity = _parcelRegistration.TransitionParcel(entity, trackingId);
                 var result = _mapper.Map<TrackingInformation>(parcelEntity);

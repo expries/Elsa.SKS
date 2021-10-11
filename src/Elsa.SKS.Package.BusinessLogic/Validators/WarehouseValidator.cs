@@ -1,3 +1,4 @@
+using System.Linq;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using FluentValidation;
 

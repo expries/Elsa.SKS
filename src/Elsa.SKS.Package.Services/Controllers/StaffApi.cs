@@ -30,6 +30,11 @@ namespace Elsa.SKS.Controllers
         
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parcelTracking"></param>
+        /// <param name="mapper"></param>
         public StaffApiController(IParcelTracking parcelTracking, IMapper mapper)
         {
             _parcelTracking = parcelTracking;

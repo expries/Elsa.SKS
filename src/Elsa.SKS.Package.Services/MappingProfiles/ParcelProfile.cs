@@ -9,8 +9,14 @@ using HopEntity = Elsa.SKS.Package.BusinessLogic.Entities.Hop;
 
 namespace Elsa.SKS.MappingProfiles
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ParcelProfile : Profile
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public ParcelProfile()
         {
             CreateMap<ParcelDto, ParcelEntity>(MemberList.Source).ReverseMap();

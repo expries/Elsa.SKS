@@ -28,6 +28,11 @@ namespace Elsa.SKS.Controllers
         
         private readonly IMapper _mapper;
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parcelRegistration"></param>
+        /// <param name="mapper"></param>
         public SenderApiController(IParcelRegistration parcelRegistration, IMapper mapper)
         {
             _parcelRegistration = parcelRegistration;

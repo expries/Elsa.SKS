@@ -3,8 +3,14 @@ using Elsa.SKS.Package.Services.DTOs;
 
 namespace Elsa.SKS.MappingProfiles
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class HopProfile : Profile
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public HopProfile()
         {
             CreateMap<Hop, Package.BusinessLogic.Entities.Hop>().IncludeAllDerived().ReverseMap();

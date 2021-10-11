@@ -1,5 +1,6 @@
 ﻿using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
+using Elsa.SKS.Package.BusinessLogic.Validators;
 using Warehouse = Elsa.SKS.Package.BusinessLogic.Entities.Warehouse;
 
 namespace Elsa.SKS.Package.BusinessLogic
@@ -55,6 +56,13 @@ namespace Elsa.SKS.Package.BusinessLogic
 
         public void ImportWarehouses(Warehouse warehouse)
         {
+            var validation = new WarehouseValidator().Validate(warehouse);
+
+            if (!validation.IsValid)
+            {
+                throw new InvalidWarehouseException(validation.ToString(" "));
+            }
+            
             if (string.IsNullOrEmpty(warehouse.Code))
             {
                 throw new InvalidWarehouseException("Warehouse code is null or empty");
