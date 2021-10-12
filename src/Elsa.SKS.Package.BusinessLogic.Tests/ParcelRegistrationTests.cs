@@ -11,7 +11,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
     public class ParcelRegistrationTests
     {
         [Fact]
-        public void GivenTheParcelInformationIsCorrect_WhenTransitioningTheParcel_ThenReturnParcel()
+        public void GivenCorrectParcelInformation_WhenTransitioningTheParcel_ThenReturnParcel()
         {
             var parcelRegistration = new ParcelRegistration();
             var parcel = Builder<Parcel>.CreateNew()
@@ -28,7 +28,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheValidationIsNotValid_WhenTransitioningTheParcel_ThenThrowTransactionException()
+        public void GivenNonValidParcelValidation_WhenTransitioningTheParcel_ThenThrowTransactionException()
         {
             var parcelRegistration = new ParcelRegistration();
             var parcel = Builder<Parcel>.CreateNew().Build();
@@ -38,7 +38,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheTrackingIdIsWrong_WhenTransitioningTheParcel_ThenThrowTransferException()
+        public void GivenWrongTrackingId_WhenTransitioningTheParcel_ThenThrowTransferException()
         {
             var parcelRegistration = new ParcelRegistration();
             var parcel = Builder<Parcel>.CreateNew()
@@ -53,7 +53,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheParcelInformationIsCorrect_WhenSubmittingTheParcel_ThenReturnParcelWithCorrectTrackingId()
+        public void GivenCorrectParcelInformation_WhenSubmittingTheParcel_ThenReturnParcelWithCorrectTrackingId()
         {
             var parcelRegistration = new ParcelRegistration();
             var parcel = Builder<Parcel>.CreateNew()
@@ -70,7 +70,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheValidationIsNotValid_WhenSubmittingTheParcel_ThenReturnInvalidParcelException()
+        public void GivenNonValidParcelValidation_WhenSubmittingTheParcel_ThenReturnInvalidParcelException()
         {
             var parcelRegistration = new ParcelRegistration();
             var parcel = Builder<Parcel>.CreateNew().Build();
@@ -79,7 +79,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheWeightIsTooLow_WhenSubmittingTheParcel_ThenReturnInvalidParcelException()
+        public void GivenTooLowParcelWeight_WhenSubmittingTheParcel_ThenReturnInvalidParcelException()
         {
             var parcelRegistration = new ParcelRegistration();
             var parcel = Builder<Parcel>.CreateNew()

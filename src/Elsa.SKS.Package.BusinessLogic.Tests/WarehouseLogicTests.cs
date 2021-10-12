@@ -65,7 +65,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheValidationIsNotValid_WhenImportingWarehouses_ThenThrowInvalidWarehouseException()
+        public void GivenNonValidWarehouseValidation_WhenImportingWarehouses_ThenThrowInvalidWarehouseException()
         {
             var warehouseLogic = new WarehouseLogic();
             var warehouse = Builder<Warehouse>.CreateNew()

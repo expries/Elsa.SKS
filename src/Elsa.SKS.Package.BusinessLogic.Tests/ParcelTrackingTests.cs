@@ -10,7 +10,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
     public class ParcelTrackingTests
     {
         [Fact]
-        public void GivenTheTrackingIdIsCorrect_WhenReportingParcelDelivery_ThenReturnParcelWithCorrectTrackingId()
+        public void GivenCorrectTrackingId_WhenReportingParcelDelivery_ThenReturnParcelWithCorrectTrackingId()
         {
             var parcelTracking = new ParcelTracking();
             const string trackingId = TestConstants.TrackingIdOfParcelThatIsTransferred;
@@ -22,7 +22,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheTrackingIdIsNonExistent_WhenReportingParcelDelivery_ThenThrowParcelNotFoundException()
+        public void GivenTrackingIdOfNonExistentParcel_WhenReportingParcelDelivery_ThenThrowParcelNotFoundException()
         {
             var parcelTracking = new ParcelTracking();
             const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
@@ -32,7 +32,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheTrackingIdFromParcelThatCanNotBeReported_WhenReportingParcelDelivery_ThenThrowReportParcelHopException()
+        public void GivenTrackingIdOfParcelThatCanNotBeReported_WhenReportingParcelDelivery_ThenThrowReportParcelHopException()
         {
             var parcelTracking = new ParcelTracking();
             const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeReported;
@@ -41,7 +41,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheTrackingIdIsNonExistent_WhenReportingParcelHop_ThenThrowParcelNotFoundException()
+        public void GivenTrackingIdOfNonExistentParcel_WhenReportingParcelHop_ThenThrowParcelNotFoundException()
         {
             var parcelTracking = new ParcelTracking();
             const string code = TestConstants.ExistentHopCode;
@@ -51,7 +51,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheHopCodeIsNonExistent_WhenReportingParcelHop_ThenThrowHopNotFoundException()
+        public void GivenNonExistentHopCode_WhenReportingParcelHop_ThenThrowHopNotFoundException()
         {
             var parcelTracking = new ParcelTracking();
             const string code = TestConstants.NonExistentHopCode;
@@ -61,7 +61,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheTrackingIdFromParcelThatCanNotBeReported_WhenReportingParcelHop_ThenThrowReportParcelHopException()
+        public void GivenTrackingIdOfParcelThatCanNotBeReported_WhenReportingParcelHop_ThenThrowReportParcelHopException()
         {
             var parcelTracking = new ParcelTracking();
             const string code = TestConstants.ExistentHopCode;
@@ -71,7 +71,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheTrackingIdIsCorrect_WhenTrackingParcel_ThenReturnParcelWithCorrectTrackingId()
+        public void GivenCorrectTrackingId_WhenTrackingParcel_ThenReturnParcelWithCorrectTrackingId()
         {
             var parcelTracking = new ParcelTracking();
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
@@ -83,7 +83,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheTrackingIdIsNonExistent_WhenTrackingParcel_ThenThrowParcelNotFoundException()
+        public void GivenTrackingIdOfNonExistentParcel_WhenTrackingParcel_ThenThrowParcelNotFoundException()
         {
             var parcelTracking = new ParcelTracking();
             const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
@@ -92,7 +92,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTheTrackingIdFromParcelThatCanNotBeTracked_WhenTrackingParcel_ThenThrowTrackingException()
+        public void GivenTrackingIdOfParcelThatCanNotBeTracked_WhenTrackingParcel_ThenThrowTrackingException()
         {
             var parcelTracking = new ParcelTracking();
             const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeTracked;
