@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Transactions;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
-using Elsa.SKS.Package.BusinessLogic.Interfaces;
-using Elsa.SKS.Package.BusinessLogic.Validators;
-using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Xunit;
@@ -14,7 +10,6 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
 {
     public class ParcelRegistrationTests
     {
-
         [Fact]
         public void GivenTheParcelInformationIsCorrect_WhenTransitioningTheParcel_ThenReturnParcel()
         {
@@ -94,8 +89,5 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
             
             Assert.Throws<InvalidParcelException>(() => parcelRegistration.SubmitParcel(parcel));
         }
-        
-
-
     }
 }
