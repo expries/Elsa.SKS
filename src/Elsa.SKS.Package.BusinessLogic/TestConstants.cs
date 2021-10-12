@@ -18,7 +18,7 @@ namespace Elsa.SKS.Package.BusinessLogic
         public const string TrackingIdOfSubmittedParcel = "ABCDEF123";
         
         public const string TrackingIdOfParcelThatCanNotBeDelivered = "XXXXXXXXX";
-
+        
         public const string ExistentWareHouseCode = "ABCDEF123";
         
         public const string NonExistentWarehouseCode = "000000000";
