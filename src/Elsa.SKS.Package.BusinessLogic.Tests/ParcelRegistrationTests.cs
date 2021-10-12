@@ -31,8 +31,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         public void GivenTheValidationIsNotValid_WhenTransitioningTheParcel_ThenThrowTransactionException()
         {
             var parcelRegistration = new ParcelRegistration();
-            var parcel = Builder<Parcel>.CreateNew()
-                .Build();
+            var parcel = Builder<Parcel>.CreateNew().Build();
             const string trackingId = TestConstants.TrackingIdOfParcelThatIsTransferred;
             
             Assert.Throws<TransactionException>(() => parcelRegistration.TransitionParcel(parcel, trackingId));

@@ -24,13 +24,15 @@ namespace Elsa.SKS.Package.BusinessLogic
         public const string NonExistentWarehouseCode = "000000000";
 
         public const string FaultyWarehouseCode = "XXXXXXXXX";
+        
+        public const string FaultyWarehouseDescription = "*********";
 
         public const string NonExistentHopCode = "000000000";
 
         public const string ExistentHopCode = "ABCDEF123";
 
         public const string TrackingIdOfParcelThatCanNotBeReported = "XXXXXXXXX";
-
+        
         public static Warehouse ExistingWarehouses = new Warehouse
         {
             Code = "W123456789",
