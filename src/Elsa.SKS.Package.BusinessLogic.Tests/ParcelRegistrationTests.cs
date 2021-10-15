@@ -19,7 +19,9 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
                 .And(x => x.Sender = new User())
                 .And(x => x.VisitedHops = new List<HopArrival>())
                 .And(x => x.FutureHops = new List<HopArrival>())
+                .With(x => x.TrackingId = TestConstants.ValidTrackingId)
                 .Build();
+            
             const string trackingId = TestConstants.TrackingIdOfParcelThatIsTransferred;
             
             var parcelReturned = parcelRegistration.TransitionParcel(parcel, trackingId);
@@ -46,7 +48,9 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
                 .And(x => x.Sender = new User())
                 .And(x => x.VisitedHops = new List<HopArrival>())
                 .And(x => x.FutureHops = new List<HopArrival>())
+                .With(x => x.TrackingId = TestConstants.ValidTrackingId)
                 .Build();
+            
             const string trackingId = TestConstants.TrackingIdOfParcelThatIsNotTransferred;
             
             Assert.Throws<TransferException>(() => parcelRegistration.TransitionParcel(parcel, trackingId));
@@ -61,6 +65,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
                 .And(x => x.Sender = new User())
                 .And(x => x.VisitedHops = new List<HopArrival>())
                 .And(x => x.FutureHops = new List<HopArrival>())
+                .With(x => x.TrackingId = TestConstants.ValidTrackingId)
                 .Build();
             
             var parcelReturned = parcelRegistration.SubmitParcel(parcel);
