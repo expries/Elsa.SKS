@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Elsa.SKS.Package.BusinessLogic.Entities.Enums;
 

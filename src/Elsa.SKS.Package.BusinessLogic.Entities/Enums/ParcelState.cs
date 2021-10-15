@@ -1,5 +1,3 @@
-using System.Runtime.Serialization;
-
 namespace Elsa.SKS.Package.BusinessLogic.Entities.Enums
 {
     /// <summary>

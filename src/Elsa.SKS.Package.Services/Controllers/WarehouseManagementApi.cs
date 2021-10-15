@@ -14,9 +14,7 @@ using Elsa.SKS.Attributes;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
-using Elsa.SKS.Package.Services.DTOs.Enums;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Elsa.SKS.Controllers
