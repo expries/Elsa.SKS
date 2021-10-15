@@ -11,27 +11,22 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities.Enums
         /// <summary>
         /// Enum PickupEnum for Pickup
         /// </summary>
-        [EnumMember(Value = "Pickup")]
         Pickup = 0,
         /// <summary>
         /// Enum InTransportEnum for InTransport
         /// </summary>
-        [EnumMember(Value = "InTransport")]
         InTransport = 1,
         /// <summary>
         /// Enum InTruckDeliveryEnum for InTruckDelivery
         /// </summary>
-        [EnumMember(Value = "InTruckDelivery")]
         InTruckDelivery = 2,
         /// <summary>
         /// Enum TransferredEnum for Transferred
         /// </summary>
-        [EnumMember(Value = "Transferred")]
         Transferred = 3,
         /// <summary>
         /// Enum DeliveredEnum for Delivered
         /// </summary>
-        [EnumMember(Value = "Delivered")]
         Delivered = 4        
     }
 }
