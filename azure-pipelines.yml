@@ -27,7 +27,6 @@ steps:
   displayName: 'Perform tests'
   inputs:
     command: 'test'
-    projects: '**/*test.csproj'
     arguments: '--configuration $(buildConfiguration) --no-build --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
     publishTestResults: true
   
