@@ -1,28 +1,20 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /build
+COPY . .
+RUN dotnet restore "src/Elsa.SKS.Package.Services/Elsa.SKS.Package.Services.csproj"
 
-# copy csproj and restore as distinct layers
-COPY *.sln ./
-COPY /src/Elsa.SKS.Package.Services/*.csproj ./src/Elsa.SKS.Package.Services/
-COPY /src/Elsa.SKS.Package.Services.DTOs/*.csproj ./src/Elsa.SKS.Package.Services.DTOs/
-COPY /src/Elsa.SKS.Package.Services.Interfaces/*.csproj ./src/Elsa.SKS.Package.Services.Interfaces/
-COPY /src/Elsa.SKS.Package.Services.Tests/*.csproj ./src/Elsa.SKS.Package.Services.Tests/
-COPY /src/Elsa.SKS.Package.BusinessLogic/*.csproj ./src/Elsa.SKS.Package.BusinessLogic/
-COPY /src/Elsa.SKS.Package.BusinessLogic.Entities/*.csproj ./src/Elsa.SKS.Package.BusinessLogic.Entities/
-COPY /src/Elsa.SKS.Package.BusinessLogic.Interfaces/*.csproj ./src/Elsa.SKS.Package.BusinessLogic.Interfaces/
-COPY /src/Elsa.SKS.Package.BusinessLogic.Tests/*.csproj ./src/Elsa.SKS.Package.BusinessLogic.Tests/
+WORKDIR "/build/src/Elsa.SKS.Package.Services"
+RUN dotnet build "Elsa.SKS.Package.Services.csproj" -c Release -o /app/build
 
-RUN dotnet restore
+FROM build AS publish
+RUN dotnet publish "Elsa.SKS.Package.Services.csproj" -c Release -o /app/publish
 
-# copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
-
-# build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM base AS final
 WORKDIR /app
-COPY --from=build-env /app/out .
-
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Elsa.SKS.Package.Services.dll"]
