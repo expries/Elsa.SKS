@@ -1,20 +1,26 @@
-﻿using System.Transactions;
-using Elsa.SKS.Package.BusinessLogic.Entities;
+﻿using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
-using Elsa.SKS.Package.BusinessLogic.Validators;
+using FluentValidation;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
     public class ParcelRegistration : IParcelRegistration
     {
+        private readonly IValidator<Parcel> _parcelValidator;
+        
+        public ParcelRegistration(IValidator<Parcel> parcelValidator)
+        {
+            _parcelValidator = parcelValidator;
+        }
+    
         public Parcel TransitionParcel(Parcel parcel, string trackingId)
         {
-            var validation = new ParcelValidator().Validate(parcel);
+            var validation = _parcelValidator.Validate(parcel);
 
             if (!validation.IsValid)
             {
-                throw new TransactionException(validation.ToString(" "));
+                throw new TransferException(validation.ToString(" "));
             }
             
             if (trackingId != TestConstants.TrackingIdOfParcelThatIsTransferred)
@@ -27,7 +33,7 @@ namespace Elsa.SKS.Package.BusinessLogic
 
         public Parcel SubmitParcel(Parcel parcel)
         {
-            var validation = new ParcelValidator().Validate(parcel);
+            var validation = _parcelValidator.Validate(parcel);
 
             if (!validation.IsValid)
             {

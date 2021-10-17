@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
+using Elsa.SKS.Package.BusinessLogic.Validators;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Xunit;
@@ -12,7 +13,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenHierarchyIsLoadedAndRootWarehouseIsNotNull_WhenExportingWarehouses_ThenReturnRootWarehouse()
         {
-            var warehouseLogic = new WarehouseLogic();
+            var warehouseLogic = new WarehouseLogic(new WarehouseValidator());
             
             var warehouseReturned = warehouseLogic.ExportWarehouses();
             
@@ -22,7 +23,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenHierarchyIsNotLoaded_WhenExportingWarehouses_ThenThrowWarehouseHierarchyNotLoadedException()
         {
-            var warehouseLogic = WarehouseLogic.CreateWithoutLoadedHierarchy();
+            var warehouseLogic = WarehouseLogic.CreateWithoutLoadedHierarchy(new WarehouseValidator());
             
             Assert.Throws<WarehouseHierarchyNotLoadedException>(() => warehouseLogic.ExportWarehouses());
         }
@@ -30,7 +31,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenRootWareHouseIsNull_WhenExportingWarehouses_ThenThrowInvalidWarehouseException()
         {
-            var warehouseLogic = WarehouseLogic.CreateWithFaultyWarehouse();
+            var warehouseLogic = WarehouseLogic.CreateWithFaultyWarehouse(new WarehouseValidator());
             
             Assert.Throws<InvalidWarehouseException>(() => warehouseLogic.ExportWarehouses());
         }
@@ -38,7 +39,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenExistentWarehouseCode_WhenGettingWarehouse_ThenReturnWarehouse()
         {
-            var warehouseLogic = new WarehouseLogic();
+            var warehouseLogic = new WarehouseLogic(new WarehouseValidator());
             const string code = TestConstants.ExistentWareHouseCode;
 
             var warehouseReturned = warehouseLogic.GetWarehouse(code);
@@ -49,7 +50,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenNonExistentWarehouseCode_WhenGettingWarehouse_ThenThrowWarehouseNotFoundException()
         {
-            var warehouseLogic = new WarehouseLogic();
+            var warehouseLogic = new WarehouseLogic(new WarehouseValidator());
             const string code = TestConstants.NonExistentWarehouseCode;
 
             Assert.Throws<WarehouseNotFoundException>(() => warehouseLogic.GetWarehouse(code));
@@ -58,7 +59,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenFaultyWarehouseCode_WhenGettingWarehouse_ThenThrowInvalidWarehouseException()
         {
-            var warehouseLogic = new WarehouseLogic();
+            var warehouseLogic = new WarehouseLogic(new WarehouseValidator());
             const string code = TestConstants.FaultyWarehouseCode;
 
             Assert.Throws<InvalidWarehouseException>(() => warehouseLogic.GetWarehouse(code));
@@ -67,7 +68,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenNonValidWarehouseValidation_WhenImportingWarehouses_ThenThrowInvalidWarehouseException()
         {
-            var warehouseLogic = new WarehouseLogic();
+            var warehouseLogic = new WarehouseLogic(new WarehouseValidator());
             var warehouse = Builder<Warehouse>.CreateNew()
                 .With(x => x.Description = TestConstants.FaultyWarehouseDescription)
                 .With(x => x.NextHops = null)
@@ -80,7 +81,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenWarehouseCodeIsNullOrEmpty_WhenImportingWarehouses_ThenThrowInvalidWarehouseException()
         {
-            var warehouseLogic = new WarehouseLogic();
+            var warehouseLogic = new WarehouseLogic(new WarehouseValidator());
             var warehouse = Builder<Warehouse>.CreateNew()
                 .With(x => x.Code = null)
                 .With(x => x.NextHops = new List<WarehouseNextHops>())

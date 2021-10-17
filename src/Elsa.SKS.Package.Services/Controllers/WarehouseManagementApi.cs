@@ -64,9 +64,9 @@ namespace Elsa.SKS.Controllers
             {
                 return NotFound();
             }
-            catch (BusinessException)
+            catch (BusinessException ex)
             {
-                var error = new Error();
+                var error = new Error { ErrorMessage = ex.Message };
                 return BadRequest(error);
             }
         }
@@ -96,9 +96,9 @@ namespace Elsa.SKS.Controllers
             {
                 return NotFound();
             }
-            catch (BusinessException)
+            catch (BusinessException ex)
             {
-                var error = new Error();
+                var error = new Error { ErrorMessage = ex.Message };
                 return BadRequest(error);
             }
         }
@@ -122,10 +122,10 @@ namespace Elsa.SKS.Controllers
                 _warehouseLogic.ImportWarehouses(entity);
                 return Ok();
             }
-            catch (BusinessException)
+            catch (BusinessException ex)
             {
-                var error = new Error();
-                return BadRequest(error); 
+                var error = new Error { ErrorMessage = ex.Message };
+                return BadRequest(error);
             }
         }
     }

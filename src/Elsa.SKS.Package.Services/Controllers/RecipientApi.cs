@@ -66,9 +66,9 @@ namespace Elsa.SKS.Controllers
             {
                 return NotFound();
             }
-            catch (BusinessException)
+            catch (BusinessException ex)
             {
-                var error = new Error();
+                var error = new Error { ErrorMessage = ex.Message };
                 return BadRequest(error);
             }
         }

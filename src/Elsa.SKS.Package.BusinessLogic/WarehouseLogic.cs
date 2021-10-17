@@ -1,25 +1,33 @@
 ﻿using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.BusinessLogic.Validators;
+using FluentValidation;
 using Warehouse = Elsa.SKS.Package.BusinessLogic.Entities.Warehouse;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
     public class WarehouseLogic : IWarehouseLogic
     {
+        private readonly IValidator<Warehouse> _warehouseValidator;
+        
         private Warehouse _rootWarehouse= new Warehouse();
 
         private bool _hierarchyIsLoaded = true;
 
-        public static WarehouseLogic CreateWithFaultyWarehouse()
+        public WarehouseLogic(IValidator<Warehouse> warehouseValidator)
         {
-            var warehouseLogic = new WarehouseLogic { _rootWarehouse = null };
+            _warehouseValidator = warehouseValidator;
+        }
+
+        public static WarehouseLogic CreateWithFaultyWarehouse(IValidator<Warehouse> warehouseValidator)
+        {
+            var warehouseLogic = new WarehouseLogic(warehouseValidator) { _rootWarehouse = null };
             return warehouseLogic;
         }
 
-        public static WarehouseLogic CreateWithoutLoadedHierarchy()
+        public static WarehouseLogic CreateWithoutLoadedHierarchy(IValidator<Warehouse> warehouseValidator)
         {
-            var warehouseLogic = new WarehouseLogic { _hierarchyIsLoaded = false };
+            var warehouseLogic = new WarehouseLogic(warehouseValidator) { _hierarchyIsLoaded = false };
             return warehouseLogic;
         }
         
@@ -56,7 +64,7 @@ namespace Elsa.SKS.Package.BusinessLogic
 
         public void ImportWarehouses(Warehouse warehouse)
         {
-            var validation = new WarehouseValidator().Validate(warehouse);
+            var validation = _warehouseValidator.Validate(warehouse);
 
             if (!validation.IsValid)
             {

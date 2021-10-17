@@ -13,7 +13,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Elsa.SKS.Filters;
 using Elsa.SKS.Package.BusinessLogic;
+using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
+using Elsa.SKS.Package.BusinessLogic.Validators;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -53,9 +56,14 @@ namespace Elsa.SKS
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add business layer components
             services.AddTransient<IWarehouseLogic, WarehouseLogic>();
             services.AddTransient<IParcelTracking, ParcelTracking>();
             services.AddTransient<IParcelRegistration, ParcelRegistration>();
+            
+            // Add validators
+            services.AddTransient<IValidator<Parcel>, ParcelValidator>();
+            services.AddTransient<IValidator<Warehouse>, WarehouseValidator>();
 
             // Add framework services.
             services

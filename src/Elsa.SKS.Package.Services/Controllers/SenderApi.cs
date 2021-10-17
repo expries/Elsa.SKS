@@ -60,9 +60,9 @@ namespace Elsa.SKS.Controllers
                 var result = _mapper.Map<TrackingInformation>(parcelEntity);
                 return Created("/" + parcelEntity.TrackingId, result);
             }
-            catch (BusinessException)
+            catch (BusinessException ex)
             {
-                var error = new Error();
+                var error = new Error { ErrorMessage = ex.Message };
                 return BadRequest(error);
             }
         }
