@@ -24,21 +24,18 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// <summary>
         /// Gets or Sets Weight
         /// </summary>
-        [Required]
         [DataMember(Name="weight")]
         public float? Weight { get; set; }
 
         /// <summary>
         /// Gets or Sets Recipient
         /// </summary>
-        [Required]
         [DataMember(Name="recipient")]
         public Recipient Recipient { get; set; }
 
         /// <summary>
         /// Gets or Sets Sender
         /// </summary>
-        [Required]
         [DataMember(Name="sender")]
         public Recipient Sender { get; set; }
     }

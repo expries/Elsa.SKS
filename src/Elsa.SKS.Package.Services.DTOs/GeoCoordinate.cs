@@ -25,7 +25,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// Latitude of the coordinate.
         /// </summary>
         /// <value>Latitude of the coordinate.</value>
-        [Required]
         [DataMember(Name="lat")]
         public double? Lat { get; set; }
 
@@ -33,7 +32,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// Longitude of the coordinate.
         /// </summary>
         /// <value>Longitude of the coordinate.</value>
-        [Required]
         [DataMember(Name="lon")]
         public double? Lon { get; set; }
     }

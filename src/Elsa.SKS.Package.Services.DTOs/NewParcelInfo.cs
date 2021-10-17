@@ -25,7 +25,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// The tracking ID of the parcel. 
         /// </summary>
         /// <value>The tracking ID of the parcel. </value>
-        [RegularExpression("^[A-Z0-9]{9}$")]
         [DataMember(Name="trackingId")]
         public string TrackingId { get; set; }
     }

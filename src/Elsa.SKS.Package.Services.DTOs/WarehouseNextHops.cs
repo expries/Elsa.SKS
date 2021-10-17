@@ -24,14 +24,12 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// <summary>
         /// Gets or Sets TraveltimeMins
         /// </summary>
-        [Required]
         [DataMember(Name="traveltimeMins")]
         public int? TravelTimeInMinutes { get; set; }
 
         /// <summary>
         /// Gets or Sets Hop
         /// </summary>
-        [Required]
         [DataMember(Name="hop")]
         public Hop Hop { get; set; }
     }

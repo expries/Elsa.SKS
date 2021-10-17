@@ -26,7 +26,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// GeoJSON of the are covered by the truck.
         /// </summary>
         /// <value>GeoJSON of the are covered by the truck.</value>
-        [Required]
         [DataMember(Name="regionGeoJson")]
         public string RegionGeoJson { get; set; }
 
@@ -34,7 +33,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// The truck&#x27;s number plate.
         /// </summary>
         /// <value>The truck&#x27;s number plate.</value>
-        [Required]
         [DataMember(Name="numberPlate")]
         public string NumberPlate { get; set; }
 

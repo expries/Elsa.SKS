@@ -27,7 +27,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// State of the parcel.
         /// </summary>
         /// <value>State of the parcel.</value>
-        [Required]
         [DataMember(Name="state")]
         public ParcelState? State { get; set; }
 
@@ -35,7 +34,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// Hops visited in the past.
         /// </summary>
         /// <value>Hops visited in the past.</value>
-        [Required]
         [DataMember(Name="visitedHops")]
         public List<HopArrival> VisitedHops { get; set; }
 
@@ -43,7 +41,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// Hops coming up in the future - their times are estimations.
         /// </summary>
         /// <value>Hops coming up in the future - their times are estimations.</value>
-        [Required]
         [DataMember(Name="futureHops")]
         public List<HopArrival> FutureHops { get; set; }
     }

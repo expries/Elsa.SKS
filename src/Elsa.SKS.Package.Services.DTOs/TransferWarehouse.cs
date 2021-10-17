@@ -26,7 +26,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// GeoJSON of the are covered by the logistics partner.
         /// </summary>
         /// <value>GeoJSON of the are covered by the logistics partner.</value>
-        [Required]
         [DataMember(Name="regionGeoJson")]
         public string RegionGeoJson { get; set; }
 
@@ -34,7 +33,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// Name of the logistics partner.
         /// </summary>
         /// <value>Name of the logistics partner.</value>
-        [Required]
         [DataMember(Name="logisticsPartner")]
         public string LogisticsPartner { get; set; }
 
@@ -42,7 +40,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// BaseURL of the logistics partner&#x27;s REST service.
         /// </summary>
         /// <value>BaseURL of the logistics partner&#x27;s REST service.</value>
-        [Required]
         [DataMember(Name="logisticsPartnerUrl")]
         public string LogisticsPartnerUrl { get; set; }
         

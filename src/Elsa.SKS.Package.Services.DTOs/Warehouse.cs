@@ -26,7 +26,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// <summary>
         /// Gets or Sets Level
         /// </summary>
-        [Required]
         [DataMember(Name="level")]
         public int? Level { get; set; }
 
@@ -34,7 +33,6 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// Next hops after this warehouse (warehouses or trucks).
         /// </summary>
         /// <value>Next hops after this warehouse (warehouses or trucks).</value>
-        [Required]
         [DataMember(Name="nextHops")]
         public List<WarehouseNextHops> NextHops { get; set; }
 
