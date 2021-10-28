@@ -18,7 +18,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenANewParcel_WhenSubmittingTheParcel_ThenReturn201()
         {
-            var parcelRegistration = A.Fake<IParcelRegistration>();
+            var parcelRegistration = A.Fake<IParcelRegistrationLogic>();
             
             A.CallTo(() => parcelRegistration.SubmitParcel(A<BusinessLogic.Entities.Parcel>._))
                 .Returns(new BusinessLogic.Entities.Parcel { TrackingId = TestConstants.TrackingIdOfSubmittedParcel });
@@ -36,7 +36,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenABusinessExceptionIsThrown_WhenSubmittingAParcel_ThenReturn400()
         {
-            var parcelRegistration = A.Fake<IParcelRegistration>();
+            var parcelRegistration = A.Fake<IParcelRegistrationLogic>();
             
             A.CallTo(() => parcelRegistration.SubmitParcel(A<BusinessLogic.Entities.Parcel>._))
                 .Throws<BusinessException>();

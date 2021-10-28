@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
-    public class ParcelRegistration : IParcelRegistration
+    public class ParcelRegistrationLogic : IParcelRegistrationLogic
     {
         private readonly IValidator<Parcel> _parcelValidator;
         
@@ -16,7 +16,7 @@ namespace Elsa.SKS.Package.BusinessLogic
         private readonly IMapper _mapper;
 
 
-        public ParcelRegistration(IValidator<Parcel> parcelValidator, IParcelRepository parcelRepository, IMapper mapper)
+        public ParcelRegistrationLogic(IValidator<Parcel> parcelValidator, IParcelRepository parcelRepository, IMapper mapper)
         {
             _parcelValidator = parcelValidator;
             _parcelRepository = parcelRepository;

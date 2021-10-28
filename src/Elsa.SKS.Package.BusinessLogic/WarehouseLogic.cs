@@ -11,7 +11,7 @@ namespace Elsa.SKS.Package.BusinessLogic
     {
         private readonly IValidator<Warehouse> _warehouseValidator;
 
-        private IWarehouseRepository _warehouseRepository;
+        private IHopRepository _hopRepository;
         
         private readonly IMapper _mapper;
         
@@ -20,45 +20,32 @@ namespace Elsa.SKS.Package.BusinessLogic
         private bool _hierarchyIsLoaded = true;
         
 
-        public WarehouseLogic(IWarehouseRepository warehouseRepository, IMapper mapper, IValidator<Warehouse> warehouseValidator)
+        public WarehouseLogic(IHopRepository hopRepository, IMapper mapper, IValidator<Warehouse> warehouseValidator)
         {
+            _hopRepository = hopRepository;
             _warehouseValidator = warehouseValidator;
             _mapper = mapper;
-            _warehouseRepository = warehouseRepository;
         }
 
-        public static WarehouseLogic CreateWithFaultyWarehouse(IWarehouseRepository warehouseRepository, IMapper mapper, IValidator<Warehouse> warehouseValidator)
+        public static WarehouseLogic CreateWithFaultyWarehouse(IHopRepository hopRepository, IMapper mapper, IValidator<Warehouse> warehouseValidator)
         {
-            var warehouseLogic = new WarehouseLogic(warehouseRepository, mapper, warehouseValidator) { _rootWarehouse = null };
+            var warehouseLogic = new WarehouseLogic(hopRepository, mapper, warehouseValidator) { _rootWarehouse = null };
             return warehouseLogic;
         }
 
-        public static WarehouseLogic CreateWithoutLoadedHierarchy(IWarehouseRepository warehouseRepository, IMapper mapper, IValidator<Warehouse> warehouseValidator)
+        public static WarehouseLogic CreateWithoutLoadedHierarchy(IHopRepository hopRepository, IMapper mapper, IValidator<Warehouse> warehouseValidator)
         {
-            var warehouseLogic = new WarehouseLogic(warehouseRepository, mapper, warehouseValidator) { _hierarchyIsLoaded = false };
+            var warehouseLogic = new WarehouseLogic(hopRepository, mapper, warehouseValidator) { _hierarchyIsLoaded = false };
             return warehouseLogic;
         }
         
         public Warehouse ExportWarehouses()
         {
-            var warehouseHierarchy = _warehouseRepository.GetAllWarehouses();
+            var warehouseHierarchy = _hopRepository.GetAllWarehouses();
             
             var result = _mapper.Map<Warehouse>(warehouseHierarchy);
 
             if (result == null)
-            {
-                throw new WarehouseHierarchyNotLoadedException("Warehouse hierarchy was not loaded yet");
-            }
-            
-            if (result.Level.Value == 0)
-            {
-                throw new InvalidWarehouseException("Root warehouse is null");
-            }
-
-            return result;
-            
-            /*
-            if (!_hierarchyIsLoaded)
             {
                 throw new WarehouseHierarchyNotLoadedException("Warehouse hierarchy was not loaded yet");
             }
@@ -68,42 +55,25 @@ namespace Elsa.SKS.Package.BusinessLogic
                 throw new InvalidWarehouseException("Root warehouse is null");
             }
 
-            return _rootWarehouse;
-            
-            */
+            return result;
         }
 
         public Warehouse GetWarehouse(string code)
         {
-            if (!_warehouseRepository.DoesExist(code))
+            if (!_hopRepository.DoesWarehouseExist(code))
             {
                 throw new WarehouseNotFoundException($"Warehouse with code {code} can not be found");
             }
 
-            if (!_warehouseRepository.IsValidWarehouseCode(code))
+            if (!_hopRepository.IsValidWarehouseCode(code))
             {
                 throw new InvalidWarehouseException("Warehouse code is faulty");
             }
 
-            var warehouseEntity = _warehouseRepository.GetWarehouseByCode(code);
+            var warehouseEntity = _hopRepository.GetWarehouseByCode(code);
             var result = _mapper.Map<Warehouse>(warehouseEntity);
             
             return result;
-
-            /*
-            switch (code)
-            {
-                case TestConstants.NonExistentWarehouseCode:
-                    throw new WarehouseNotFoundException($"Warehouse with code {code} can not be found");
-                
-                case TestConstants.FaultyWarehouseCode:
-                    throw new InvalidWarehouseException("Warehouse code is faulty");
-                
-                default:
-                    var warehouse = new Warehouse();
-                    return warehouse;
-            }
-            */
         }
 
         public void ImportWarehouses(Warehouse warehouse)
@@ -121,7 +91,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
 
             var warehouseDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Warehouse>(warehouse);
-            _warehouseRepository.Create(warehouseDal);
+            _hopRepository.Create(warehouseDal);
         }
     }
 }

@@ -26,18 +26,18 @@ namespace Elsa.SKS.Controllers
     [ApiController]
     public class StaffApiController : ControllerBase
     {
-        private readonly IParcelTracking _parcelTracking;
+        private readonly IParcelTrackingLogic _parcelTrackingLogic;
         
         private readonly IMapper _mapper;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="parcelTracking"></param>
+        /// <param name="parcelTrackingLogic"></param>
         /// <param name="mapper"></param>
-        public StaffApiController(IParcelTracking parcelTracking, IMapper mapper)
+        public StaffApiController(IParcelTrackingLogic parcelTrackingLogic, IMapper mapper)
         {
-            _parcelTracking = parcelTracking;
+            _parcelTrackingLogic = parcelTrackingLogic;
             _mapper = mapper;
         }
         
@@ -58,7 +58,7 @@ namespace Elsa.SKS.Controllers
         {
             try
             {
-                var parcelEntity = _parcelTracking.ReportParcelDelivery(trackingId);
+                var parcelEntity = _parcelTrackingLogic.ReportParcelDelivery(trackingId);
                 var result = _mapper.Map<TrackingInformation>(parcelEntity);
                 return Ok(result);
             }
@@ -92,7 +92,7 @@ namespace Elsa.SKS.Controllers
         {
             try
             {
-                _parcelTracking.ReportParcelHop(trackingId, code);
+                _parcelTrackingLogic.ReportParcelHop(trackingId, code);
                 return Ok();
             }
             catch (Exception ex) when (ex is ParcelNotFoundException or HopNotFoundException)

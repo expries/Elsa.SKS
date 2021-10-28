@@ -6,15 +6,18 @@ using Elsa.SKS.Package.DataAccess.Interfaces;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
-    public class ParcelTracking : IParcelTracking
+    public class ParcelTrackingLogic : IParcelTrackingLogic
     {
         private IParcelRepository _parcelRepository;
+        
+        private IHopRepository _hopRepository;
 
         private readonly IMapper _mapper;
 
-        public ParcelTracking(IParcelRepository parcelRepository, IMapper mapper)
+        public ParcelTrackingLogic(IParcelRepository parcelRepository, IHopRepository hopRepository, IMapper mapper)
         {
             _parcelRepository = parcelRepository;
+            _hopRepository = hopRepository;
             _mapper = mapper;
         }
 
@@ -31,19 +34,6 @@ namespace Elsa.SKS.Package.BusinessLogic
                 throw new ReportParcelHopException("Parcel delivery cannot be reported for parcel with " +
                                                    $"tracking id {trackingId}");
             }
-
-            /*
-            if (trackingId == TestConstants.TrackingIdOfNonExistentParcel)
-            {
-                throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
-            }
-
-            if (trackingId == TestConstants.TrackingIdOfParcelThatCanNotBeReported)
-            {
-                throw new ReportParcelHopException("Parcel delivery cannot be reported for parcel with " +
-                                                   $"tracking id {trackingId}");
-            }
-            */
             
             var parcelEntity = _parcelRepository.GetParcelByTrackingId(trackingId);
             var result = _mapper.Map<Parcel>(parcelEntity);
@@ -59,10 +49,10 @@ namespace Elsa.SKS.Package.BusinessLogic
                 throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
             }
 
-            // TODO: IHopRepository?
-            if (code == TestConstants.NonExistentHopCode)
+            if (!_hopRepository.IsValidHopCode(code))
             {
                 throw new HopNotFoundException($"Hop with code {code} was not found");
+
             }
 
             if (!_parcelRepository.ReportParcelHopArrival(trackingId))
@@ -70,24 +60,6 @@ namespace Elsa.SKS.Package.BusinessLogic
                 throw new ReportParcelHopException($"Hop with code {code} can not be reported for parcel " +
                                                    $"with tracking id {trackingId}");
             }
-            
-            /*
-            if (trackingId == TestConstants.TrackingIdOfNonExistentParcel)
-            {
-                throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
-            }
-
-            if (code == TestConstants.NonExistentHopCode)
-            {
-                throw new HopNotFoundException($"Hop with code {code} was not found");
-            }
-
-            if (trackingId == TestConstants.TrackingIdOfParcelThatCanNotBeReported)
-            {
-                throw new ReportParcelHopException($"Hop with code {code} can not be reported for parcel " +
-                                                   $"with tracking id {trackingId}");
-            }
-            */
         }
 
         public Parcel TrackParcel(string trackingId)
@@ -106,20 +78,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             
             return result;
-
-            /*
-            switch (trackingId)
-            {
-                case TestConstants.TrackingIdOfNonExistentParcel:
-                    throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
-                
-                case TestConstants.TrackingIdOfParcelThatCanNotBeTracked:
-                    throw new TrackingException($"Parcel with tracking id {trackingId} can not be tracked");
-                
-                default:
-                    return new Parcel { TrackingId = trackingId };
-            }
-            */
+            
         }
     }
 }

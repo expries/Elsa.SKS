@@ -18,7 +18,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenAParcelIsExpected_WhenTransitioningTheParcel_ThenReturn200()
         {
-            var parcelRegistration = A.Fake<IParcelRegistration>();
+            var parcelRegistration = A.Fake<IParcelRegistrationLogic>();
             
             A.CallTo(() => parcelRegistration.TransitionParcel(A<BusinessLogic.Entities.Parcel>._, A<string>._))
                 .Returns(new BusinessLogic.Entities.Parcel());
@@ -35,7 +35,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenAnTransferExceptionsIsThrown_WhenTransitioningAParcel_ThenReturn400()
         {
-            var parcelRegistration = A.Fake<IParcelRegistration>();
+            var parcelRegistration = A.Fake<IParcelRegistrationLogic>();
             
             A.CallTo(() => parcelRegistration.TransitionParcel(A<BusinessLogic.Entities.Parcel>._, A<string>._))
                 .Throws<TransferException>();

@@ -58,8 +58,8 @@ namespace Elsa.SKS
         {
             // Add business layer components
             services.AddTransient<IWarehouseLogic, WarehouseLogic>();
-            services.AddTransient<IParcelTracking, ParcelTracking>();
-            services.AddTransient<IParcelRegistration, ParcelRegistration>();
+            services.AddTransient<IParcelTrackingLogic, ParcelTrackingLogic>();
+            services.AddTransient<IParcelRegistrationLogic, ParcelRegistrationLogic>();
             
             // Add validators
             services.AddTransient<IValidator<Parcel>, ParcelValidator>();

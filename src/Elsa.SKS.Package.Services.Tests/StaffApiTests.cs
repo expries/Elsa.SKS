@@ -16,7 +16,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenAParcelExists_WhenParcelDeliveryIsReported_ThenReturn200()
         {
-            var parcelTracking = A.Fake<IParcelTracking>();
+            var parcelTracking = A.Fake<IParcelTrackingLogic>();
             
             A.CallTo(() => parcelTracking.ReportParcelDelivery(A<string>._))
                 .Returns(new BusinessLogic.Entities.Parcel());
@@ -32,7 +32,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenAParcelNotFoundExceptionIsThrown_WhenParcelDeliveryIsReported_ThenReturn404()
         {
-            var parcelTracking = A.Fake<IParcelTracking>();
+            var parcelTracking = A.Fake<IParcelTrackingLogic>();
             
             A.CallTo(() => parcelTracking.ReportParcelDelivery(A<string>._))
                 .Throws<ParcelNotFoundException>();
@@ -48,7 +48,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenABusinessExceptionIsThrown_WhenParcelDeliveryIsReported_ThenReturn400()
         {
-            var parcelTracking = A.Fake<IParcelTracking>();
+            var parcelTracking = A.Fake<IParcelTrackingLogic>();
             
             A.CallTo(() => parcelTracking.ReportParcelDelivery(A<string>._))
                 .Throws<BusinessException>();
@@ -64,7 +64,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenAParcelNotFoundExceptionIsThrown_WhenParcelHopIsReported_ThenReturn404()
         {
-            var parcelTracking = A.Fake<IParcelTracking>();
+            var parcelTracking = A.Fake<IParcelTrackingLogic>();
             
             A.CallTo(() => parcelTracking.ReportParcelHop(A<string>._, A<string>._))
                 .Throws<ParcelNotFoundException>();
@@ -81,7 +81,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenAHopNotFoundExceptionIsThrown_WhenParcelHopIsReported_ThenReturn404()
         {
-            var parcelTracking = A.Fake<IParcelTracking>();
+            var parcelTracking = A.Fake<IParcelTrackingLogic>();
             
             A.CallTo(() => parcelTracking.ReportParcelHop(A<string>._, A<string>._))
                 .Throws<ParcelNotFoundException>();
@@ -98,7 +98,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenABusinessExceptionIsThrown_WhenParcelHopIsReported_ThenReturn400()
         {
-            var parcelTracking = A.Fake<IParcelTracking>();
+            var parcelTracking = A.Fake<IParcelTrackingLogic>();
             
             A.CallTo(() => parcelTracking.ReportParcelHop(A<string>._, A<string>._))
                 .Throws<BusinessException>();
@@ -115,7 +115,7 @@ namespace Elsa.SKS.Package.Services.Tests
         [Fact]
         public void GivenAParcelExists_WhenParcelHopIsReported_ThenReturn200()
         {
-            var parcelTracking = A.Fake<IParcelTracking>();
+            var parcelTracking = A.Fake<IParcelTrackingLogic>();
 
             A.CallTo(() => parcelTracking.ReportParcelHop(A<string>._, A<string>._))
                 .DoesNothing();

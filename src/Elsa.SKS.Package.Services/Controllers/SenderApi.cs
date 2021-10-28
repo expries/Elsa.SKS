@@ -24,18 +24,18 @@ namespace Elsa.SKS.Controllers
     [ApiController]
     public class SenderApiController : ControllerBase
     {
-        private readonly IParcelRegistration _parcelRegistration;
+        private readonly IParcelRegistrationLogic _parcelRegistrationLogic;
         
         private readonly IMapper _mapper;
         
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="parcelRegistration"></param>
+        /// <param name="parcelRegistrationLogic"></param>
         /// <param name="mapper"></param>
-        public SenderApiController(IParcelRegistration parcelRegistration, IMapper mapper)
+        public SenderApiController(IParcelRegistrationLogic parcelRegistrationLogic, IMapper mapper)
         {
-            _parcelRegistration = parcelRegistration;
+            _parcelRegistrationLogic = parcelRegistrationLogic;
             _mapper = mapper;
         }
         
@@ -56,7 +56,7 @@ namespace Elsa.SKS.Controllers
             try
             {
                 var entity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Parcel>(body);
-                var parcelEntity = _parcelRegistration.SubmitParcel(entity);
+                var parcelEntity = _parcelRegistrationLogic.SubmitParcel(entity);
                 var result = _mapper.Map<TrackingInformation>(parcelEntity);
                 return Created("/" + parcelEntity.TrackingId, result);
             }

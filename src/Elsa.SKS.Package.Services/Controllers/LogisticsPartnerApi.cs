@@ -25,18 +25,18 @@ namespace Elsa.SKS.Controllers
     [ApiController]
     public class LogisticsPartnerApiController : ControllerBase
     {
-        private readonly IParcelRegistration _parcelRegistration;
+        private readonly IParcelRegistrationLogic _parcelRegistrationLogic;
 
         private readonly IMapper _mapper;
         
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="parcelRegistration"></param>
+        /// <param name="parcelRegistrationLogic"></param>
         /// <param name="mapper"></param>
-        public LogisticsPartnerApiController(IParcelRegistration parcelRegistration, IMapper mapper)
+        public LogisticsPartnerApiController(IParcelRegistrationLogic parcelRegistrationLogic, IMapper mapper)
         {
-            _parcelRegistration = parcelRegistration;
+            _parcelRegistrationLogic = parcelRegistrationLogic;
             _mapper = mapper;
         }
         
@@ -60,7 +60,7 @@ namespace Elsa.SKS.Controllers
             try
             {
                 var entity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Parcel>(body);
-                var parcelEntity = _parcelRegistration.TransitionParcel(entity, trackingId);
+                var parcelEntity = _parcelRegistrationLogic.TransitionParcel(entity, trackingId);
                 var result = _mapper.Map<TrackingInformation>(parcelEntity);
                 return Ok(result);
             }
