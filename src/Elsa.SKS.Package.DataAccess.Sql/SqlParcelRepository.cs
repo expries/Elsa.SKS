@@ -4,11 +4,11 @@ using Elsa.SKS.Package.DataAccess.Interfaces;
 
 namespace Elsa.SKS.Package.DataAccess.Sql
 {
-    public class ParcelSqlRepository : IParcelRepository
+    public class SqlParcelRepository : IParcelRepository
     {
         private readonly AppDbContext _context;
 
-        public ParcelSqlRepository(AppDbContext context)
+        public SqlParcelRepository(AppDbContext context)
         {
             _context = context;
         }

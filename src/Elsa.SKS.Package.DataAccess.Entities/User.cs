@@ -1,10 +1,17 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Elsa.SKS.Package.DataAccess.Entities
 {
     [ExcludeFromCodeCoverage]
     public class User
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Key]
+        public int? Id { get; set; }
+        
         /// <summary>
         /// Name of person or company.
         /// </summary>

@@ -7,6 +7,12 @@ namespace Elsa.SKS.Package.DataAccess.Entities
     public class Hop
     {
         /// <summary>
+        /// 
+        /// </summary>
+        [Key]
+        public int? Id { get; set; }
+        
+        /// <summary>
         /// Unique CODE of the hop.
         /// </summary>
         /// <value>Unique CODE of the hop.</value>
@@ -35,6 +41,6 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// Gets or Sets LocationCoordinates
         /// </summary>
         [Required]
-        public GeoCoordinate LocationCoordinates { get; set; }
+        public GeoCoordinates LocationCoordinates { get; set; }
     }
 }

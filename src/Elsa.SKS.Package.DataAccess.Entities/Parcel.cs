@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Elsa.SKS.Package.DataAccess.Entities.Enums;
 
@@ -7,6 +8,12 @@ namespace Elsa.SKS.Package.DataAccess.Entities
     [ExcludeFromCodeCoverage]
     public class Parcel
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Key]
+        public int? Id { get; set; }
+        
         /// <summary>
         /// Gets or Sets Weight
         /// </summary>

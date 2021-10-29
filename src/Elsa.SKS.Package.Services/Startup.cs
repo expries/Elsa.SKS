@@ -12,11 +12,13 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Elsa.SKS.Filters;
+using Elsa.SKS.MappingProfiles;
 using Elsa.SKS.Package.BusinessLogic;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.BusinessLogic.Validators;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
+using Elsa.SKS.Package.DataAccess.Sql;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -65,6 +67,9 @@ namespace Elsa.SKS
             services.AddTransient<IParcelTrackingLogic, ParcelTrackingLogic>();
             services.AddTransient<IParcelRegistrationLogic, ParcelRegistrationLogic>();
             
+            services.AddTransient<IParcelRepository, SqlParcelRepository>();
+            services.AddTransient<IHopRepository, SqlHopRepository>();
+            
             // Add validators
             services.AddTransient<IValidator<Parcel>, ParcelValidator>();
             services.AddTransient<IValidator<Warehouse>, WarehouseValidator>();
@@ -110,9 +115,12 @@ namespace Elsa.SKS
 
             services
                 .AddSwaggerGenNewtonsoftSupport();
-            
+
             services
-                .AddAutoMapper(typeof(Startup));
+                .AddAutoMapper(
+                    typeof(ParcelProfile).Assembly,
+                    typeof(Package.BusinessLogic.MappingProfiles.ParcelProfile).Assembly
+                );
 
             services
                 .AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection")));

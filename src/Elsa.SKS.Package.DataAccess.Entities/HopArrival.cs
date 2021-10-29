@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Elsa.SKS.Package.DataAccess.Entities
@@ -6,6 +7,12 @@ namespace Elsa.SKS.Package.DataAccess.Entities
     [ExcludeFromCodeCoverage]
     public class HopArrival
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Key]
+        public int? Id { get; set; }
+        
         /// <summary>
         /// Reference of Hop.
         /// </summary>

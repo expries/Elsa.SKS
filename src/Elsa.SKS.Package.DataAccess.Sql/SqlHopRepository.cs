@@ -1,13 +1,29 @@
-﻿using Elsa.SKS.Package.DataAccess.Entities;
+﻿using System.Linq;
+using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Elsa.SKS.Package.DataAccess.Sql
 {
     public class SqlHopRepository : IHopRepository
     {
+        private readonly AppDbContext _context;
+        
+        public SqlHopRepository(AppDbContext context)
+        {
+            _context = context;
+        }
+
         public Hop Create(Hop hop)
         {
-            throw new System.NotImplementedException();
+            _context.Hops.Add(hop);
+            _context.SaveChanges();
+            
+            // var warehouses = _context.Warehouses.ToList();
+            // var hops = _context.Hops.Where(h => h is Warehouse).ToList();
+            
+            return hop;
         }
 
         public bool Update(Hop hop)
