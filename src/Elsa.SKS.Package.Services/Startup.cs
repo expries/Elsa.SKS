@@ -13,12 +13,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Elsa.SKS.Filters;
 using Elsa.SKS.Package.BusinessLogic;
-using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.BusinessLogic.Validators;
+using Elsa.SKS.Package.DataAccess.Entities;
+using Elsa.SKS.Package.DataAccess.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +28,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using Parcel = Elsa.SKS.Package.BusinessLogic.Entities.Parcel;
+using Warehouse = Elsa.SKS.Package.BusinessLogic.Entities.Warehouse;
 
 namespace Elsa.SKS
 {
@@ -109,6 +113,9 @@ namespace Elsa.SKS
             
             services
                 .AddAutoMapper(typeof(Startup));
+
+            services
+                .AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection")));
 
         }
 
