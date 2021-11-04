@@ -1,46 +1,29 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using FluentValidation;
 using Warehouse = Elsa.SKS.Package.BusinessLogic.Entities.Warehouse;
+using DataAccessWarehouse = Elsa.SKS.Package.DataAccess.Entities.Warehouse;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
     public class WarehouseLogic : IWarehouseLogic
     {
+        private readonly IHopRepository _hopRepository;
+
         private readonly IValidator<Warehouse> _warehouseValidator;
 
-        private IHopRepository _hopRepository;
-        
         private readonly IMapper _mapper;
         
-        private Warehouse _rootWarehouse= new Warehouse();
-
-        private bool _hierarchyIsLoaded = true;
-        
-
-        public WarehouseLogic(IHopRepository hopRepository, IMapper mapper, IValidator<Warehouse> warehouseValidator)
+        public WarehouseLogic(IHopRepository hopRepository, IValidator<Warehouse> warehouseValidator, IMapper mapper)
         {
             _hopRepository = hopRepository;
             _warehouseValidator = warehouseValidator;
             _mapper = mapper;
         }
 
-        public static WarehouseLogic CreateWithFaultyWarehouse(IHopRepository hopRepository, IMapper mapper, IValidator<Warehouse> warehouseValidator)
-        {
-            var warehouseLogic = new WarehouseLogic(hopRepository, mapper, warehouseValidator) { _rootWarehouse = null };
-            return warehouseLogic;
-        }
-
-        public static WarehouseLogic CreateWithoutLoadedHierarchy(IHopRepository hopRepository, IMapper mapper, IValidator<Warehouse> warehouseValidator)
-        {
-            var warehouseLogic = new WarehouseLogic(hopRepository, mapper, warehouseValidator) { _hierarchyIsLoaded = false };
-            return warehouseLogic;
-        }
-        
         public Warehouse ExportWarehouses()
         {
             try
@@ -57,29 +40,36 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (SingleOrDefaultException ex)
             {
-                throw new InvalidWarehouseException("Root warehouse is not unique.");
+                throw new InvalidWarehouseException("Root warehouse is not unique.", ex);
             }
-            
+            catch (DataAccessException ex)
+            {
+                throw new BusinessException("A database has occurred.", ex);
+            }
         }
 
         public Warehouse GetWarehouse(string code)
         {
-            if (!_hopRepository.DoesWarehouseExist(code))
-            {
-                throw new WarehouseNotFoundException($"Warehouse with code {code} can not be found");
-            }
-
             try
             {
                 var warehouseEntity = _hopRepository.GetWarehouseByCode(code);
-                var result = _mapper.Map<Warehouse>(warehouseEntity);
-                return result;
+
+                if (warehouseEntity is null)
+                {
+                    throw new WarehouseNotFoundException($"Warehouse with code {code} can not be found");
+                }
+
+                var warehouse = _mapper.Map<Warehouse>(warehouseEntity);
+                return warehouse;
             }
             catch (SingleOrDefaultException ex)
             {
-                throw new InvalidWarehouseException("Warehouse is not unique.");
+                throw new InvalidWarehouseException("Warehouse is not unique.", ex);
             }
-
+            catch (DataAccessException ex)
+            {
+                throw new BusinessException("A database has occurred.", ex);
+            }
         }
 
         public void ImportWarehouses(Warehouse warehouse)
@@ -90,14 +80,16 @@ namespace Elsa.SKS.Package.BusinessLogic
             {
                 throw new InvalidWarehouseException(validation.ToString(" "));
             }
-            
-            if (string.IsNullOrEmpty(warehouse.Code))
-            {
-                throw new InvalidWarehouseException("Warehouse code is null or empty");
-            }
 
-            var warehouseDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Warehouse>(warehouse);
-            _hopRepository.Create(warehouseDal);
+            try
+            {
+                var warehouseDal = _mapper.Map<DataAccessWarehouse>(warehouse);
+                _hopRepository.Create(warehouseDal);
+            }
+            catch (DataAccessException ex)
+            {
+                throw new BusinessException("A database has occurred.", ex);
+            }
         }
     }
     

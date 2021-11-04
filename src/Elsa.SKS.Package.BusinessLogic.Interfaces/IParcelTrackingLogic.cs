@@ -4,7 +4,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Interfaces
 {
     public interface IParcelTrackingLogic
     {
-        public Parcel ReportParcelDelivery(string trackingId);
+        public void ReportParcelDelivery(string trackingId);
             
         public void ReportParcelHop(string trackingId, string code);
 

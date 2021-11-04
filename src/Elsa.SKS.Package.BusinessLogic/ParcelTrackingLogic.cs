@@ -1,16 +1,21 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
+using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
+using Parcel = Elsa.SKS.Package.BusinessLogic.Entities.Parcel;
+using DataAccessParcel = Elsa.SKS.Package.DataAccess.Entities.Parcel;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
     public class ParcelTrackingLogic : IParcelTrackingLogic
     {
-        private IParcelRepository _parcelRepository;
+        private readonly IParcelRepository _parcelRepository;
         
-        private IHopRepository _hopRepository;
+        private readonly IHopRepository _hopRepository;
 
         private readonly IMapper _mapper;
 
@@ -21,65 +26,96 @@ namespace Elsa.SKS.Package.BusinessLogic
             _mapper = mapper;
         }
 
-        public Parcel ReportParcelDelivery(string trackingId)
+        public void ReportParcelDelivery(string trackingId)
         {
-            
-            if (!_parcelRepository.DoesExist(trackingId))
+            try
             {
-                throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
-            }
+                var parcelEntity = _parcelRepository.GetByTrackingId(trackingId);
 
-            if (!_parcelRepository.ReportParcelHopArrival(trackingId))
+                // check that parcel exists
+                if (parcelEntity is null)
+                {
+                    throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
+                }
+
+                var parcel = _mapper.Map<Parcel>(parcelEntity);
+
+                // on delivery, mark all future hop arrivals with the current timestamp and add to visited hop
+                parcel.FutureHops.ToList().ForEach(ha =>
+                {
+                    parcel.FutureHops.Remove(ha);
+                    ha.DateTime = DateTime.Now;
+                    parcel.VisitedHops.Add(ha);
+                });
+
+                parcelEntity = _mapper.Map<DataAccessParcel>(parcel);
+                _parcelRepository.Update(parcelEntity);
+            }
+            catch (DataAccessException ex)
             {
-                throw new ReportParcelHopException("Parcel delivery cannot be reported for parcel with " +
-                                                   $"tracking id {trackingId}");
+                throw new BusinessException("A database error has occurred.", ex);
             }
-            
-            var parcelEntity = _parcelRepository.GetParcelByTrackingId(trackingId);
-            var result = _mapper.Map<Parcel>(parcelEntity);
-
-            return result;
         }
 
         public void ReportParcelHop(string trackingId, string code)
         {
-            
-            if (!_parcelRepository.DoesExist(trackingId))
+            try
             {
-                throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
-            }
+                var parcelEntity = _parcelRepository.GetByTrackingId(trackingId);
 
-            if (!_hopRepository.IsValidHopCode(code))
-            {
-                throw new HopNotFoundException($"Hop with code {code} was not found");
+                // check that parcel exists
+                if (parcelEntity is null)
+                {
+                    throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
+                }
 
-            }
+                var hopEntity = _hopRepository.GetByCode(code);
+
+                // check that hop exists
+                if (hopEntity is null)
+                {
+                    throw new HopNotFoundException($"Hop with code {code} was not found");
+                }
+
+                var parcel = _mapper.Map<Parcel>(parcelEntity);
+                var hop = _mapper.Map<Hop>(hopEntity);
             
-            //TODO: logic hier implementieren
-            if (!_parcelRepository.ReportParcelHopArrival(trackingId))
+                // remove all future/visited hop arrivals with the given code
+                parcel.FutureHops.RemoveAll(ha => ha.Hop.Code == code);
+                parcel.VisitedHops.RemoveAll(ha => ha.Hop.Code == code);
+
+                // add hop arrival to parcel's visited hops
+                var hopArrival = new HopArrival { Hop = hop, DateTime = DateTime.Now };
+                parcel.VisitedHops.Add(hopArrival);
+            
+                parcelEntity = _mapper.Map<DataAccessParcel>(parcel);
+                _parcelRepository.Update(parcelEntity);
+            }
+            catch (DataAccessException ex)
             {
-                throw new ReportParcelHopException($"Hop with code {code} can not be reported for parcel " +
-                                                   $"with tracking id {trackingId}");
+                throw new BusinessException("A database error has occurred.", ex);
             }
         }
 
         public Parcel TrackParcel(string trackingId)
         {
-            if (!_parcelRepository.DoesExist(trackingId))
+            try
             {
-                throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
+                var parcelEntity = _parcelRepository.GetByTrackingId(trackingId);
+
+                // check that parcel exists
+                if (parcelEntity is null)
+                {
+                    throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
+                }
+
+                var parcel = _mapper.Map<Parcel>(parcelEntity);
+                return parcel;
             }
-
-            var parcelEntity = _parcelRepository.GetParcelByTrackingId(trackingId);
-            var result = _mapper.Map<Parcel>(parcelEntity);
-
-            if (result == null)
+            catch (DataAccessException ex)
             {
-                throw new TrackingException($"Parcel with tracking id {trackingId} can not be tracked");
+                throw new BusinessException("A database error has occurred.", ex);
             }
-            
-            return result;
-            
         }
     }
 }

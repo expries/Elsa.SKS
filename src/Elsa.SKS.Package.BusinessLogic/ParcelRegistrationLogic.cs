@@ -3,23 +3,23 @@ using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
+using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using FluentValidation;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
     public class ParcelRegistrationLogic : IParcelRegistrationLogic
     {
+        private readonly IParcelRepository _parcelRepository;
+        
         private readonly IValidator<Parcel> _parcelValidator;
-        
-        private IParcelRepository _parcelRepository;
-        
+
         private readonly IMapper _mapper;
-
-
-        public ParcelRegistrationLogic(IValidator<Parcel> parcelValidator, IParcelRepository parcelRepository, IMapper mapper)
+        
+        public ParcelRegistrationLogic(IParcelRepository parcelRepository, IValidator<Parcel> parcelValidator, IMapper mapper)
         {
-            _parcelValidator = parcelValidator;
             _parcelRepository = parcelRepository;
+            _parcelValidator = parcelValidator;
             _mapper = mapper;
         }
     
@@ -32,16 +32,24 @@ namespace Elsa.SKS.Package.BusinessLogic
                 throw new TransferException(validation.ToString(" "));
             }
             
-            if (trackingId != TestConstants.TrackingIdOfParcelThatIsTransferred)
+            try
             {
-                throw new TransferException("Parcel cannot be transferred");
+                var existingParcel = _parcelRepository.GetByTrackingId(trackingId);
+
+                if (existingParcel is not null)
+                {
+                    throw new TransferException("A parcel with this tracking Id is already being tracked.");
+                }
+            
+                var parcelDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Parcel>(parcel);
+                var parcelEntity = _parcelRepository.Create(parcelDal);
+                var result = _mapper.Map<Parcel>(parcelEntity);
+                return result;
             }
-            
-            var parcelDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Parcel>(parcel);
-            var parcelEntity = _parcelRepository.Update(parcelDal);
-            var result = _mapper.Map<Parcel>(parcelEntity);
-            
-            return result;
+            catch (DataAccessException ex)
+            {
+                throw new BusinessException("A database error has occurred.", ex);
+            }
         }
 
         public Parcel SubmitParcel(Parcel parcel)
@@ -53,18 +61,18 @@ namespace Elsa.SKS.Package.BusinessLogic
                 throw new InvalidParcelException(validation.ToString(" "));
             }
             
-            if (parcel.Weight <= 0)
-            {
-                throw new InvalidParcelException("Parcel weight has to be greater than 0");
-            }
-            
             var parcelDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Parcel>(parcel);
-            var parcelEntity = _parcelRepository.Create(parcelDal);
-            var result = _mapper.Map<Parcel>(parcelEntity);
 
-            // parcel with trackingId comes back
-            //parcel.TrackingId = TestConstants.TrackingIdOfSubmittedParcel;
-            return result;
+            try
+            {
+                var parcelEntity = _parcelRepository.Create(parcelDal);
+                var result = _mapper.Map<Parcel>(parcelEntity);
+                return result;
+            }
+            catch (DataAccessException ex)
+            {
+                throw new BusinessException("A database error has occurred.", ex);
+            }
         }
     }
 }
