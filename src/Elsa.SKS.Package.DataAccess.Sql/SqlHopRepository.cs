@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Elsa.SKS.Package.DataAccess.Sql
 {
@@ -19,32 +19,69 @@ namespace Elsa.SKS.Package.DataAccess.Sql
 
         public Hop Create(Hop hop)
         {
-            _context.Hops.Add(hop);
-            _context.SaveChanges();
-            
-            // var warehouses = _context.Warehouses.ToList();
-            // var hops = _context.Hops.Where(h => h is Warehouse).ToList();
-            
-            return hop;
+            try
+            {
+                var entry = _context.Hops.Add(hop);
+                _context.SaveChanges();
+                return entry.Entity;
+            }
+            catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
+            {
+                throw new DataException("A database error occurred, see inner exception for details.", ex);
+            }
         }
 
-        public bool Update(Hop hop)
+        public Hop Update(Hop hop)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var entry = _context.Entry(hop);
+                entry.State = EntityState.Modified;
+                _context.SaveChanges();
+                return entry.Entity;
+            }
+            catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
+            {
+                throw new DataException("A database error occurred, see inner exception for details.", ex);
+            }
         }
 
         public bool Delete(Hop hop)
         {
-            var result = _context.Hops.Find(hop);
-            if (result == null)
+            try
             {
-                return false;
+                var result = _context.Hops.SingleOrDefault(h => h.Code == hop.Code);
+                
+                if (result is null)
+                {
+                    return false;
+                }
+
+                _context.Hops.Remove(result);
+                _context.SaveChanges();
+                return true;
             }
+            catch (InvalidOperationException ex)
+            {
+                throw new SingleOrDefaultException("More than one hop with this code exists.", ex);
+            }
+            catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
+            {
+                throw new DataException("A database error occurred, see inner exception for details.", ex);
+            }
+        }
 
-            _context.Hops.Remove(result);
-            _context.SaveChanges();
-
-            return true;
+        public Hop? GetByCode(string code)
+        {
+            try
+            {
+                var hop = _context.Hops.SingleOrDefault(h => h.Code == code);
+                return hop;
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new SingleOrDefaultException("More than one hop with this code exists.", ex);
+            }
         }
 
         public Warehouse? GetAllWarehouses()
@@ -60,26 +97,6 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
         }
 
-        public bool DoesHopExist(string code)
-        {
-            return _context.Hops.Find(code) is not null;
-        }
-
-        public bool DoesWarehouseExist(string code)
-        {
-            return _context.Warehouses.Find(code) is not null;
-        }
-
-        public bool IsValidHopCode(string code)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool IsValidWarehouseCode(string code)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public Warehouse? GetWarehouseByCode(string code)
         {
             try
@@ -90,7 +107,6 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             {
                 throw new SingleOrDefaultException("More than one warehouse with this code exists.", ex);
             }
-
         }
     }
     

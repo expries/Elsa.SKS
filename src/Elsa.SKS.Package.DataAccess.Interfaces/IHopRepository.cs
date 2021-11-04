@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Elsa.SKS.Package.DataAccess.Entities;
+﻿using Elsa.SKS.Package.DataAccess.Entities;
 
 namespace Elsa.SKS.Package.DataAccess.Interfaces
 {
@@ -7,19 +6,13 @@ namespace Elsa.SKS.Package.DataAccess.Interfaces
     {
         public Hop Create(Hop hop);
 
-        public bool Update(Hop hop);
+        public Hop Update(Hop hop);
         
         public bool Delete(Hop hop);
         
+        public Hop? GetByCode(string code);
+
         public Warehouse? GetAllWarehouses();
-        
-        public bool DoesHopExist(string code);
-        
-        public bool DoesWarehouseExist(string code);
-        
-        //public bool IsValidHopCode(string code);
-        
-        //public bool IsValidWarehouseCode(string code);
         
         public Warehouse? GetWarehouseByCode(string code);
     }
