@@ -52,7 +52,7 @@ namespace Elsa.SKS.Controllers
         [SwaggerOperation("ExportWarehouses")]
         [SwaggerResponse(statusCode: 200, type: typeof(Warehouse), description: "Successful response")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "An error occurred loading.")]
-        public virtual IActionResult ExportWarehouses()
+        public IActionResult ExportWarehouses()
         {
             try
             {
@@ -84,7 +84,7 @@ namespace Elsa.SKS.Controllers
         [SwaggerOperation("GetWarehouse")]
         [SwaggerResponse(statusCode: 200, type: typeof(Warehouse), description: "Successful response")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "An error occurred loading.")]
-        public virtual IActionResult GetWarehouse([FromRoute][Required] string code)
+        public IActionResult GetWarehouse([FromRoute][Required] string code)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace Elsa.SKS.Controllers
         [ValidateModelState]
         [SwaggerOperation("ImportWarehouses")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
-        public virtual IActionResult ImportWarehouses([FromBody] Warehouse body)
+        public IActionResult ImportWarehouses([FromBody] Warehouse body)
         {
             try
             {

@@ -51,14 +51,14 @@ namespace Elsa.SKS.Controllers
         [SwaggerOperation("SubmitParcel")]
         [SwaggerResponse(statusCode: 201, type: typeof(NewParcelInfo), description: "Successfully submitted the new parcel")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
-        public virtual IActionResult SubmitParcel([FromBody] Parcel body)
+        public IActionResult SubmitParcel([FromBody] Parcel body)
         {
             try
             {
                 var entity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Parcel>(body);
-                var parcelEntity = _parcelRegistrationLogic.SubmitParcel(entity);
-                var result = _mapper.Map<TrackingInformation>(parcelEntity);
-                return Created("/" + parcelEntity.TrackingId, result);
+                var parcel = _parcelRegistrationLogic.SubmitParcel(entity);
+                var newParcelInfo = _mapper.Map<NewParcelInfo>(parcel);
+                return Created("/" + newParcelInfo.TrackingId, newParcelInfo);
             }
             catch (BusinessException ex)
             {

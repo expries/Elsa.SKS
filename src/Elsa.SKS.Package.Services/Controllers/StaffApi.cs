@@ -53,14 +53,13 @@ namespace Elsa.SKS.Controllers
         [ValidateModelState]
         [SwaggerOperation("ReportParcelDelivery")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
-        public virtual IActionResult ReportParcelDelivery(
+        public IActionResult ReportParcelDelivery(
             [FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")] string trackingId)
         {
             try
             {
-                var parcelEntity = _parcelTrackingLogic.ReportParcelDelivery(trackingId);
-                var result = _mapper.Map<TrackingInformation>(parcelEntity);
-                return Ok(result);
+                _parcelTrackingLogic.ReportParcelDelivery(trackingId);
+                return Ok();
             }
             catch (ParcelNotFoundException)
             {
@@ -86,7 +85,7 @@ namespace Elsa.SKS.Controllers
         [ValidateModelState]
         [SwaggerOperation("ReportParcelHop")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "The operation failed due to an error.")]
-        public virtual IActionResult ReportParcelHop(
+        public IActionResult ReportParcelHop(
             [FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")] string trackingId, 
             [FromRoute][Required][RegularExpression("^[A-Z]{4}\\d{1,4}$")] string code)
         {
