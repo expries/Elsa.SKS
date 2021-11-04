@@ -17,16 +17,15 @@ namespace Elsa.SKS.Package.Services.Tests
         public void GivenAParcelExists_WhenParcelDeliveryIsReported_ThenReturn200()
         {
             var parcelTracking = A.Fake<IParcelTrackingLogic>();
-            
-            A.CallTo(() => parcelTracking.ReportParcelDelivery(A<string>._))
-                .Returns(new BusinessLogic.Entities.Parcel());
+
+            A.CallTo(() => parcelTracking.ReportParcelDelivery(A<string>._)).DoesNothing();
 
             var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
             var controller = new StaffApiController(parcelTracking, mapper);
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
             
             var actionResult = controller.ReportParcelDelivery(trackingId);
-            actionResult.Should().BeOfType<OkObjectResult>();
+            actionResult.Should().BeOfType<OkResult>();
         }
 
         [Fact]

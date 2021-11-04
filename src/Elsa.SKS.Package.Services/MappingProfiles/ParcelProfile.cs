@@ -23,6 +23,8 @@ namespace Elsa.SKS.MappingProfiles
             CreateMap<Recipient, User>().ReverseMap();
             CreateMap<ParcelEntity, TrackingInformation>().ReverseMap();
             
+            CreateMap<ParcelEntity, NewParcelInfo>().ReverseMap();
+            
             CreateMap<HopArrivalDto, HopArrivalEntity>(MemberList.None)
                 .ForMember(h => h.Hop, o => o.MapFrom(dto => dto));
             CreateMap<HopArrivalDto, HopEntity>(MemberList.None);
