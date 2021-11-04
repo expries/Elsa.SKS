@@ -1,5 +1,10 @@
-﻿using Elsa.SKS.Package.BusinessLogic.Entities;
+﻿using System;
+using AutoMapper;
+using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
+using Elsa.SKS.Package.BusinessLogic.Interfaces;
+using Elsa.SKS.Package.DataAccess.Interfaces;
+using FakeItEasy;
 using FluentAssertions;
 using Xunit;
 
@@ -7,74 +12,82 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
 {
     public class ParcelTrackingLogicTests
     {
+        private readonly IParcelTrackingLogic _logic;
+
+        private readonly IParcelRepository _parcelRepository;
+
+        private readonly IHopRepository _hopRepository;
+
+        private readonly IMapper _mapper;
+        
+        public ParcelTrackingLogicTests()
+        {
+            _parcelRepository = A.Fake<IParcelRepository>();
+            _hopRepository = A.Fake<IHopRepository>();
+            _mapper = A.Fake<IMapper>();
+            _logic = new ParcelTrackingLogic(_parcelRepository, _hopRepository, _mapper);
+        }
+        
         [Fact]
         public void GivenCorrectTrackingId_WhenReportingParcelDelivery_ThenReturnParcelWithCorrectTrackingId()
         {
-            var parcelTracking = new ParcelTrackingLogic();
             const string trackingId = TestConstants.TrackingIdOfParcelThatIsTransferred;
             
-            var parcelReturned = parcelTracking.ReportParcelDelivery(trackingId);
-            
-            parcelReturned.Should().BeOfType<Parcel>();
-            parcelReturned.TrackingId.Should().Be($"{TestConstants.TrackingIdOfParcelThatIsTransferred}");
+            Action reportParcelDelivery = () => _logic.ReportParcelDelivery(trackingId);
+
+            reportParcelDelivery.Should().NotThrow<Exception>();
         }
         
         [Fact]
         public void GivenTrackingIdOfNonExistentParcel_WhenReportingParcelDelivery_ThenThrowParcelNotFoundException()
         {
-            var parcelTracking = new ParcelTrackingLogic();
             const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
             
-            Assert.Throws<ParcelNotFoundException>(() => parcelTracking.ReportParcelDelivery(trackingId));
+            Assert.Throws<ParcelNotFoundException>(() => _logic.ReportParcelDelivery(trackingId));
 
         }
         
         [Fact]
         public void GivenTrackingIdOfParcelThatCanNotBeReported_WhenReportingParcelDelivery_ThenThrowReportParcelHopException()
         {
-            var parcelTracking = new ParcelTrackingLogic();
             const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeReported;
             
-            Assert.Throws<ReportParcelHopException>(() => parcelTracking.ReportParcelDelivery(trackingId));
+            Assert.Throws<ReportParcelHopException>(() => _logic.ReportParcelDelivery(trackingId));
         }
         
         [Fact]
         public void GivenTrackingIdOfNonExistentParcel_WhenReportingParcelHop_ThenThrowParcelNotFoundException()
         {
-            var parcelTracking = new ParcelTrackingLogic();
             const string code = TestConstants.ExistentHopCode;
             const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
             
-            Assert.Throws<ParcelNotFoundException>(() => parcelTracking.ReportParcelHop(trackingId, code));
+            Assert.Throws<ParcelNotFoundException>(() => _logic.ReportParcelHop(trackingId, code));
         }
         
         [Fact]
         public void GivenNonExistentHopCode_WhenReportingParcelHop_ThenThrowHopNotFoundException()
         {
-            var parcelTracking = new ParcelTrackingLogic();
             const string code = TestConstants.NonExistentHopCode;
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
             
-            Assert.Throws<HopNotFoundException>(() => parcelTracking.ReportParcelHop(trackingId, code));
+            Assert.Throws<HopNotFoundException>(() => _logic.ReportParcelHop(trackingId, code));
         }
         
         [Fact]
         public void GivenTrackingIdOfParcelThatCanNotBeReported_WhenReportingParcelHop_ThenThrowReportParcelHopException()
         {
-            var parcelTracking = new ParcelTrackingLogic();
             const string code = TestConstants.ExistentHopCode;
             const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeReported;
             
-            Assert.Throws<ReportParcelHopException>(() => parcelTracking.ReportParcelHop(trackingId, code));
+            Assert.Throws<ReportParcelHopException>(() => _logic.ReportParcelHop(trackingId, code));
         }
         
         [Fact]
         public void GivenCorrectTrackingId_WhenTrackingParcel_ThenReturnParcelWithCorrectTrackingId()
         {
-            var parcelTracking = new ParcelTrackingLogic();
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
             
-            var parcelReturned = parcelTracking.TrackParcel(trackingId);
+            var parcelReturned = _logic.TrackParcel(trackingId);
             
             parcelReturned.Should().BeOfType<Parcel>();
             parcelReturned.TrackingId.Should().Be($"{TestConstants.TrackingIdOfExistentParcel}");
@@ -83,19 +96,17 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenTrackingIdOfNonExistentParcel_WhenTrackingParcel_ThenThrowParcelNotFoundException()
         {
-            var parcelTracking = new ParcelTrackingLogic();
             const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
             
-            Assert.Throws<ParcelNotFoundException>(() => parcelTracking.TrackParcel(trackingId));
+            Assert.Throws<ParcelNotFoundException>(() => _logic.TrackParcel(trackingId));
         }
         
         [Fact]
         public void GivenTrackingIdOfParcelThatCanNotBeTracked_WhenTrackingParcel_ThenThrowTrackingException()
         {
-            var parcelTracking = new ParcelTrackingLogic();
             const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeTracked;
             
-            Assert.Throws<TrackingException>(() => parcelTracking.TrackParcel(trackingId));
+            Assert.Throws<TrackingException>(() => _logic.TrackParcel(trackingId));
         }
     }
 }
