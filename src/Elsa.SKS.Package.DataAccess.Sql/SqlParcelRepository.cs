@@ -32,17 +32,17 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             {
                 return false;
             }
-            else
-            {
-                _context.Parcels.Remove(result);
-                _context.SaveChanges();
-            }
+
+            _context.Parcels.Remove(result);
+            _context.SaveChanges();
 
             return true;
         }
 
         public bool ReportParcelHopArrival(string trackingId)
         {
+            //var nextHop = _context.Parcels.Find(trackingId).FutureHops;
+
             throw new NotImplementedException();
         }
 
@@ -53,7 +53,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
 
         public bool DoesExist(string trackingId)
         {
-            throw new NotImplementedException();
+            return _context.Parcels.Find(trackingId) is not null;
         }
     }
 }

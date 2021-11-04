@@ -54,7 +54,8 @@ namespace Elsa.SKS.Package.BusinessLogic
                 throw new HopNotFoundException($"Hop with code {code} was not found");
 
             }
-
+            
+            //TODO: logic hier implementieren
             if (!_parcelRepository.ReportParcelHopArrival(trackingId))
             {
                 throw new ReportParcelHopException($"Hop with code {code} can not be reported for parcel " +

@@ -7,6 +7,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Elsa.SKS.Package.BusinessLogic.Interfaces\Elsa.SKS.Package.BusinessLogic.Interfaces.csproj" />
       <ProjectReference Include="..\Elsa.SKS.Package.DataAccess.Interfaces\Elsa.SKS.Package.DataAccess.Interfaces.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Package.DataAccess.Sql\Elsa.SKS.Package.DataAccess.Sql.csproj" />
     </ItemGroup>
 
     <ItemGroup>

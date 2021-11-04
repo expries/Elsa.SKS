@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
+using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -33,22 +35,39 @@ namespace Elsa.SKS.Package.DataAccess.Sql
 
         public bool Delete(Hop hop)
         {
-            throw new System.NotImplementedException();
+            var result = _context.Hops.Find(hop);
+            if (result == null)
+            {
+                return false;
+            }
+
+            _context.Hops.Remove(result);
+            _context.SaveChanges();
+
+            return true;
         }
 
-        public Warehouse GetAllWarehouses()
+        public Warehouse? GetAllWarehouses()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var rootWarehouse = _context.Warehouses.SingleOrDefault(w => w.Level == 0);
+                return rootWarehouse;
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new SingleOrDefaultException("More than one root warehouse exists.", ex);
+            }
         }
 
         public bool DoesHopExist(string code)
         {
-            throw new System.NotImplementedException();
+            return _context.Hops.Find(code) is not null;
         }
 
         public bool DoesWarehouseExist(string code)
         {
-            throw new System.NotImplementedException();
+            return _context.Warehouses.Find(code) is not null;
         }
 
         public bool IsValidHopCode(string code)
@@ -61,9 +80,18 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             throw new System.NotImplementedException();
         }
 
-        public Warehouse GetWarehouseByCode(string code)
+        public Warehouse? GetWarehouseByCode(string code)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return _context.Warehouses.SingleOrDefault(w => w.Code == code);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new SingleOrDefaultException("More than one warehouse with this code exists.", ex);
+            }
+
         }
     }
+    
 }

@@ -8,7 +8,7 @@ namespace Elsa.SKS.Package.DataAccess.Interfaces
         public Parcel Create(Parcel parcel);
         public Parcel Update(Parcel parcel);
         public bool Delete(Parcel parcel);
-        public bool ReportParcelHopArrival(string trackingId);
+        //public bool ReportParcelHopArrival(string trackingId);
         public Parcel GetParcelByTrackingId(string trackingId);
         public bool DoesExist(string trackingId);
     }
