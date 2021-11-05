@@ -13,118 +13,110 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class StaffApiTests
     {
+        private readonly StaffApiController _controller;
+
+        private readonly IParcelTrackingLogic _trackingLogic;
+
+        private readonly IMapper _mapper;
+        
+        public StaffApiTests()
+        {
+            _trackingLogic = A.Fake<IParcelTrackingLogic>();
+            _mapper = A.Fake<IMapper>();
+            _controller = new StaffApiController(_trackingLogic, _mapper);
+        }
+        
         [Fact]
         public void GivenAParcelExists_WhenParcelDeliveryIsReported_ThenReturn200()
         {
-            var parcelTracking = A.Fake<IParcelTrackingLogic>();
+            const string trackingId = "tracking_id";
 
-            A.CallTo(() => parcelTracking.ReportParcelDelivery(A<string>._)).DoesNothing();
-
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new StaffApiController(parcelTracking, mapper);
-            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
+            A.CallTo(() => _trackingLogic.ReportParcelDelivery(A<string>._))
+                .DoesNothing();
             
-            var actionResult = controller.ReportParcelDelivery(trackingId);
+            var actionResult = _controller.ReportParcelDelivery(trackingId);
             actionResult.Should().BeOfType<OkResult>();
         }
 
         [Fact]
         public void GivenAParcelNotFoundExceptionIsThrown_WhenParcelDeliveryIsReported_ThenReturn404()
         {
-            var parcelTracking = A.Fake<IParcelTrackingLogic>();
-            
-            A.CallTo(() => parcelTracking.ReportParcelDelivery(A<string>._))
+            const string trackingId = "tracking_id";
+
+            A.CallTo(() => _trackingLogic.ReportParcelDelivery(A<string>._))
                 .Throws<ParcelNotFoundException>();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new StaffApiController(parcelTracking, mapper);
-            const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
+            var actionResult = _controller.ReportParcelDelivery(trackingId);
             
-            var actionResult = controller.ReportParcelDelivery(trackingId);
             actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
         public void GivenABusinessExceptionIsThrown_WhenParcelDeliveryIsReported_ThenReturn400()
         {
-            var parcelTracking = A.Fake<IParcelTrackingLogic>();
+            const string trackingId = "tracking_id";
             
-            A.CallTo(() => parcelTracking.ReportParcelDelivery(A<string>._))
+            A.CallTo(() => _trackingLogic.ReportParcelDelivery(A<string>._))
                 .Throws<BusinessException>();
+
+            var actionResult = _controller.ReportParcelDelivery(trackingId);
             
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new StaffApiController(parcelTracking, mapper);
-            const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeDelivered;
-            
-            var actionResult = controller.ReportParcelDelivery(trackingId);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
 
         [Fact]
         public void GivenAParcelNotFoundExceptionIsThrown_WhenParcelHopIsReported_ThenReturn404()
         {
-            var parcelTracking = A.Fake<IParcelTrackingLogic>();
+            const string trackingId = "tracking_id";
+            const string hopCode = "hop_code";
             
-            A.CallTo(() => parcelTracking.ReportParcelHop(A<string>._, A<string>._))
+            A.CallTo(() => _trackingLogic.ReportParcelHop(A<string>._, A<string>._))
                 .Throws<ParcelNotFoundException>();
+
+            var actionResult = _controller.ReportParcelHop(trackingId, hopCode);
             
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new StaffApiController(parcelTracking, mapper);
-            const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
-            const string code = TestConstants.ExistentHopCode;
-            
-            var actionResult = controller.ReportParcelHop(trackingId, code);
             actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
         public void GivenAHopNotFoundExceptionIsThrown_WhenParcelHopIsReported_ThenReturn404()
         {
-            var parcelTracking = A.Fake<IParcelTrackingLogic>();
-            
-            A.CallTo(() => parcelTracking.ReportParcelHop(A<string>._, A<string>._))
+            const string trackingId = "tracking_id";
+            const string hopCode = "hop_code";
+
+            A.CallTo(() => _trackingLogic.ReportParcelHop(A<string>._, A<string>._))
                 .Throws<ParcelNotFoundException>();
+
+            var actionResult = _controller.ReportParcelHop(trackingId, hopCode);
             
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new StaffApiController(parcelTracking, mapper);
-            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
-            const string code = TestConstants.NonExistentHopCode;
-            
-            var actionResult = controller.ReportParcelHop(trackingId, code);
             actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
         public void GivenABusinessExceptionIsThrown_WhenParcelHopIsReported_ThenReturn400()
         {
-            var parcelTracking = A.Fake<IParcelTrackingLogic>();
+            const string trackingId = "tracking_id";
+            const string hopCode = "hop_code";
             
-            A.CallTo(() => parcelTracking.ReportParcelHop(A<string>._, A<string>._))
+            A.CallTo(() => _trackingLogic.ReportParcelHop(A<string>._, A<string>._))
                 .Throws<BusinessException>();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new StaffApiController(parcelTracking, mapper);
-            const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeReported;
-            const string code = TestConstants.ExistentHopCode;
+            var actionResult = _controller.ReportParcelHop(trackingId, hopCode);
             
-            var actionResult = controller.ReportParcelHop(trackingId, code);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         
         [Fact]
         public void GivenAParcelExists_WhenParcelHopIsReported_ThenReturn200()
         {
-            var parcelTracking = A.Fake<IParcelTrackingLogic>();
-
-            A.CallTo(() => parcelTracking.ReportParcelHop(A<string>._, A<string>._))
+            const string trackingId = "tracking_id";
+            const string hopCode = "hop_code";
+            
+            A.CallTo(() => _trackingLogic.ReportParcelHop(A<string>._, A<string>._))
                 .DoesNothing();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new StaffApiController(parcelTracking, mapper);
-            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
-            const string code = TestConstants.ExistentHopCode;
+            var actionResult = _controller.ReportParcelHop(trackingId, hopCode);
             
-            var actionResult = controller.ReportParcelHop(trackingId, code);
             actionResult.Should().BeOfType<OkResult>();
         }
     }

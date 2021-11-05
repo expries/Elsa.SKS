@@ -9,43 +9,66 @@ using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Xunit;
 
 namespace Elsa.SKS.Package.Services.Tests
 {
     public class SenderApiTests
     {
+        private readonly SenderApiController _controller;
+
+        private readonly IParcelRegistrationLogic _registrationLogic;
+
+        private readonly IMapper _mapper;
+        
+        public SenderApiTests()
+        {
+            _registrationLogic = A.Fake<IParcelRegistrationLogic>();
+            _mapper = A.Fake<IMapper>();
+            _controller = new SenderApiController(_registrationLogic, _mapper);
+        }
+        
         [Fact]
         public void GivenANewParcel_WhenSubmittingTheParcel_ThenReturn201()
         {
-            var parcelRegistration = A.Fake<IParcelRegistrationLogic>();
-            
-            A.CallTo(() => parcelRegistration.SubmitParcel(A<BusinessLogic.Entities.Parcel>._))
-                .Returns(new BusinessLogic.Entities.Parcel { TrackingId = TestConstants.TrackingIdOfSubmittedParcel });
+            var parcel = Builder<BusinessLogic.Entities.Parcel>
+                .CreateNew()
+                .Build();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new SenderApiController(parcelRegistration, mapper);
-            var parcel = Builder<Parcel>.CreateNew().Build();
+            var parcelDto = Builder<Parcel>
+                .CreateNew()
+                .Build();
             
-            var actionResult = controller.SubmitParcel(parcel);
+            var newParcelInfo = Builder<NewParcelInfo>
+                .CreateNew()
+                .With(p => p.TrackingId = parcel.TrackingId)
+                .Build();
+
+            A.CallTo(() => _registrationLogic.SubmitParcel(A<BusinessLogic.Entities.Parcel>._))
+                .Returns(parcel);
+
+            A.CallTo(() => _mapper.Map<NewParcelInfo>(A<BusinessLogic.Entities.Parcel>._))
+                .Returns(newParcelInfo);
+
+            var actionResult = _controller.SubmitParcel(parcelDto);
+            
             var typeAssertion = actionResult.Should().BeOfType<CreatedResult>();
             var creationResult = typeAssertion.Subject;
-            creationResult.Location.Should().Be($"/{TestConstants.TrackingIdOfSubmittedParcel}");
+            creationResult.Location.Should().Be($"/{newParcelInfo.TrackingId}");
         }
         
         [Fact]
         public void GivenABusinessExceptionIsThrown_WhenSubmittingAParcel_ThenReturn400()
         {
-            var parcelRegistration = A.Fake<IParcelRegistrationLogic>();
+            var parcelDto = Builder<Parcel>
+                .CreateNew()
+                .Build();
             
-            A.CallTo(() => parcelRegistration.SubmitParcel(A<BusinessLogic.Entities.Parcel>._))
+            A.CallTo(() => _registrationLogic.SubmitParcel(A<BusinessLogic.Entities.Parcel>._))
                 .Throws<BusinessException>();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new SenderApiController(parcelRegistration, mapper);
-            var parcel = Builder<Parcel>.CreateNew().Build();
-            
-            var actionResult = controller.SubmitParcel(parcel);
+            var actionResult = _controller.SubmitParcel(parcelDto);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         

@@ -15,128 +15,126 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class WarehouseManagementApiTests
     {
+        private readonly WarehouseManagementApiController _controller;
+
+        private readonly IWarehouseLogic _warehouseLogic;
+
+        private readonly IMapper _mapper;
+
+        public WarehouseManagementApiTests()
+        {
+            _warehouseLogic = A.Fake<IWarehouseLogic>();
+            _mapper = A.Fake<IMapper>();
+            _controller = new WarehouseManagementApiController(_warehouseLogic, _mapper);
+        }
+        
         [Fact]
         public void GivenWarehousesExist_WhenExportWarehouses_ThenReturn200()
         {
-            var warehouseLogic = A.Fake<IWarehouseLogic>();
+            var warehouse = Builder<BusinessLogic.Entities.Warehouse>
+                .CreateNew()
+                .Build();
             
-            A.CallTo(() => warehouseLogic.ExportWarehouses())
-                .Returns(new Elsa.SKS.Package.BusinessLogic.Entities.Warehouse());
-
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<WarehouseProfile>()));
-            var controller = new WarehouseManagementApiController(warehouseLogic, mapper);
+            A.CallTo(() => _warehouseLogic.ExportWarehouses())
+                .Returns(warehouse);
             
-            var actionResult = controller.ExportWarehouses();
+            var actionResult = _controller.ExportWarehouses();
+            
             actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
         public void GivenAWarehouseHierarchyNotLoadedExceptionIsThrown_WhenExportingWarehouses_ThenReturn404()
         {
-            var warehouseLogic = A.Fake<IWarehouseLogic>();
-            
-            A.CallTo(() => warehouseLogic.ExportWarehouses())
+            A.CallTo(() => _warehouseLogic.ExportWarehouses())
                 .Throws<WarehouseHierarchyNotLoadedException>();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<WarehouseProfile>()));
-            var controller = new WarehouseManagementApiController(warehouseLogic, mapper);
-
-            var actionResult = controller.ExportWarehouses();
+            var actionResult = _controller.ExportWarehouses();
+            
             actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
         public void GivenABusinessExceptionIsThrown_WhenExportingWarehouses_ThenReturn400()
         {
-            var warehouseLogic = A.Fake<IWarehouseLogic>();
-            
-            A.CallTo(() => warehouseLogic.ExportWarehouses())
+            A.CallTo(() => _warehouseLogic.ExportWarehouses())
                 .Throws<BusinessException>();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<WarehouseProfile>()));
-            var controller = new WarehouseManagementApiController(warehouseLogic, mapper);
+            var actionResult = _controller.ExportWarehouses();
             
-            var actionResult = controller.ExportWarehouses();
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         
         [Fact]
         public void GivenWarehousesExist_WhenAWarehouseIsRequested_ThenReturn200()
         {
-            var warehouseLogic = A.Fake<IWarehouseLogic>();
+            const string warehouseCode = "warehouse_code";
 
-            A.CallTo(() => warehouseLogic.GetWarehouse(A<string>._))
-                .Returns(new BusinessLogic.Entities.Warehouse());
+            var warehouse = Builder<BusinessLogic.Entities.Warehouse>
+                .CreateNew()
+                .Build();
+
+            A.CallTo(() => _warehouseLogic.GetWarehouse(A<string>._))
+                .Returns(warehouse);
             
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<WarehouseProfile>()));
-            var controller = new WarehouseManagementApiController(warehouseLogic, mapper);
+            var actionResult = _controller.GetWarehouse(warehouseCode);
             
-            const string warehouseCode = TestConstants.ExistentWareHouseCode;
-            var actionResult = controller.GetWarehouse(warehouseCode);
             actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
         public void GivenAWarehouseNotFoundExceptionIsThrown_WhenAWarehouseIsRequested_ThenReturn404()
         {
-            var warehouseLogic = A.Fake<IWarehouseLogic>();
+            const string warehouseCode = "warehouse_code";
 
-            A.CallTo(() => warehouseLogic.GetWarehouse(A<string>._))
+            A.CallTo(() => _warehouseLogic.GetWarehouse(A<string>._))
                 .Throws<WarehouseNotFoundException>();
+
+            var actionResult = _controller.GetWarehouse(warehouseCode);
             
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<WarehouseProfile>()));
-            var controller = new WarehouseManagementApiController(warehouseLogic, mapper);
-            const string warehouseCode = TestConstants.NonExistentWarehouseCode;
-            
-            var actionResult = controller.GetWarehouse(warehouseCode);
             actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
         public void GivenAInvalidWarehouseExceptionIsThrown_WhenAWarehouseIsRequested_ThenReturn400()
         {
-            var warehouseLogic = A.Fake<IWarehouseLogic>();
+            const string warehouseCode = "warehouse_code";
 
-            A.CallTo(() => warehouseLogic.GetWarehouse(A<string>._))
+            A.CallTo(() => _warehouseLogic.GetWarehouse(A<string>._))
                 .Throws<BusinessException>();
            
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<WarehouseProfile>()));
-            var controller = new WarehouseManagementApiController(warehouseLogic, mapper);
-            const string warehouseCode = TestConstants.FaultyWarehouseCode;
+            var actionResult = _controller.GetWarehouse(warehouseCode);
             
-            var actionResult = controller.GetWarehouse(warehouseCode);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         
         [Fact]
         public void GivenWarehousesIsValid_WhenAWarehouseIsImported_ThenReturn200()
         {
-            var warehouseLogic = A.Fake<IWarehouseLogic>();
-
-            A.CallTo(() => warehouseLogic.ImportWarehouses(A<BusinessLogic.Entities.Warehouse>._))
+            var warehouse = Builder<Warehouse>
+                .CreateNew()
+                .Build();
+            
+            A.CallTo(() => _warehouseLogic.ImportWarehouses(A<BusinessLogic.Entities.Warehouse>._))
                 .DoesNothing();
+
+            var actionResult = _controller.ImportWarehouses(warehouse);
             
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<WarehouseProfile>()));
-            var controller = new WarehouseManagementApiController(warehouseLogic, mapper);
-            var warehouse = Builder<Warehouse>.CreateNew().Build();
-            
-            var actionResult = controller.ImportWarehouses(warehouse);
             actionResult.Should().BeOfType<OkResult>();
         }
         
         [Fact]
         public void GivenABusinessExceptionIsThrown_WhenAWarehouseIsImported_ThenReturn400()
         {
-            var warehouseLogic = A.Fake<IWarehouseLogic>();
-
-            A.CallTo(() => warehouseLogic.ImportWarehouses(A<BusinessLogic.Entities.Warehouse>._))
+            var warehouse = Builder<Warehouse>
+                .CreateNew()
+                .Build();
+            
+            A.CallTo(() => _warehouseLogic.ImportWarehouses(A<BusinessLogic.Entities.Warehouse>._))
                 .Throws<BusinessException>();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<WarehouseProfile>()));
-            var controller = new WarehouseManagementApiController(warehouseLogic, mapper);
-            var warehouse = Builder<Warehouse>.CreateNew().Build();
+            var actionResult = _controller.ImportWarehouses(warehouse);
             
-            var actionResult = controller.ImportWarehouses(warehouse);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         
