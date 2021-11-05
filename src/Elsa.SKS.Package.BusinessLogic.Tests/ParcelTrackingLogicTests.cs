@@ -166,7 +166,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenADataAccessExceptionOccurs_WhenTrackingParcel_ThenThrowABusinessException()
+        public void GivenADataAccessErrorOccurs_WhenTrackingParcel_ThenThrowABusinessException()
         {
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
 
