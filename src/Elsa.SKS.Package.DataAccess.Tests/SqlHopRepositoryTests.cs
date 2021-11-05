@@ -198,6 +198,16 @@ namespace Elsa.SKS.Package.DataAccess.Tests
         }
         
         [Fact]
+        public void GivenAHopDoesNotExist_WhenGettingHop_ThenReturnNull()
+        {
+            const string hopCode = "hop_code";
+            
+            var hop = _hopRepository.GetByCode(hopCode);
+
+            hop.Should().BeNull();
+        }
+        
+        [Fact]
         public void GivenAInvalidOperationExceptionIsThrown_WhenGettingHop_ThenASingleOrDefaultExceptionIsThrown()
         {
             const string hopCode = "hop_code";
@@ -220,6 +230,13 @@ namespace Elsa.SKS.Package.DataAccess.Tests
             var rootWarehouse = _hopRepository.GetAllWarehouses();
 
             rootWarehouse.Should().Be(storedWarehouse);
+        }
+        
+        [Fact]
+        public void GivenAWarehouseDoesNotExist_WhenGettingAllWarehouses_ThenReturnNull()
+        {
+            var rootWarehouse = _hopRepository.GetAllWarehouses();
+            rootWarehouse.Should().BeNull();
         }
         
         [Fact]
