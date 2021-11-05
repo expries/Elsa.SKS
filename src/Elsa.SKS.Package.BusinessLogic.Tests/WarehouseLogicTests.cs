@@ -87,7 +87,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenAWarehouseExists_WhenGettingWarehouse_ThenReturnTheWarehouse()
         {
-            const string code = TestConstants.ExistentWareHouseCode;
+            const string code = "warehouse_code";
 
             var warehouse = Builder<Warehouse>
                 .CreateNew()
@@ -108,7 +108,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenAWarehouseDoesNotExist_WhenGettingWarehouse_ThenThrowAWarehouseNotFoundException()
         {
-            const string code = TestConstants.ExistentWareHouseCode;
+            const string code = "warehouse_code";
             
             A.CallTo(() => _hopRepository.GetWarehouseByCode(A<string>._)).Returns(null);
 
@@ -120,7 +120,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenASingleOrDefaultException_WhenGettingWarehouse_ThenThrowAInvalidWarehouseException()
         {
-            const string code = TestConstants.ExistentWareHouseCode;
+            const string code = "warehouse_code";
 
             A.CallTo(() => _hopRepository.GetWarehouseByCode(A<string>._)).Throws<SingleOrDefaultException>();
             
@@ -132,7 +132,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenADataAccessErrorOccurs_WhenGettingWarehouse_ThenThrowABusinessException()
         {
-            const string code = TestConstants.ExistentWareHouseCode;
+            const string code = "warehouse_code";
 
             A.CallTo(() => _hopRepository.GetWarehouseByCode(A<string>._)).Throws<DataAccessException>();
             

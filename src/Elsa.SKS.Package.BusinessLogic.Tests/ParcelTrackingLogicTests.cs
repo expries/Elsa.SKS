@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
@@ -35,10 +37,23 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         public void GivenAParcelExists_WhenReportingParcelDelivery_ThenReturnSuccessfully()
         {
             const string trackingId = "my_trackingId";
+
+            var parcel = Builder<Parcel>
+                .CreateNew()
+                .With(p => p.FutureHops = new List<HopArrival>
+                {
+                    new HopArrival()
+                })
+                .Build();
+
+            A.CallTo(() => _mapper.Map<Parcel>(A<DataAccess.Entities.Parcel>._))
+                .Returns(parcel);
             
             Action reportParcelDelivery = () => _logic.ReportParcelDelivery(trackingId);
 
             reportParcelDelivery.Should().NotThrow<Exception>();
+            parcel.FutureHops.Count.Should().Be(0);
+            parcel.VisitedHops.Count.Should().Be(1);
         }
         
         [Fact]
@@ -89,6 +104,76 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
+        public void GivenAParcelWithFutureHops_WhenReportingParcelHop_ThenTheHopIsRemovedFromFutureHops()
+        {
+            const string trackingId = "my_trackingId";
+            
+            var hop = Builder<BusinessLogic.Entities.Hop>
+                .CreateNew()
+                .Build();
+            
+            var parcel = Builder<Parcel>
+                .CreateNew()
+                .With(p => p.FutureHops = new List<HopArrival>
+                {
+                    new HopArrival
+                    {
+                        DateTime = DateTime.Now, 
+                        Hop = hop
+                    }
+                })
+                .Build();
+
+            A.CallTo(() => _mapper.Map<Parcel>(A<DataAccess.Entities.Parcel>._)).Returns(parcel);
+            A.CallTo(() => _mapper.Map<BusinessLogic.Entities.Hop>(A<Hop>._)).Returns(hop);
+
+            _logic.ReportParcelHop(trackingId, hop.Code);
+
+            parcel.FutureHops.Count.Should().Be(0);
+        }
+        
+        [Fact]
+        public void GivenAParcelWithVisitedHops_WhenReportingParcelHop_ThenTheHopIsRemovedFromVisitedHops()
+        {
+            const string trackingId = "my_trackingId";
+            
+            var hop = Builder<BusinessLogic.Entities.Hop>
+                .CreateNew()
+                .Build();
+
+            var hopArrivals = new List<HopArrival>
+            {
+                new HopArrival
+                {
+                    DateTime = DateTime.Now,
+                    Hop = hop
+                },
+                new HopArrival
+                {
+                    DateTime = DateTime.Now,
+                    Hop = hop
+                },
+                new HopArrival
+                {
+                    DateTime = DateTime.Now,
+                    Hop = new Entities.Hop()
+                }
+            };
+
+            var parcel = Builder<Parcel>
+                .CreateNew()
+                .With(p => p.VisitedHops = hopArrivals)
+                .Build();
+
+            A.CallTo(() => _mapper.Map<Parcel>(A<DataAccess.Entities.Parcel>._)).Returns(parcel);
+            A.CallTo(() => _mapper.Map<BusinessLogic.Entities.Hop>(A<Hop>._)).Returns(hop);
+
+            _logic.ReportParcelHop(trackingId, hop.Code);
+
+            parcel.VisitedHops.Count.Should().Be(2);
+        }
+        
+        [Fact]
         public void GivenAParcelDoesNotExist_WhenReportingParcelHop_ThenThrowAParcelNotFoundException()
         {
             const string trackingId = "my_trackingId";
@@ -135,7 +220,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenAParcelExists_WhenTrackingParcel_ThenReturnTheParcel()
         {
-            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
+            const string trackingId = "tracking_id";
             
             var parcel = Builder<Parcel>
                 .CreateNew()
@@ -156,9 +241,9 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenAParcelDoesNotExist_WhenTrackingParcel_ThenThrowAParcelNotFoundException()
         {
-            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
+            const string trackingId = "tracking_id";
             
-            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Throws<ParcelNotFoundException>();
+            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Returns(null);
 
             Action trackParcel = () => _logic.TrackParcel(trackingId);
 
@@ -168,7 +253,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         [Fact]
         public void GivenADataAccessErrorOccurs_WhenTrackingParcel_ThenThrowABusinessException()
         {
-            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
+            const string trackingId = "tracking_id";
 
             A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Throws<DataAccessException>();
 

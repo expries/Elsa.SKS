@@ -15,37 +15,51 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class LogisticPartnerApiTests
     {
+        private readonly LogisticsPartnerApiController _controller;
+
+        private readonly IParcelRegistrationLogic _registrationLogic;
+        
+        private readonly IMapper _mapper;
+        
+        public LogisticPartnerApiTests()
+        {
+            _registrationLogic = A.Fake<IParcelRegistrationLogic>();
+            _mapper = A.Fake<IMapper>();
+            _controller = new LogisticsPartnerApiController(_registrationLogic, _mapper);
+        }
+        
         [Fact]
         public void GivenAParcelIsExpected_WhenTransitioningTheParcel_ThenReturn200()
         {
-            var parcelRegistration = A.Fake<IParcelRegistrationLogic>();
-            
-            A.CallTo(() => parcelRegistration.TransitionParcel(A<BusinessLogic.Entities.Parcel>._, A<string>._))
-                .Returns(new BusinessLogic.Entities.Parcel());
-            
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new LogisticsPartnerApiController(parcelRegistration, mapper);
-            var parcel = Builder<Parcel>.CreateNew().Build();
-            const string trackingId = TestConstants.TrackingIdOfParcelThatIsTransferred;
+            var parcel = Builder<BusinessLogic.Entities.Parcel>
+                .CreateNew()
+                .Build();
 
-            var actionResult = controller.TransitionParcel(parcel, trackingId);
+            var parcelDto = Builder<Parcel>
+                .CreateNew()
+                .Build();
+
+            A.CallTo(() => _registrationLogic.TransitionParcel(A<BusinessLogic.Entities.Parcel>._, A<string>._))
+                .Returns(parcel);
+            
+            var actionResult = _controller.TransitionParcel(parcelDto, parcel.TrackingId);
             actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
         public void GivenAnTransferExceptionsIsThrown_WhenTransitioningAParcel_ThenReturn400()
         {
-            var parcelRegistration = A.Fake<IParcelRegistrationLogic>();
+            const string trackingId = "tracking_id";
             
-            A.CallTo(() => parcelRegistration.TransitionParcel(A<BusinessLogic.Entities.Parcel>._, A<string>._))
+            var parcelDto = Builder<Parcel>
+                .CreateNew()
+                .Build();
+            
+            A.CallTo(() => _registrationLogic.TransitionParcel(A<BusinessLogic.Entities.Parcel>._, A<string>._))
                 .Throws<TransferException>();
+
+            var actionResult = _controller.TransitionParcel(parcelDto, trackingId);
             
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new LogisticsPartnerApiController(parcelRegistration, mapper);
-            var parcel = Builder<Parcel>.CreateNew().Build();
-            const string trackingId = TestConstants.TrackingIdOfParcelThatIsNotTransferred;
-            
-            var actionResult = controller.TransitionParcel(parcel, trackingId);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         

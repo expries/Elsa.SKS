@@ -1,10 +1,13 @@
+using System;
 using AutoMapper;
 using Elsa.SKS.Controllers;
 using Elsa.SKS.MappingProfiles;
 using Elsa.SKS.Package.BusinessLogic;
+using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using FakeItEasy;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
@@ -13,51 +16,59 @@ namespace Elsa.SKS.Package.Services.Tests
 {
     public class RecipientApiTests
     {
+        private readonly RecipientApiController _controller;
+
+        private readonly IParcelTrackingLogic _trackingLogic;
+
+        private readonly IMapper _mapper;
+        
+        public RecipientApiTests()
+        {
+            _trackingLogic = A.Fake<IParcelTrackingLogic>();
+            _mapper = A.Fake<IMapper>();
+            _controller = new RecipientApiController(_trackingLogic, _mapper);
+        }
+        
         [Fact]
         public void GivenAParcelExists_WhenTrackingTheParcel_ThenReturn200()
         {
-            var parcelTracking = A.Fake<IParcelTrackingLogic>();
-            
-            A.CallTo(() => parcelTracking.TrackParcel(A<string>._))
-                .Returns(new BusinessLogic.Entities.Parcel());
+            var parcel = Builder<Parcel>
+                .CreateNew()
+                .Build();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new RecipientApiController(parcelTracking, mapper);
-            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
+            var parcelDto = Builder<DTOs.Parcel>
+                .CreateNew()
+                .Build();
             
-            var actionResult = controller.TrackParcel(trackingId);
+            A.CallTo(() => _trackingLogic.TrackParcel(A<string>._)).Returns(parcel);
+            A.CallTo(() => _mapper.Map<DTOs.Parcel>(A<Parcel>._)).Returns(parcelDto);
+            
+            var actionResult = _controller.TrackParcel(parcel.TrackingId);
+            
             actionResult.Should().BeOfType<OkObjectResult>();
         }
         
         [Fact]
         public void GivenAParcelNotFoundExceptionsIsThrown_WhenTrackingAParcel_ThenReturn404()
         {
-            var parcelTracking = A.Fake<IParcelTrackingLogic>();
+            const string trackingId = "tracking_id";
             
-            A.CallTo(() => parcelTracking.TrackParcel(A<string>._))
-                .Throws<ParcelNotFoundException>();
+            A.CallTo(() => _trackingLogic.TrackParcel(A<string>._)).Throws<ParcelNotFoundException>();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new RecipientApiController(parcelTracking, mapper);
-            const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
-            
-            var actionResult = controller.TrackParcel(trackingId);
+            var actionResult = _controller.TrackParcel(trackingId);
+
             actionResult.Should().BeOfType<NotFoundResult>();
         }
         
         [Fact]
         public void GivenABusinessExceptionIsThrown_WhenTrackingAParcel_ThenReturn400()
         {
-            var parcelTracking = A.Fake<IParcelTrackingLogic>();
+            const string trackingId = "tracking_id";
             
-            A.CallTo(() => parcelTracking.TrackParcel(A<string>._))
-                .Throws<BusinessException>();
+            A.CallTo(() => _trackingLogic.TrackParcel(A<string>._)).Throws<BusinessException>();
 
-            var mapper = new Mapper(new MapperConfiguration(c => c.AddProfile<ParcelProfile>()));
-            var controller = new RecipientApiController(parcelTracking, mapper);
-            const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeTracked;
+            var actionResult = _controller.TrackParcel(trackingId);
             
-            var actionResult = controller.TrackParcel(trackingId);
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
         
