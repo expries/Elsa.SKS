@@ -27,7 +27,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
-                throw new DataException("A database error occurred, see inner exception for details.", ex);
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
 
@@ -35,14 +35,13 @@ namespace Elsa.SKS.Package.DataAccess.Sql
         {
             try
             {
-                var entry = _context.Entry(parcel);
-                entry.State = EntityState.Modified;
+                _context.Parcels.Update(parcel);
                 _context.SaveChanges();
-                return entry.Entity;
+                return parcel;
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
-                throw new DataException("A database error occurred, see inner exception for details.", ex);
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
 
@@ -67,7 +66,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
-                throw new DataException("A database error occurred, see inner exception for details.", ex);
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
 

@@ -9,10 +9,10 @@ namespace Elsa.SKS.Package.DataAccess.Sql
         {
         }
 
-        public DbSet<Hop> Hops { get; set; }
+        public virtual DbSet<Hop> Hops { get; set; }
         
-        public DbSet<Parcel> Parcels { get; set; }
+        public virtual DbSet<Parcel> Parcels { get; set; }
         
-        public DbSet<Warehouse> Warehouses { get; set; }
+        public virtual DbSet<Warehouse> Warehouses { get; set; }
     }
 }

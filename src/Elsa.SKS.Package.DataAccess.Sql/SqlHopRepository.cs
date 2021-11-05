@@ -21,13 +21,13 @@ namespace Elsa.SKS.Package.DataAccess.Sql
         {
             try
             {
-                var entry = _context.Hops.Add(hop);
+                _context.Hops.Add(hop);
                 _context.SaveChanges();
-                return entry.Entity;
+                return hop;
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
-                throw new DataException("A database error occurred, see inner exception for details.", ex);
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
 
@@ -35,14 +35,13 @@ namespace Elsa.SKS.Package.DataAccess.Sql
         {
             try
             {
-                var entry = _context.Entry(hop);
-                entry.State = EntityState.Modified;
+                _context.Hops.Update(hop);
                 _context.SaveChanges();
-                return entry.Entity;
+                return hop;
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
-                throw new DataException("A database error occurred, see inner exception for details.", ex);
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
 
@@ -67,7 +66,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
-                throw new DataException("A database error occurred, see inner exception for details.", ex);
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
 
