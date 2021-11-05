@@ -1,8 +1,10 @@
-﻿using Elsa.SKS.Package.BusinessLogic.Entities;
+﻿using System.Diagnostics.CodeAnalysis;
+using Elsa.SKS.Package.BusinessLogic.Entities;
 using FluentValidation;
 
 namespace Elsa.SKS.Package.BusinessLogic.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class UserValidator : AbstractValidator<User>
     {
         public UserValidator()

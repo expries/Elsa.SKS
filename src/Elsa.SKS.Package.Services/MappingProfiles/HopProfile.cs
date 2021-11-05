@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
 using Elsa.SKS.Package.Services.DTOs;
 
 namespace Elsa.SKS.MappingProfiles
@@ -6,6 +7,7 @@ namespace Elsa.SKS.MappingProfiles
     /// <summary>
     /// 
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class HopProfile : Profile
     {
         /// <summary>

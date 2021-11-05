@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Elsa.SKS.Package.BusinessLogic.Exceptions
 {
+    [ExcludeFromCodeCoverage]
     public class TransferException : BusinessException
     {
         public TransferException()

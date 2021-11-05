@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.Services.DTOs;
 using HopArrivalDto = Elsa.SKS.Package.Services.DTOs.HopArrival;
@@ -17,6 +18,7 @@ namespace Elsa.SKS.MappingProfiles
         /// <summary>
         /// 
         /// </summary>
+        [ExcludeFromCodeCoverage]
         public ParcelProfile()
         {
             CreateMap<ParcelDto, ParcelEntity>(MemberList.Source).ReverseMap();
