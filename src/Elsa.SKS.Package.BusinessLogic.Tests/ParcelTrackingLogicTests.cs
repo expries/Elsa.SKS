@@ -4,9 +4,12 @@ using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
+using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using FakeItEasy;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using Xunit;
+using Hop = Elsa.SKS.Package.DataAccess.Entities.Hop;
 
 namespace Elsa.SKS.Package.BusinessLogic.Tests
 {
@@ -29,9 +32,9 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenCorrectTrackingId_WhenReportingParcelDelivery_ThenReturnParcelWithCorrectTrackingId()
+        public void GivenAParcelExists_WhenReportingParcelDelivery_ThenReturnSuccessfully()
         {
-            const string trackingId = TestConstants.TrackingIdOfParcelThatIsTransferred;
+            const string trackingId = "my_trackingId";
             
             Action reportParcelDelivery = () => _logic.ReportParcelDelivery(trackingId);
 
@@ -39,74 +42,139 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenTrackingIdOfNonExistentParcel_WhenReportingParcelDelivery_ThenThrowParcelNotFoundException()
+        public void GivenAParcelDoesNotExist_WhenReportingParcelDelivery_ThenThrowParcelNotFoundException()
         {
-            const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
-            
-            Assert.Throws<ParcelNotFoundException>(() => _logic.ReportParcelDelivery(trackingId));
+            const string trackingId = "my_trackingId";
+
+            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Returns(null);
+
+            Action reportParcelDelivery = () => _logic.ReportParcelDelivery(trackingId);
+
+            reportParcelDelivery.Should().Throw<ParcelNotFoundException>();
 
         }
         
         [Fact]
-        public void GivenTrackingIdOfParcelThatCanNotBeReported_WhenReportingParcelDelivery_ThenThrowReportParcelHopException()
+        public void GivenADataAccessErrorOccurs_WhenReportingParcelDelivery_ThenThrowABusinessException()
         {
-            const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeReported;
-            
-            Assert.Throws<ReportParcelHopException>(() => _logic.ReportParcelDelivery(trackingId));
+            const string trackingId = "my_trackingId";
+
+            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Throws<DataAccessException>();
+
+            Action reportParcelDelivery = () => _logic.ReportParcelDelivery(trackingId);
+
+            reportParcelDelivery.Should().Throw<BusinessException>();
         }
         
         [Fact]
-        public void GivenTrackingIdOfNonExistentParcel_WhenReportingParcelHop_ThenThrowParcelNotFoundException()
+        public void GivenATrackingIdAndHopCode_WhenReportingParcelHop_ThenReturnSuccessfully()
         {
-            const string code = TestConstants.ExistentHopCode;
-            const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
+           const string trackingId = "my_trackingId";
+           const string hopCode = "hop_code";
+
+           var parcel = Builder<DataAccess.Entities.Parcel>
+                .CreateNew()
+                .Build();
+
+            var hop = Builder<Hop>
+                .CreateNew()
+                .Build();
             
-            Assert.Throws<ParcelNotFoundException>(() => _logic.ReportParcelHop(trackingId, code));
+            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Returns(parcel);
+            A.CallTo(() => _hopRepository.GetByCode(A<string>._)).Returns(hop);
+
+            Action reportParcelHop = () => _logic.ReportParcelHop(trackingId, hopCode);
+
+            reportParcelHop.Should().NotThrow<Exception>();
         }
         
         [Fact]
-        public void GivenNonExistentHopCode_WhenReportingParcelHop_ThenThrowHopNotFoundException()
+        public void GivenAParcelDoesNotExist_WhenReportingParcelHop_ThenThrowAParcelNotFoundException()
         {
-            const string code = TestConstants.NonExistentHopCode;
+            const string trackingId = "my_trackingId";
+            const string hopCode = "hop_code";
+
+            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Returns(null);
+
+            Action reportParcelHop = () => _logic.ReportParcelHop(trackingId, hopCode);
+
+            reportParcelHop.Should().Throw<ParcelNotFoundException>();
+        }
+        
+        [Fact]
+        public void GivenAHopDoesNotExist_WhenReportingParcelHop_ThenThrowAHopNotFoundException()
+        {
+            const string trackingId = "my_trackingId";
+            const string hopCode = "hop_code";
+
+            var parcel = Builder<DataAccess.Entities.Parcel>
+                .CreateNew()
+                .Build();
+
+            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Returns(parcel);
+            A.CallTo(() => _hopRepository.GetByCode(A<string>._)).Returns(null);
+
+            Action reportParcelHop = () => _logic.ReportParcelHop(trackingId, hopCode);
+
+            reportParcelHop.Should().Throw<HopNotFoundException>();
+        }
+        
+        [Fact]
+        public void GivenADataAccessErrorOccurs_WhenReportingParcelHop_ThenThrowABusinessException()
+        {
+            const string trackingId = "my_trackingId";
+            const string hopCode = "hop_code";
+
+            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Throws<DataAccessException>();
+            
+            Action reportParcelHop = () => _logic.ReportParcelHop(trackingId, hopCode);
+
+            reportParcelHop.Should().Throw<BusinessException>();
+        }
+        
+        [Fact]
+        public void GivenAParcelExists_WhenTrackingParcel_ThenReturnTheParcel()
+        {
             const string trackingId = TestConstants.TrackingIdOfExistentParcel;
             
-            Assert.Throws<HopNotFoundException>(() => _logic.ReportParcelHop(trackingId, code));
-        }
-        
-        [Fact]
-        public void GivenTrackingIdOfParcelThatCanNotBeReported_WhenReportingParcelHop_ThenThrowReportParcelHopException()
-        {
-            const string code = TestConstants.ExistentHopCode;
-            const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeReported;
+            var parcel = Builder<Parcel>
+                .CreateNew()
+                .Build();
             
-            Assert.Throws<ReportParcelHopException>(() => _logic.ReportParcelHop(trackingId, code));
-        }
-        
-        [Fact]
-        public void GivenCorrectTrackingId_WhenTrackingParcel_ThenReturnParcelWithCorrectTrackingId()
-        {
-            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
+            var parcelEntity = Builder<DataAccess.Entities.Parcel>
+                .CreateNew()
+                .Build();
+
+            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Returns(parcelEntity);
+            A.CallTo(() => _mapper.Map<Parcel>(A<DataAccess.Entities.Parcel>._)).Returns(parcel);
             
             var parcelReturned = _logic.TrackParcel(trackingId);
-            
-            parcelReturned.Should().BeOfType<Parcel>();
-            parcelReturned.TrackingId.Should().Be($"{TestConstants.TrackingIdOfExistentParcel}");
+
+            parcelReturned.Should().Be(parcel);
         }
         
         [Fact]
-        public void GivenTrackingIdOfNonExistentParcel_WhenTrackingParcel_ThenThrowParcelNotFoundException()
+        public void GivenAParcelDoesNotExist_WhenTrackingParcel_ThenThrowAParcelNotFoundException()
         {
-            const string trackingId = TestConstants.TrackingIdOfNonExistentParcel;
+            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
             
-            Assert.Throws<ParcelNotFoundException>(() => _logic.TrackParcel(trackingId));
+            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Throws<ParcelNotFoundException>();
+
+            Action trackParcel = () => _logic.TrackParcel(trackingId);
+
+            trackParcel.Should().Throw<ParcelNotFoundException>();
         }
         
         [Fact]
-        public void GivenTrackingIdOfParcelThatCanNotBeTracked_WhenTrackingParcel_ThenThrowTrackingException()
+        public void GivenADataAccessExceptionOccurs_WhenTrackingParcel_ThenThrowABusinessException()
         {
-            const string trackingId = TestConstants.TrackingIdOfParcelThatCanNotBeTracked;
-            
-            Assert.Throws<TrackingException>(() => _logic.TrackParcel(trackingId));
+            const string trackingId = TestConstants.TrackingIdOfExistentParcel;
+
+            A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Throws<DataAccessException>();
+
+            Action trackParcel = () => _logic.TrackParcel(trackingId);
+
+            trackParcel.Should().Throw<BusinessException>();
         }
     }
 }
