@@ -1,14 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
+using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using FluentValidation;
+using FluentValidation.Results;
 using Xunit;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace Elsa.SKS.Package.BusinessLogic.Tests
 {
@@ -29,75 +34,163 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
             _mapper = A.Fake<IMapper>();
             _logic = new WarehouseLogic(_hopRepository, _warehouseValidator, _mapper);
         }
-        
+
         [Fact]
-        public void GivenHierarchyIsLoadedAndRootWarehouseIsNotNull_WhenExportingWarehouses_ThenReturnRootWarehouse()
+        public void GivenAWarehouseHierarchy_WhenExportingWarehouses_ThenReturnTheRootWarehouse()
         {
-            var warehouseReturned = _logic.ExportWarehouses();
+            var warehouse = Builder<Warehouse>
+                .CreateNew()
+                .Build();
             
-            warehouseReturned.Should().BeOfType<Warehouse>();
+            var warehouseEntity = Builder<DataAccess.Entities.Warehouse>
+                .CreateNew()
+                .Build();
+
+            A.CallTo(() => _hopRepository.GetAllWarehouses()).Returns(warehouseEntity);
+            A.CallTo(() => _mapper.Map<Warehouse>(A<DataAccess.Entities.Warehouse>._)).Returns(warehouse);
+            
+            var rootWarehouse = _logic.ExportWarehouses();
+            
+            rootWarehouse.Should().BeOfType<Warehouse>();
         }
         
         [Fact]
-        public void GivenHierarchyIsNotLoaded_WhenExportingWarehouses_ThenThrowWarehouseHierarchyNotLoadedException()
+        public void GivenTheWarehouseHierarchyWasNotLoadedYet_WhenExportingWarehouses_ThenThrowAWarehouseHierarchyNotLoadedException()
         {
-            Assert.Throws<WarehouseHierarchyNotLoadedException>(() => _logic.ExportWarehouses());
+            A.CallTo(() => _hopRepository.GetAllWarehouses()).Returns(null);
+
+            Action exportWarehouses = () => _logic.ExportWarehouses();
+            
+            exportWarehouses.Should().Throw<WarehouseHierarchyNotLoadedException>();
         }
         
         [Fact]
-        public void GivenRootWareHouseIsNull_WhenExportingWarehouses_ThenThrowInvalidWarehouseException()
+        public void GivenASingleOrDefaultExceptionIsThrown_WhenExportingWarehouses_ThenThrowAInvalidWarehouseException()
         {
-            Assert.Throws<InvalidWarehouseException>(() => _logic.ExportWarehouses());
+            A.CallTo(() => _hopRepository.GetAllWarehouses()).Throws<SingleOrDefaultException>();
+
+            Action exportWarehouses = () => _logic.ExportWarehouses();
+            
+            exportWarehouses.Should().Throw<InvalidWarehouseException>();
         }
         
         [Fact]
-        public void GivenExistentWarehouseCode_WhenGettingWarehouse_ThenReturnWarehouse()
+        public void GivenADataAccessErrorOccurs_WhenExportingWarehouses_ThenThrowABusinessException()
+        {
+            A.CallTo(() => _hopRepository.GetAllWarehouses()).Throws<DataAccessException>();
+
+            Action exportWarehouses = () => _logic.ExportWarehouses();
+            
+            exportWarehouses.Should().Throw<BusinessException>();
+        }
+
+        [Fact]
+        public void GivenAWarehouseExists_WhenGettingWarehouse_ThenReturnTheWarehouse()
         {
             const string code = TestConstants.ExistentWareHouseCode;
 
-            var warehouseReturned = _logic.GetWarehouse(code);
+            var warehouse = Builder<Warehouse>
+                .CreateNew()
+                .Build();
             
-            warehouseReturned.Should().BeOfType<Warehouse>();
-        }
-        
-        [Fact]
-        public void GivenNonExistentWarehouseCode_WhenGettingWarehouse_ThenThrowWarehouseNotFoundException()
-        {
-            const string code = TestConstants.NonExistentWarehouseCode;
-
-            Assert.Throws<WarehouseNotFoundException>(() => _logic.GetWarehouse(code));
-        }
-        
-        [Fact]
-        public void GivenFaultyWarehouseCode_WhenGettingWarehouse_ThenThrowInvalidWarehouseException()
-        {
-            const string code = TestConstants.FaultyWarehouseCode;
-
-            Assert.Throws<InvalidWarehouseException>(() => _logic.GetWarehouse(code));
-        }
-        
-        [Fact]
-        public void GivenNonValidWarehouseValidation_WhenImportingWarehouses_ThenThrowInvalidWarehouseException()
-        {
-            var warehouse = Builder<Warehouse>.CreateNew()
-                .With(x => x.Description = TestConstants.FaultyWarehouseDescription)
-                .With(x => x.NextHops = null)
-                .With(x => x.Code = TestConstants.ExistentWareHouseCode)
+            var warehouseEntity = Builder<DataAccess.Entities.Warehouse>
+                .CreateNew()
                 .Build();
 
-            Assert.Throws<InvalidWarehouseException>(() => _logic.ImportWarehouses(warehouse));
+            A.CallTo(() => _hopRepository.GetWarehouseByCode(A<string>._)).Returns(warehouseEntity);
+            A.CallTo(() => _mapper.Map<Warehouse>(A<DataAccess.Entities.Warehouse>._)).Returns(warehouse);
+            
+            var result = _logic.GetWarehouse(code);
+            
+            result.Should().Be(warehouse);
         }
         
         [Fact]
-        public void GivenWarehouseCodeIsNullOrEmpty_WhenImportingWarehouses_ThenThrowInvalidWarehouseException()
+        public void GivenAWarehouseDoesNotExist_WhenGettingWarehouse_ThenThrowAWarehouseNotFoundException()
         {
-            var warehouse = Builder<Warehouse>.CreateNew()
-                .With(x => x.Code = null)
-                .With(x => x.NextHops = new List<WarehouseNextHops>())
-                .Build();
+            const string code = TestConstants.ExistentWareHouseCode;
+            
+            A.CallTo(() => _hopRepository.GetWarehouseByCode(A<string>._)).Returns(null);
 
-            Assert.Throws<InvalidWarehouseException>(() => _logic.ImportWarehouses(warehouse));
+            Action getWarehouse = () => _logic.GetWarehouse(code);
+            
+            getWarehouse.Should().Throw<WarehouseNotFoundException>();
         }
         
+        [Fact]
+        public void GivenASingleOrDefaultException_WhenGettingWarehouse_ThenThrowAInvalidWarehouseException()
+        {
+            const string code = TestConstants.ExistentWareHouseCode;
+
+            A.CallTo(() => _hopRepository.GetWarehouseByCode(A<string>._)).Throws<SingleOrDefaultException>();
+            
+            Action getWarehouse = () => _logic.GetWarehouse(code);
+            
+            getWarehouse.Should().Throw<InvalidWarehouseException>();
+        }
+        
+        [Fact]
+        public void GivenADataAccessErrorOccurs_WhenGettingWarehouse_ThenThrowABusinessException()
+        {
+            const string code = TestConstants.ExistentWareHouseCode;
+
+            A.CallTo(() => _hopRepository.GetWarehouseByCode(A<string>._)).Throws<DataAccessException>();
+            
+            Action getWarehouse = () => _logic.GetWarehouse(code);
+            
+            getWarehouse.Should().Throw<BusinessException>();
+        }
+
+        [Fact]
+        public void GivenAValidWarehouseHierarchy_WhenImportingWarehouses_ThenReturnSuccessfully()
+        {
+            var validationResults = new ValidationResult();
+
+            var warehouse = Builder<Warehouse>
+                .CreateNew()
+                .Build();
+            
+            A.CallTo(() => _warehouseValidator.Validate(A<Warehouse>._)).Returns(validationResults);
+            
+            Action importWarehouses = () => _logic.ImportWarehouses(warehouse);
+
+            importWarehouses.Should().NotThrow<Exception>();
+        }
+        
+        [Fact]
+        public void GivenWarehouseValidationFails_WhenImportingWarehouses_ThenThrowAInvalidWarehouseException()
+        {
+            var validationFailure = new ValidationResult(new List<ValidationFailure>()
+            {
+                new ValidationFailure("prop", "message")
+            });
+
+            var warehouse = Builder<Warehouse>
+                .CreateNew()
+                .Build();
+            
+            A.CallTo(() => _warehouseValidator.Validate(A<Warehouse>._)).Returns(validationFailure);
+            
+            Action importWarehouses = () => _logic.ImportWarehouses(warehouse);
+
+            importWarehouses.Should().Throw<InvalidWarehouseException>();
+        }
+        
+        [Fact]
+        public void GivenADataAccessErrorOccurs_WhenImportingWarehouses_ThenThrowABusinessException()
+        {
+            var validationResults = new ValidationResult();
+
+            var warehouse = Builder<Warehouse>
+                .CreateNew()
+                .Build();
+            
+            A.CallTo(() => _warehouseValidator.Validate(A<Warehouse>._)).Returns(validationResults);
+            A.CallTo(() => _hopRepository.Create(A<DataAccess.Entities.Warehouse>._)).Throws<DataAccessException>();
+            
+            Action importWarehouses = () => _logic.ImportWarehouses(warehouse);
+
+            importWarehouses.Should().Throw<BusinessException>();
+        }
     }
 }
