@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Elsa.Sks.Package.DataAccess.Sql.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class CreateSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
