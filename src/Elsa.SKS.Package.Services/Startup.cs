@@ -123,7 +123,11 @@ namespace Elsa.SKS
                 );
 
             services
-                .AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection")));
+                .AddDbContextPool<AppDbContext>(options =>
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection"));
+                    options.UseLazyLoadingProxies();
+                });
 
         }
 

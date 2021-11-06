@@ -17,7 +17,7 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// Reference of Hop.
         /// </summary>
         /// <value>Reference of Hop.</value>
-        public Hop Hop { get; set; }
+        public virtual Hop Hop { get; set; }
         
         /// <summary>
         /// The date/time the parcel arrived at the hop.

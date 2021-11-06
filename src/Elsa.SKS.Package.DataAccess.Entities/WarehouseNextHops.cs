@@ -21,6 +21,6 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// <summary>
         /// Gets or Sets Hop
         /// </summary>
-        public Hop Hop { get; set; }
+        public virtual Hop Hop { get; set; }
     }
 }

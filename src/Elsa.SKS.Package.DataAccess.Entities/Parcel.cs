@@ -22,12 +22,12 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// <summary>
         /// Gets or Sets Recipient
         /// </summary>
-        public User Recipient { get; set; }
+        public virtual User Recipient { get; set; }
 
         /// <summary>
         /// Gets or Sets Sender
         /// </summary>
-        public User Sender { get; set; }
+        public virtual User Sender { get; set; }
 
         /// <summary>
         /// The tracking ID of the parcel. 
@@ -45,12 +45,12 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// Hops visited in the past.
         /// </summary>
         /// <value>Hops visited in the past.</value>
-        public List<HopArrival> VisitedHops { get; set; }
+        public virtual List<HopArrival> VisitedHops { get; set; }
 
         /// <summary>
         /// Hops coming up in the future - their times are estimations.
         /// </summary>
         /// <value>Hops coming up in the future - their times are estimations.</value>
-        public List<HopArrival> FutureHops { get; set; }
+        public virtual List<HopArrival> FutureHops { get; set; }
     }
 }

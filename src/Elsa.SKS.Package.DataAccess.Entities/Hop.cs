@@ -41,6 +41,6 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// Gets or Sets LocationCoordinates
         /// </summary>
         [Required]
-        public GeoCoordinates LocationCoordinates { get; set; }
+        public virtual GeoCoordinates LocationCoordinates { get; set; }
     }
 }
