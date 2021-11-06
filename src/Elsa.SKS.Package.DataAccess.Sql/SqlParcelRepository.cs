@@ -10,9 +10,9 @@ namespace Elsa.SKS.Package.DataAccess.Sql
 {
     public class SqlParcelRepository : IParcelRepository
     {
-        private readonly AppDbContext _context;
+        private readonly IAppDbContext _context;
 
-        public SqlParcelRepository(AppDbContext context)
+        public SqlParcelRepository(IAppDbContext context)
         {
             _context = context;
         }

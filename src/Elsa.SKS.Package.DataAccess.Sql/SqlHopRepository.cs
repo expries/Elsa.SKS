@@ -10,9 +10,9 @@ namespace Elsa.SKS.Package.DataAccess.Sql
 {
     public class SqlHopRepository : IHopRepository
     {
-        private readonly AppDbContext _context;
+        private readonly IAppDbContext _context;
         
-        public SqlHopRepository(AppDbContext context)
+        public SqlHopRepository(IAppDbContext context)
         {
             _context = context;
         }

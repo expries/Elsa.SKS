@@ -69,6 +69,7 @@ namespace Elsa.SKS
             
             services.AddTransient<IParcelRepository, SqlParcelRepository>();
             services.AddTransient<IHopRepository, SqlHopRepository>();
+            services.AddTransient<IAppDbContext, AppDbContext>();
             
             // Add validators
             services.AddTransient<IValidator<Parcel>, ParcelValidator>();

@@ -14,7 +14,7 @@ namespace Elsa.SKS.Package.DataAccess.Tests
 {
     public class SqlHopRepositoryTests : DataAccessTests
     {
-        private readonly AppDbContext _context;
+        private readonly IAppDbContext _context;
 
         private readonly IHopRepository _hopRepository;
         

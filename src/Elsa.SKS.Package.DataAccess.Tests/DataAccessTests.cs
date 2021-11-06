@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Elsa.SKS.Package.DataAccess.Entities;
+using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql;
 using FakeItEasy;
 using FluentAssertions;
@@ -11,34 +12,24 @@ namespace Elsa.SKS.Package.DataAccess.Tests
 {
     public class DataAccessTests
     {
-        protected static AppDbContext GetMockedAppDbContext()
+        protected static IAppDbContext GetMockedAppDbContext()
         {
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-
-            var dbContext = A.Fake<AppDbContext>(o => 
-                o.WithArgumentsForConstructor(new object[] { options }));
-            
             var hopSet = GetQueryableMockDbSet<Hop>();
             var parcelSet = GetQueryableMockDbSet<Parcel>();
             var warehouseSet = GetQueryableMockDbSet<Warehouse>();
-
-            A.CallTo(() => dbContext.Hops).Returns(hopSet);
-            A.CallTo(() => dbContext.Parcels).Returns(parcelSet);
-            A.CallTo(() => dbContext.Warehouses).Returns(warehouseSet);
             
-            return dbContext;
+            var appDbContext = A.Fake<IAppDbContext>();
+            
+            A.CallTo(() => appDbContext.Hops).Returns(hopSet);
+            A.CallTo(() => appDbContext.Parcels).Returns(parcelSet);
+            A.CallTo(() => appDbContext.Warehouses).Returns(warehouseSet);
+            
+            return appDbContext;
         }
-        
+
         private static DbSet<T> GetQueryableMockDbSet<T>() where T : class
         {
-            var list = new List<T>();
-            return GetQueryableMockDbSet(list);
-        }
-        
-        private static DbSet<T> GetQueryableMockDbSet<T>(List<T> sourceList) where T : class
-        {
+            var sourceList = new List<T>();
             var queryable = sourceList.AsQueryable();
             var dbSet = A.Fake<DbSet<T>>(option => option.Implements<IQueryable<T>>());
             
