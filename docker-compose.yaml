@@ -2,25 +2,19 @@
 version: '3'
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2017-latest
+    image: elsa-db
+    build:
+      dockerfile: database/docker/Dockerfile
+    ports: 
+      - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=pass@word1
-    ports: 
-      - 1433:1433
-    volumes:
-      - mssqldata:/var/opt/mssql
+      - SA_PASSWORD=P@ssword
   adminer:
-    image: knom/adminer-mssql
+    image: adminer
     ports:
       - 8080:8080
     environment:
-       - ADMINER_PLUGINS=tinymce
-       - ADMINER_DESIGN=flat
-       - ADMINER_DEFAULT_SERVER=sqlserver
-#  rabbitmq:
-#    image: rabbitmq
-#    ports:
-#      - 5672:5672
-volumes:
-    mssqldata:
+      - ADMINER_PLUGINS=tinymce
+      - ADMINER_DESIGN=flat
+      - ADMINER_DEFAULT_SERVER=sqlserver

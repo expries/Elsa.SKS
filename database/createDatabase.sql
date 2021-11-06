@@ -1,0 +1,6 @@
+IF DB_ID('ElsaDb') IS NULL
+CREATE DATABASE ElsaDb;
+GO
+
+USE ElsaDb;
+GO

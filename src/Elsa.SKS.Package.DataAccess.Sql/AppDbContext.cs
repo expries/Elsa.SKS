@@ -9,6 +9,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+            Database.Migrate();
         }
 
         public virtual DbSet<Hop> Hops { get; set; }
