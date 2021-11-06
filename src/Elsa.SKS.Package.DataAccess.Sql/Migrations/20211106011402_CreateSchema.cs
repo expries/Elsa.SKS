@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Elsa.SKS.Package.DataAccess.Sql.Migrations
+namespace Elsa.Sks.Package.DataAccess.Sql.Migrations
 {
-    [ExcludeFromCodeCoverage]
-    public partial class InitialCreate : Migration
+    public partial class CreateSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,11 +50,6 @@ namespace Elsa.SKS.Package.DataAccess.Sql.Migrations
                     LocationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LocationCoordinatesId = table.Column<int>(type: "int", nullable: true),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RegionGeoJson = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LogisticsPartner = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LogisticsPartnerUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Truck_RegionGeoJson = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberPlate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Level = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -127,7 +120,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HopsArrivals",
+                name: "HopArrival",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -139,21 +132,21 @@ namespace Elsa.SKS.Package.DataAccess.Sql.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HopsArrivals", x => x.Id);
+                    table.PrimaryKey("PK_HopArrival", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HopsArrivals_Hops_HopId",
+                        name: "FK_HopArrival_Hops_HopId",
                         column: x => x.HopId,
                         principalTable: "Hops",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_HopsArrivals_Parcels_ParcelId",
+                        name: "FK_HopArrival_Parcels_ParcelId",
                         column: x => x.ParcelId,
                         principalTable: "Parcels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_HopsArrivals_Parcels_ParcelId1",
+                        name: "FK_HopArrival_Parcels_ParcelId1",
                         column: x => x.ParcelId1,
                         principalTable: "Parcels",
                         principalColumn: "Id",
@@ -161,24 +154,24 @@ namespace Elsa.SKS.Package.DataAccess.Sql.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Hops_LocationCoordinatesId",
-                table: "Hops",
-                column: "LocationCoordinatesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HopsArrivals_HopId",
-                table: "HopsArrivals",
+                name: "IX_HopArrival_HopId",
+                table: "HopArrival",
                 column: "HopId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HopsArrivals_ParcelId",
-                table: "HopsArrivals",
+                name: "IX_HopArrival_ParcelId",
+                table: "HopArrival",
                 column: "ParcelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HopsArrivals_ParcelId1",
-                table: "HopsArrivals",
+                name: "IX_HopArrival_ParcelId1",
+                table: "HopArrival",
                 column: "ParcelId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Hops_LocationCoordinatesId",
+                table: "Hops",
+                column: "LocationCoordinatesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Parcels_RecipientId",
@@ -204,7 +197,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "HopsArrivals");
+                name: "HopArrival");
 
             migrationBuilder.DropTable(
                 name: "WarehouseNextHops");

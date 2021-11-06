@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Elsa.SKS.Package.DataAccess.Sql.Migrations
+namespace Elsa.Sks.Package.DataAccess.Sql.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211031143130_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211106011402_CreateSchema")]
+    partial class CreateSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,7 +102,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql.Migrations
 
                     b.HasIndex("ParcelId1");
 
-                    b.ToTable("HopsArrivals");
+                    b.ToTable("HopArrival");
                 });
 
             modelBuilder.Entity("Elsa.SKS.Package.DataAccess.Entities.Parcel", b =>
@@ -186,36 +186,6 @@ namespace Elsa.SKS.Package.DataAccess.Sql.Migrations
                     b.HasIndex("WarehouseId");
 
                     b.ToTable("WarehouseNextHops");
-                });
-
-            modelBuilder.Entity("Elsa.SKS.Package.DataAccess.Entities.TransferWarehouse", b =>
-                {
-                    b.HasBaseType("Elsa.SKS.Package.DataAccess.Entities.Hop");
-
-                    b.Property<string>("LogisticsPartner")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LogisticsPartnerUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RegionGeoJson")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("TransferWarehouse");
-                });
-
-            modelBuilder.Entity("Elsa.SKS.Package.DataAccess.Entities.Truck", b =>
-                {
-                    b.HasBaseType("Elsa.SKS.Package.DataAccess.Entities.Hop");
-
-                    b.Property<string>("NumberPlate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RegionGeoJson")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Truck_RegionGeoJson");
-
-                    b.HasDiscriminator().HasValue("Truck");
                 });
 
             modelBuilder.Entity("Elsa.SKS.Package.DataAccess.Entities.Warehouse", b =>
