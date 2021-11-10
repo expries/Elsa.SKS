@@ -5,6 +5,7 @@ using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using FluentValidation;
+using Microsoft.Extensions.Logging;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
@@ -16,11 +17,14 @@ namespace Elsa.SKS.Package.BusinessLogic
 
         private readonly IMapper _mapper;
         
-        public ParcelRegistrationLogic(IParcelRepository parcelRepository, IValidator<Parcel> parcelValidator, IMapper mapper)
+        private readonly ILogger<ParcelRegistrationLogic> _logger;
+
+        public ParcelRegistrationLogic(IParcelRepository parcelRepository, IValidator<Parcel> parcelValidator, IMapper mapper, ILogger<ParcelRegistrationLogic> logger)
         {
             _parcelRepository = parcelRepository;
             _parcelValidator = parcelValidator;
             _mapper = mapper;
+            _logger = logger;
         }
     
         public Parcel TransitionParcel(Parcel parcel, string trackingId)
@@ -48,6 +52,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (DataAccessException ex)
             {
+                _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database error has occurred.", ex);
             }
         }
@@ -71,6 +76,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (DataAccessException ex)
             {
+                _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database error has occurred.", ex);
             }
         }

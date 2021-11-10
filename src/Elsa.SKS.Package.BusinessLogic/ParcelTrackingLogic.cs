@@ -6,6 +6,7 @@ using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
+using Microsoft.Extensions.Logging;
 using Parcel = Elsa.SKS.Package.BusinessLogic.Entities.Parcel;
 using DataAccessParcel = Elsa.SKS.Package.DataAccess.Entities.Parcel;
 
@@ -18,12 +19,15 @@ namespace Elsa.SKS.Package.BusinessLogic
         private readonly IHopRepository _hopRepository;
 
         private readonly IMapper _mapper;
+        
+        private readonly ILogger<ParcelTrackingLogic> _logger;
 
-        public ParcelTrackingLogic(IParcelRepository parcelRepository, IHopRepository hopRepository, IMapper mapper)
+        public ParcelTrackingLogic(IParcelRepository parcelRepository, IHopRepository hopRepository, IMapper mapper, ILogger<ParcelTrackingLogic> logger)
         {
             _parcelRepository = parcelRepository;
             _hopRepository = hopRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public void ReportParcelDelivery(string trackingId)
@@ -53,6 +57,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (DataAccessException ex)
             {
+                _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database error has occurred.", ex);
             }
         }
@@ -93,6 +98,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (DataAccessException ex)
             {
+                _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database error has occurred.", ex);
             }
         }
@@ -114,6 +120,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (DataAccessException ex)
             {
+                _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database error has occurred.", ex);
             }
         }

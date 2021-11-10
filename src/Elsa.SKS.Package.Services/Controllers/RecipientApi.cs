@@ -15,6 +15,7 @@ using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Elsa.SKS.Controllers
@@ -28,16 +29,20 @@ namespace Elsa.SKS.Controllers
         private readonly IParcelTrackingLogic _parcelTrackingLogic;
         
         private readonly IMapper _mapper;
+        
+        private readonly ILogger<RecipientApiController> _logger;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="parcelTrackingLogic"></param>
         /// <param name="mapper"></param>
-        public RecipientApiController(IParcelTrackingLogic parcelTrackingLogic, IMapper mapper)
+        /// <param name="logger"></param>
+        public RecipientApiController(IParcelTrackingLogic parcelTrackingLogic, IMapper mapper, ILogger<RecipientApiController> logger)
         {
             _parcelTrackingLogic = parcelTrackingLogic;
             _mapper = mapper;
+            _logger = logger;
         }
         
         /// <summary>
@@ -64,10 +69,12 @@ namespace Elsa.SKS.Controllers
             }
             catch (ParcelNotFoundException)
             {
+                _logger.LogError("Parcel not found error");
                 return NotFound();
             }
             catch (BusinessException ex)
             {
+                _logger.LogError(ex, "Track parcel error");
                 var error = new Error { ErrorMessage = ex.Message };
                 return BadRequest(error);
             }

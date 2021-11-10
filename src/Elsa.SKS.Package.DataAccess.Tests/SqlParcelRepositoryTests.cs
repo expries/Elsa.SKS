@@ -8,6 +8,7 @@ using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Elsa.SKS.Package.DataAccess.Tests
@@ -18,10 +19,13 @@ namespace Elsa.SKS.Package.DataAccess.Tests
         
         private readonly IParcelRepository _parcelRepository;
         
+        private readonly ILogger<SqlParcelRepository> _logger;
+
         public SqlParcelRepositoryTests()
         {
             _context = GetMockedAppDbContext();
-            _parcelRepository = new SqlParcelRepository(_context);
+            _logger = A.Fake<ILogger<SqlParcelRepository>>();
+            _parcelRepository = new SqlParcelRepository(_context, _logger);
         }
 
         [Fact]

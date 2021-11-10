@@ -15,6 +15,7 @@ using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Elsa.SKS.Controllers
@@ -29,15 +30,19 @@ namespace Elsa.SKS.Controllers
 
         private readonly IMapper _mapper;
         
+        private readonly ILogger<LogisticsPartnerApiController> _logger;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="parcelRegistrationLogic"></param>
         /// <param name="mapper"></param>
-        public LogisticsPartnerApiController(IParcelRegistrationLogic parcelRegistrationLogic, IMapper mapper)
+        /// <param name="logger"></param>
+        public LogisticsPartnerApiController(IParcelRegistrationLogic parcelRegistrationLogic, IMapper mapper, ILogger<LogisticsPartnerApiController> logger)
         {
             _parcelRegistrationLogic = parcelRegistrationLogic;
             _mapper = mapper;
+            _logger = logger;
         }
         
         /// <summary>
@@ -66,6 +71,7 @@ namespace Elsa.SKS.Controllers
             }
             catch (BusinessException ex)
             {
+                _logger.LogError(ex, "Transition parcel error");
                 var error = new Error { ErrorMessage = ex.Message };
                 return BadRequest(error);
             }

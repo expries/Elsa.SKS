@@ -1,6 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 
 namespace Elsa.SKS
 {
@@ -26,6 +28,11 @@ namespace Elsa.SKS
         /// <returns>IWebHostBuilder</returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .ConfigureLogging(builder =>
+                {
+                    //builder.ClearProviders();
+                })
+            ;
     }
 }

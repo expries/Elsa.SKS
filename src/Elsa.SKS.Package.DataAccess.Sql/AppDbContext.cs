@@ -12,6 +12,11 @@ namespace Elsa.SKS.Package.DataAccess.Sql
         {
             Database.Migrate();
         }
+        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
 
         public virtual DbSet<Hop> Hops { get; set; }
         

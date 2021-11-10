@@ -10,6 +10,7 @@ using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Xunit;
 using Hop = Elsa.SKS.Package.DataAccess.Entities.Hop;
 
@@ -25,12 +26,15 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
 
         private readonly IMapper _mapper;
         
+        private readonly ILogger<ParcelTrackingLogic> _logger;
+
         public ParcelTrackingLogicTests()
         {
             _parcelRepository = A.Fake<IParcelRepository>();
             _hopRepository = A.Fake<IHopRepository>();
             _mapper = A.Fake<IMapper>();
-            _logic = new ParcelTrackingLogic(_parcelRepository, _hopRepository, _mapper);
+            _logger = A.Fake<ILogger<ParcelTrackingLogic>>();
+            _logic = new ParcelTrackingLogic(_parcelRepository, _hopRepository, _mapper, _logger);
         }
         
         [Fact]

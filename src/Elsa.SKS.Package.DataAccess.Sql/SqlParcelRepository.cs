@@ -5,16 +5,20 @@ using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Elsa.SKS.Package.DataAccess.Sql
 {
     public class SqlParcelRepository : IParcelRepository
     {
         private readonly IAppDbContext _context;
+        
+        private readonly ILogger<SqlParcelRepository> _logger;
 
-        public SqlParcelRepository(IAppDbContext context)
+        public SqlParcelRepository(IAppDbContext context, ILogger<SqlParcelRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
         
         public Parcel Create(Parcel parcel)
@@ -27,6 +31,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
+                _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
@@ -41,6 +46,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
+                _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
@@ -62,10 +68,12 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Parcel ID error");
                 throw new SingleOrDefaultException("More than one parcel with this ID exists.", ex);
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
+                _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
@@ -79,6 +87,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Parcel ID error");
                 throw new SingleOrDefaultException("More than one parcel with this ID exists.", ex);
             }
         }

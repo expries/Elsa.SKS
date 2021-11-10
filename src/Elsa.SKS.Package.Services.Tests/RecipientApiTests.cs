@@ -10,6 +10,7 @@ using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Elsa.SKS.Package.Services.Tests
@@ -22,11 +23,14 @@ namespace Elsa.SKS.Package.Services.Tests
 
         private readonly IMapper _mapper;
         
+        private readonly ILogger<RecipientApiController> _logger;
+
         public RecipientApiTests()
         {
             _trackingLogic = A.Fake<IParcelTrackingLogic>();
             _mapper = A.Fake<IMapper>();
-            _controller = new RecipientApiController(_trackingLogic, _mapper);
+            _logger = A.Fake<ILogger<RecipientApiController>>();
+            _controller = new RecipientApiController(_trackingLogic, _mapper, _logger);
         }
         
         [Fact]

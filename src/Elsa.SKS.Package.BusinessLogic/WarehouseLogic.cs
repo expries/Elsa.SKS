@@ -4,6 +4,7 @@ using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using FluentValidation;
+using Microsoft.Extensions.Logging;
 using Warehouse = Elsa.SKS.Package.BusinessLogic.Entities.Warehouse;
 using DataAccessWarehouse = Elsa.SKS.Package.DataAccess.Entities.Warehouse;
 
@@ -17,11 +18,14 @@ namespace Elsa.SKS.Package.BusinessLogic
 
         private readonly IMapper _mapper;
         
-        public WarehouseLogic(IHopRepository hopRepository, IValidator<Warehouse> warehouseValidator, IMapper mapper)
+        private readonly ILogger<WarehouseLogic> _logger;
+
+        public WarehouseLogic(IHopRepository hopRepository, IValidator<Warehouse> warehouseValidator, IMapper mapper, ILogger<WarehouseLogic> logger)
         {
             _hopRepository = hopRepository;
             _warehouseValidator = warehouseValidator;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public Warehouse ExportWarehouses()
@@ -40,10 +44,12 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (SingleOrDefaultException ex)
             {
+                _logger.LogError(ex, "Root warehouse error");
                 throw new InvalidWarehouseException("Root warehouse is not unique.", ex);
             }
             catch (DataAccessException ex)
             {
+                _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database has occurred.", ex);
             }
         }
@@ -64,10 +70,12 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (SingleOrDefaultException ex)
             {
+                _logger.LogError(ex, "Warehouse error");
                 throw new InvalidWarehouseException("Warehouse is not unique.", ex);
             }
             catch (DataAccessException ex)
             {
+                _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database has occurred.", ex);
             }
         }
@@ -88,6 +96,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (DataAccessException ex)
             {
+                _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database has occurred.", ex);
             }
         }

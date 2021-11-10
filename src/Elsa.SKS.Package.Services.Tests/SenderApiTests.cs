@@ -10,6 +10,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Elsa.SKS.Package.Services.Tests
@@ -22,11 +23,14 @@ namespace Elsa.SKS.Package.Services.Tests
 
         private readonly IMapper _mapper;
         
+        private readonly ILogger<SenderApiController> _logger;
+
         public SenderApiTests()
         {
             _registrationLogic = A.Fake<IParcelRegistrationLogic>();
             _mapper = A.Fake<IMapper>();
-            _controller = new SenderApiController(_registrationLogic, _mapper);
+            _logger = A.Fake<ILogger<SenderApiController>>();
+            _controller = new SenderApiController(_registrationLogic, _mapper, _logger);
         }
         
         [Fact]

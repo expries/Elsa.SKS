@@ -11,6 +11,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Elsa.SKS.Package.BusinessLogic.Tests
@@ -24,13 +25,16 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         private readonly IValidator<Parcel> _parcelValidator;
         
         private readonly IMapper _mapper;
+        
+        private readonly ILogger<ParcelRegistrationLogic> _logger;
 
         public ParcelRegistrationLogicTests()
         {
             _parcelRepository = A.Fake<IParcelRepository>();
             _parcelValidator = A.Fake<IValidator<Parcel>>();
             _mapper = A.Fake<IMapper>();
-            _logic = new ParcelRegistrationLogic(_parcelRepository, _parcelValidator, _mapper);
+            _logger = A.Fake<ILogger<ParcelRegistrationLogic>>();
+            _logic = new ParcelRegistrationLogic(_parcelRepository, _parcelValidator, _mapper, _logger);
         }
         
         [Fact]

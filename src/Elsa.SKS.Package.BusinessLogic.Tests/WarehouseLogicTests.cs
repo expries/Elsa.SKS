@@ -12,6 +12,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.Extensions.Logging;
 using Xunit;
 using ValidationResult = FluentValidation.Results.ValidationResult;
 
@@ -27,12 +28,15 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
 
         private readonly IMapper _mapper;
         
+        private readonly ILogger<WarehouseLogic> _logger;
+
         public WarehouseLogicTests()
         {
             _hopRepository = A.Fake<IHopRepository>();
             _warehouseValidator = A.Fake<IValidator<Warehouse>>();
             _mapper = A.Fake<IMapper>();
-            _logic = new WarehouseLogic(_hopRepository, _warehouseValidator, _mapper);
+            _logger = A.Fake<ILogger<WarehouseLogic>>();
+            _logic = new WarehouseLogic(_hopRepository, _warehouseValidator, _mapper, _logger);
         }
 
         [Fact]

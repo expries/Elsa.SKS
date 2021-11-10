@@ -15,6 +15,7 @@ using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Elsa.SKS.Controllers
@@ -28,16 +29,20 @@ namespace Elsa.SKS.Controllers
         private readonly IWarehouseLogic _warehouseLogic;
         
         private readonly IMapper _mapper;
+        
+        private readonly ILogger<WarehouseManagementApiController> _logger;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="warehouseLogic"></param>
         /// <param name="mapper"></param>
-        public WarehouseManagementApiController(IWarehouseLogic warehouseLogic, IMapper mapper)
+        /// <param name="logger"></param>
+        public WarehouseManagementApiController(IWarehouseLogic warehouseLogic, IMapper mapper, ILogger<WarehouseManagementApiController> logger)
         {
             _warehouseLogic = warehouseLogic;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>
@@ -62,10 +67,12 @@ namespace Elsa.SKS.Controllers
             }
             catch (WarehouseHierarchyNotLoadedException)
             {
+                _logger.LogError("Loading warehouse hierarchy error");
                 return NotFound();
             }
             catch (BusinessException ex)
             {
+                _logger.LogError(ex, "Export warehouses error");
                 var error = new Error { ErrorMessage = ex.Message };
                 return BadRequest(error);
             }
@@ -93,11 +100,13 @@ namespace Elsa.SKS.Controllers
                 return Ok(result);
             }
             catch (WarehouseNotFoundException)
-            {
+            {                
+                _logger.LogError("Warehouse not found error");
                 return NotFound();
             }
             catch (BusinessException ex)
             {
+                _logger.LogError(ex, "Get warehouse error");
                 var error = new Error { ErrorMessage = ex.Message };
                 return BadRequest(error);
             }
@@ -124,6 +133,7 @@ namespace Elsa.SKS.Controllers
             }
             catch (BusinessException ex)
             {
+                _logger.LogError(ex, "Import warehouse error");
                 var error = new Error { ErrorMessage = ex.Message };
                 return BadRequest(error);
             }

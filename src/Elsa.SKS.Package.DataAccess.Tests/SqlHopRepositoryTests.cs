@@ -8,6 +8,7 @@ using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Elsa.SKS.Package.DataAccess.Tests
@@ -18,10 +19,13 @@ namespace Elsa.SKS.Package.DataAccess.Tests
 
         private readonly IHopRepository _hopRepository;
         
+        private readonly ILogger<SqlHopRepository> _logger;
+
         public SqlHopRepositoryTests()
         {
             _context = GetMockedAppDbContext();
-            _hopRepository = new SqlHopRepository(_context);
+            _logger = A.Fake<ILogger<SqlHopRepository>>();
+            _hopRepository = new SqlHopRepository(_context, _logger);
         }
 
         [Fact]

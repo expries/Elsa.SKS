@@ -9,6 +9,7 @@ using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Elsa.SKS.Package.Services.Tests
@@ -20,12 +21,15 @@ namespace Elsa.SKS.Package.Services.Tests
         private readonly IWarehouseLogic _warehouseLogic;
 
         private readonly IMapper _mapper;
+        
+        private readonly ILogger<WarehouseManagementApiController> _logger;
 
         public WarehouseManagementApiTests()
         {
             _warehouseLogic = A.Fake<IWarehouseLogic>();
             _mapper = A.Fake<IMapper>();
-            _controller = new WarehouseManagementApiController(_warehouseLogic, _mapper);
+            _logger = A.Fake<ILogger<WarehouseManagementApiController>>();
+            _controller = new WarehouseManagementApiController(_warehouseLogic, _mapper, _logger);
         }
         
         [Fact]

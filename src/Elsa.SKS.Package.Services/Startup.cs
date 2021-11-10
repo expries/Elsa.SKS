@@ -176,6 +176,7 @@ namespace Elsa.SKS
 
                 app.UseHsts();
             }
+            
         }
     }
 }

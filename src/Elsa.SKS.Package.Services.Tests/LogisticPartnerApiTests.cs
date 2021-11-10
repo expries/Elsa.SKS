@@ -9,6 +9,7 @@ using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Elsa.SKS.Package.Services.Tests
@@ -21,11 +22,14 @@ namespace Elsa.SKS.Package.Services.Tests
         
         private readonly IMapper _mapper;
         
+        private readonly ILogger<LogisticsPartnerApiController> _logger;
+
         public LogisticPartnerApiTests()
         {
             _registrationLogic = A.Fake<IParcelRegistrationLogic>();
             _mapper = A.Fake<IMapper>();
-            _controller = new LogisticsPartnerApiController(_registrationLogic, _mapper);
+            _logger = A.Fake<ILogger<LogisticsPartnerApiController>>();
+            _controller = new LogisticsPartnerApiController(_registrationLogic, _mapper, _logger);
         }
         
         [Fact]

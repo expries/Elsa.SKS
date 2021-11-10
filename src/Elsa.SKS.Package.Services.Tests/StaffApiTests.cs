@@ -7,6 +7,7 @@ using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Elsa.SKS.Package.Services.Tests
@@ -19,11 +20,14 @@ namespace Elsa.SKS.Package.Services.Tests
 
         private readonly IMapper _mapper;
         
+        private readonly ILogger<StaffApiController> _logger;
+
         public StaffApiTests()
         {
             _trackingLogic = A.Fake<IParcelTrackingLogic>();
             _mapper = A.Fake<IMapper>();
-            _controller = new StaffApiController(_trackingLogic, _mapper);
+            _logger = A.Fake<ILogger<StaffApiController>>();
+            _controller = new StaffApiController(_trackingLogic, _mapper, _logger);
         }
         
         [Fact]

@@ -5,6 +5,7 @@ using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Elsa.SKS.Package.DataAccess.Sql
 {
@@ -12,9 +13,12 @@ namespace Elsa.SKS.Package.DataAccess.Sql
     {
         private readonly IAppDbContext _context;
         
-        public SqlHopRepository(IAppDbContext context)
+        private readonly ILogger<SqlHopRepository> _logger;
+
+        public SqlHopRepository(IAppDbContext context, ILogger<SqlHopRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public Hop Create(Hop hop)
@@ -27,6 +31,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
+                _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
@@ -41,6 +46,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
+                _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
@@ -62,10 +68,12 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Hop not unique error");
                 throw new SingleOrDefaultException("More than one hop with this code exists.", ex);
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
             {
+                _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
@@ -79,6 +87,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Hop not unique error");
                 throw new SingleOrDefaultException("More than one hop with this code exists.", ex);
             }
         }
@@ -92,6 +101,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Root warehouse error");
                 throw new SingleOrDefaultException("More than one root warehouse exists.", ex);
             }
         }
@@ -104,6 +114,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Warehouse code error");
                 throw new SingleOrDefaultException("More than one warehouse with this code exists.", ex);
             }
         }
