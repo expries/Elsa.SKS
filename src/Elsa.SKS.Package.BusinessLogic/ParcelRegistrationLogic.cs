@@ -33,6 +33,7 @@ namespace Elsa.SKS.Package.BusinessLogic
 
             if (!validation.IsValid)
             {
+                _logger.LogDebug("Validation failed");
                 throw new TransferException(validation.ToString(" "));
             }
             
@@ -63,6 +64,7 @@ namespace Elsa.SKS.Package.BusinessLogic
 
             if (!validation.IsValid)
             {
+                _logger.LogDebug("Validation failed");
                 throw new InvalidParcelException(validation.ToString(" "));
             }
             

@@ -64,6 +64,7 @@ namespace Elsa.SKS.Controllers
             try
             {
                 _parcelTrackingLogic.ReportParcelDelivery(trackingId);
+                _logger.LogInformation("Report parcel delivery response: Ok");
                 return Ok();
             }
             catch (ParcelNotFoundException)
@@ -99,6 +100,7 @@ namespace Elsa.SKS.Controllers
             try
             {
                 _parcelTrackingLogic.ReportParcelHop(trackingId, code);
+                _logger.LogInformation("Report parcel hop response: Ok");
                 return Ok();
             }
             catch (Exception ex) when (ex is ParcelNotFoundException or HopNotFoundException)

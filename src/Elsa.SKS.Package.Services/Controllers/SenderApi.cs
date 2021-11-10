@@ -63,6 +63,7 @@ namespace Elsa.SKS.Controllers
                 var entity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Parcel>(body);
                 var parcel = _parcelRegistrationLogic.SubmitParcel(entity);
                 var newParcelInfo = _mapper.Map<NewParcelInfo>(parcel);
+                _logger.LogInformation("Submit parcel response: Created");
                 return Created("/" + newParcelInfo.TrackingId, newParcelInfo);
             }
             catch (BusinessException ex)

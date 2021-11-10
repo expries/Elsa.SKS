@@ -67,6 +67,7 @@ namespace Elsa.SKS.Controllers
                 var entity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Parcel>(body);
                 var parcelEntity = _parcelRegistrationLogic.TransitionParcel(entity, trackingId);
                 var result = _mapper.Map<TrackingInformation>(parcelEntity);
+                _logger.LogInformation("Transition parcel response: OK");
                 return Ok(result);
             }
             catch (BusinessException ex)

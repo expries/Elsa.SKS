@@ -65,6 +65,7 @@ namespace Elsa.SKS.Controllers
             {
                 var parcelEntity = _parcelTrackingLogic.TrackParcel(trackingId);
                 var result = _mapper.Map<TrackingInformation>(parcelEntity);
+                _logger.LogInformation("Track Parcel response: OK");
                 return Ok(result);
             }
             catch (ParcelNotFoundException)

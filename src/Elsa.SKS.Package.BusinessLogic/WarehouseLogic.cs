@@ -86,6 +86,7 @@ namespace Elsa.SKS.Package.BusinessLogic
 
             if (!validation.IsValid)
             {
+                _logger.LogDebug("Validation failed");
                 throw new InvalidWarehouseException(validation.ToString(" "));
             }
 

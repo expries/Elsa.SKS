@@ -63,6 +63,7 @@ namespace Elsa.SKS.Controllers
             {
                 var warehouseEntity = _warehouseLogic.ExportWarehouses();
                 var result = _mapper.Map<Warehouse>(warehouseEntity);
+                _logger.LogInformation("Export warehouses response: Ok");
                 return Ok(result);
             }
             catch (WarehouseHierarchyNotLoadedException)
@@ -97,6 +98,7 @@ namespace Elsa.SKS.Controllers
             {
                 var warehouseEntity = _warehouseLogic.GetWarehouse(code);
                 var result = _mapper.Map<Warehouse>(warehouseEntity);
+                _logger.LogInformation("Get warehouse response: Ok");
                 return Ok(result);
             }
             catch (WarehouseNotFoundException)
@@ -129,6 +131,7 @@ namespace Elsa.SKS.Controllers
             {
                 var entity = _mapper.Map<Elsa.SKS.Package.BusinessLogic.Entities.Warehouse>(body);
                 _warehouseLogic.ImportWarehouses(entity);
+                _logger.LogInformation("Import warehouse response: Ok");
                 return Ok();
             }
             catch (BusinessException ex)
