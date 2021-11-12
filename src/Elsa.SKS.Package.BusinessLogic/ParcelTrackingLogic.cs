@@ -39,6 +39,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                 // check that parcel exists
                 if (parcelEntity is null)
                 {
+                    _logger.LogInformation("Parcel with tracking id was not found");
                     throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
                 }
 
@@ -71,6 +72,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                 // check that parcel exists
                 if (parcelEntity is null)
                 {
+                    _logger.LogInformation("Parcel with tracking id was not found");
                     throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
                 }
 
@@ -79,6 +81,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                 // check that hop exists
                 if (hopEntity is null)
                 {
+                    _logger.LogInformation("Hop was not found");
                     throw new HopNotFoundException($"Hop with code {code} was not found");
                 }
 
@@ -112,6 +115,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                 // check that parcel exists
                 if (parcelEntity is null)
                 {
+                    _logger.LogInformation("Parcel with tracking id was not found");
                     throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
                 }
 

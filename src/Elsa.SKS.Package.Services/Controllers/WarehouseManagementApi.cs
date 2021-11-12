@@ -68,7 +68,7 @@ namespace Elsa.SKS.Controllers
             }
             catch (WarehouseHierarchyNotLoadedException)
             {
-                _logger.LogError("Loading warehouse hierarchy error");
+                _logger.LogInformation("Loading warehouse hierarchy error");
                 return NotFound();
             }
             catch (BusinessException ex)
@@ -103,7 +103,7 @@ namespace Elsa.SKS.Controllers
             }
             catch (WarehouseNotFoundException)
             {                
-                _logger.LogError("Warehouse not found error");
+                _logger.LogInformation("Warehouse not found error");
                 return NotFound();
             }
             catch (BusinessException ex)

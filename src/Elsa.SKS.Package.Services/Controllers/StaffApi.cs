@@ -69,7 +69,7 @@ namespace Elsa.SKS.Controllers
             }
             catch (ParcelNotFoundException)
             {
-                _logger.LogError("Parcel not found error");
+                _logger.LogInformation("Parcel not found");
                 return NotFound();
             }
             catch (BusinessException ex)
@@ -105,7 +105,7 @@ namespace Elsa.SKS.Controllers
             }
             catch (Exception ex) when (ex is ParcelNotFoundException or HopNotFoundException)
             {
-                _logger.LogError("Parcel or hop not found error");
+                _logger.LogInformation("Parcel or hop not found");
                 return NotFound();
             }
             catch (BusinessException ex)

@@ -68,7 +68,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError(ex, "Hop not unique error");
+                _logger.LogWarning(ex, "Hop not unique error");
                 throw new SingleOrDefaultException("More than one hop with this code exists.", ex);
             }
             catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
@@ -87,7 +87,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError(ex, "Hop not unique error");
+                _logger.LogWarning(ex, "Hop not unique");
                 throw new SingleOrDefaultException("More than one hop with this code exists.", ex);
             }
         }
@@ -101,7 +101,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError(ex, "Root warehouse error");
+                _logger.LogWarning(ex, "Root warehouse not unique");
                 throw new SingleOrDefaultException("More than one root warehouse exists.", ex);
             }
         }
@@ -114,7 +114,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError(ex, "Warehouse code error");
+                _logger.LogWarning(ex, "Warehouse not unique");
                 throw new SingleOrDefaultException("More than one warehouse with this code exists.", ex);
             }
         }

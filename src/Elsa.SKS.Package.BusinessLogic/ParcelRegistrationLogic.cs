@@ -43,6 +43,7 @@ namespace Elsa.SKS.Package.BusinessLogic
 
                 if (existingParcel is not null)
                 {
+                    _logger.LogInformation("A parcel with this tracking Id is already being tracked");
                     throw new TransferException("A parcel with this tracking Id is already being tracked.");
                 }
             

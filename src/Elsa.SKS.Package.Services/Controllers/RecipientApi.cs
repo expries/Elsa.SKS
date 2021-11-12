@@ -70,7 +70,7 @@ namespace Elsa.SKS.Controllers
             }
             catch (ParcelNotFoundException)
             {
-                _logger.LogError("Parcel not found error");
+                _logger.LogInformation("Parcel not found");
                 return NotFound();
             }
             catch (BusinessException ex)

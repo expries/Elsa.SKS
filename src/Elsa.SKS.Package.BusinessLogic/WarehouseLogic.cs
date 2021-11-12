@@ -36,6 +36,7 @@ namespace Elsa.SKS.Package.BusinessLogic
 
                 if (warehouseHierarchy is null)
                 {
+                    _logger.LogWarning("Warehouse hierarchy not loaded");
                     throw new WarehouseHierarchyNotLoadedException("Warehouse hierarchy was not loaded yet");
                 }
             
@@ -44,7 +45,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (SingleOrDefaultException ex)
             {
-                _logger.LogError(ex, "Root warehouse error");
+                _logger.LogWarning(ex, "Root warehouse is not unique");
                 throw new InvalidWarehouseException("Root warehouse is not unique.", ex);
             }
             catch (DataAccessException ex)
@@ -62,6 +63,7 @@ namespace Elsa.SKS.Package.BusinessLogic
 
                 if (warehouseEntity is null)
                 {
+                    _logger.LogInformation("Warehouse with code an not be found");
                     throw new WarehouseNotFoundException($"Warehouse with code {code} can not be found");
                 }
 
@@ -70,7 +72,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (SingleOrDefaultException ex)
             {
-                _logger.LogError(ex, "Warehouse error");
+                _logger.LogWarning(ex, "Warehouse is not unique");
                 throw new InvalidWarehouseException("Warehouse is not unique.", ex);
             }
             catch (DataAccessException ex)
