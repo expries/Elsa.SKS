@@ -30,6 +30,12 @@ steps:
     arguments: '--configuration $(buildConfiguration) --no-build --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
     publishTestResults: true
 
+- task: DotNetCoreCLI@2
+  displayName: 'Publish application'
+  inputs:
+    command: 'publish'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-build'
+
 - task: reportgenerator@4
   displayName: 'Merge code coverage reports'
   inputs:
@@ -43,12 +49,6 @@ steps:
   inputs:
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(Pipeline.Workspace)/coverlet/Cobertura.xml'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Publish application'
-  inputs:
-    command: 'publish'
-    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-build'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish build artifact'
