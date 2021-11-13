@@ -12,6 +12,11 @@
     <UserSecretsId>d6d7f092-d18c-4d13-8ff2-c82aea4f5ab3</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+	<Content Update="appsettings.json">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="FluentValidation" Version="10.3.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
