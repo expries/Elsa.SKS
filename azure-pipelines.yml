@@ -55,3 +55,4 @@ steps:
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'elsa-sks-artifact'
+    FileCopyOptions: '**/appsettings.json'
