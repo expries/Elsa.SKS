@@ -36,6 +36,19 @@ steps:
     command: 'publish'
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-build'
 
+- task: reportgenerator@4
+  displayName: 'Merge code coverage reports'
+  inputs:
+    reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+    targetdir: '$(Pipeline.Workspace)/coverlet'
+    reporttypes: 'Cobertura'
+    verbosity: 'Verbose'
+     
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage results'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Pipeline.Workspace)/coverlet/Cobertura.xml'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish build artifact'
