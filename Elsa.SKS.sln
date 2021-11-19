@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.ServiceAge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.ServiceAgents.Tests", "src\Elsa.SKS.Package.ServiceAgents.Tests\Elsa.SKS.Package.ServiceAgents.Tests.csproj", "{4EDFBBF5-46F6-4295-8871-7AE708402725}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.ServiceAgents.Entities", "src\Elsa.SKS.Package.ServiceAgents.Entities\Elsa.SKS.Package.ServiceAgents.Entities.csproj", "{BBFBBA7C-A1E9-452E-8A3B-734869ECC13F}"
+EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
 								Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 					{4EDFBBF5-46F6-4295-8871-7AE708402725}.Debug|Any CPU.Build.0 = Debug|Any CPU
 					{4EDFBBF5-46F6-4295-8871-7AE708402725}.Release|Any CPU.ActiveCfg = Release|Any CPU
 					{4EDFBBF5-46F6-4295-8871-7AE708402725}.Release|Any CPU.Build.0 = Release|Any CPU
+					{BBFBBA7C-A1E9-452E-8A3B-734869ECC13F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{BBFBBA7C-A1E9-452E-8A3B-734869ECC13F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{BBFBBA7C-A1E9-452E-8A3B-734869ECC13F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{BBFBBA7C-A1E9-452E-8A3B-734869ECC13F}.Release|Any CPU.Build.0 = Release|Any CPU
 				EndGlobalSection
 				GlobalSection(SolutionProperties) = preSolution
 								HideSolutionNode = FALSE
