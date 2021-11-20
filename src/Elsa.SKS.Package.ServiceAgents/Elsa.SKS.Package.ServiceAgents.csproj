@@ -5,4 +5,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Elsa.SKS.Package.ServiceAgents.Entities\Elsa.SKS.Package.ServiceAgents.Entities.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Package.ServiceAgents.Interfaces\Elsa.SKS.Package.ServiceAgents.Interfaces.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Nominatim.API" Version="1.6.1" />
+    </ItemGroup>
+
 </Project>
