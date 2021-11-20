@@ -37,7 +37,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                 if (warehouseHierarchy is null)
                 {
                     _logger.LogWarning("Warehouse hierarchy not loaded");
-                    throw new WarehouseHierarchyNotLoadedException("Warehouse hierarchy was not loaded yet");
+                    throw new WarehouseHierarchyNotLoadedException("Warehouse hierarchy was not loaded yet.");
                 }
             
                 var result = _mapper.Map<Warehouse>(warehouseHierarchy);
@@ -64,7 +64,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                 if (warehouseEntity is null)
                 {
                     _logger.LogInformation("Warehouse with code an not be found");
-                    throw new WarehouseNotFoundException($"Warehouse with code {code} can not be found");
+                    throw new WarehouseNotFoundException($"Warehouse with code {code} can not be found.");
                 }
 
                 var warehouse = _mapper.Map<Warehouse>(warehouseEntity);

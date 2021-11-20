@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FakeItEasy" Version="7.2.0" />
         <PackageReference Include="FluentAssertions" Version="6.2.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
         <PackageReference Include="coverlet.collector" Version="3.1.0" />
@@ -17,6 +18,12 @@
     <ItemGroup>
       <ProjectReference Include="..\Elsa.SKS.Package.ServiceAgents.Entities\Elsa.SKS.Package.ServiceAgents.Entities.csproj" />
       <ProjectReference Include="..\Elsa.SKS.Package.ServiceAgents\Elsa.SKS.Package.ServiceAgents.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+        <HintPath>..\..\..\..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\5.0.3\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

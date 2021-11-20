@@ -1,15 +1,28 @@
 using System;
 using Elsa.SKS.Package.ServiceAgents.Entities;
+using Elsa.SKS.Package.ServiceAgents.Exceptions;
+using FakeItEasy;
+using Microsoft.Extensions.Logging;
 using FluentAssertions;
 using Xunit;
 
 namespace Elsa.SKS.Package.ServiceAgents.Tests
 {
-    public class Tests
+    public class OsmCodingAgentTests
     {
+        
+        private readonly ILogger<OsmCodingAgent> _logger;
+        
+        public OsmCodingAgentTests()
+        {
+            _logger = A.Fake<ILogger<OsmCodingAgent>>();
+        }
+
         [Fact]
         public void GivenValidAddressInVienna_WhenEncoding_ThenReturnCorrectCoordinates()
         {
+            var encoder = new OsmCodingAgent(_logger);
+
             var address = new Address
             {
                 Street = "Stephansplatz 1",
@@ -22,7 +35,6 @@ namespace Elsa.SKS.Package.ServiceAgents.Tests
                 Longitude = 16.3734772
             };
             
-            var encoder = new OsmCodingAgent();
             var geolocationActualResult = encoder.GeocodeAddress(address);
             
             geolocationCorrectResult.Should().BeEquivalentTo(geolocationActualResult);
@@ -31,16 +43,17 @@ namespace Elsa.SKS.Package.ServiceAgents.Tests
         [Fact]
         public void GivenNotValidAddressInVienna_WhenEncoding_ThenReturnNotFoundException()
         {
+            var encoder = new OsmCodingAgent(_logger);
+
             var address = new Address
             {
                 Street = "Notvalid 1",
                 City = "Wien"
             };
-
-            var encoder = new OsmCodingAgent();
-            var geolocationActualResult = encoder.GeocodeAddress(address);
             
-            geolocationActualResult.Should().BeNull(); //TODO: change to exception
+            Action geocodeAddress = () => encoder.GeocodeAddress(address);
+
+            geocodeAddress.Should().Throw<AddressNotFoundException>();
         }
         
         

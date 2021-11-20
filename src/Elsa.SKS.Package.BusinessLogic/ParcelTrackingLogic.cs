@@ -116,7 +116,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                 if (parcelEntity is null)
                 {
                     _logger.LogInformation("Parcel with tracking id was not found");
-                    throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
+                    throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found.");
                 }
 
                 var parcel = _mapper.Map<Parcel>(parcelEntity);
