@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Elsa.SKS.Package.DataAccess.Sql
@@ -29,7 +27,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 _context.SaveChanges();
                 return hop;
             }
-            catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
@@ -44,7 +42,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 _context.SaveChanges();
                 return hop;
             }
-            catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
@@ -71,7 +69,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 _logger.LogWarning(ex, "Hop not unique error");
                 throw new SingleOrDefaultException("More than one hop with this code exists.", ex);
             }
-            catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
@@ -90,6 +88,11 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 _logger.LogWarning(ex, "Hop not unique");
                 throw new SingleOrDefaultException("More than one hop with this code exists.", ex);
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
+            }
         }
 
         public Warehouse? GetAllWarehouses()
@@ -104,6 +107,11 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 _logger.LogWarning(ex, "Root warehouse not unique");
                 throw new SingleOrDefaultException("More than one root warehouse exists.", ex);
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
+            }
         }
 
         public Warehouse? GetWarehouseByCode(string code)
@@ -116,6 +124,11 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             {
                 _logger.LogWarning(ex, "Warehouse not unique");
                 throw new SingleOrDefaultException("More than one warehouse with this code exists.", ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
     }

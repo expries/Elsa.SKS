@@ -29,7 +29,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 _context.SaveChanges();
                 return parcel;
             }
-            catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
@@ -44,7 +44,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 _context.SaveChanges();
                 return parcel;
             }
-            catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
@@ -71,7 +71,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 _logger.LogError(ex, "Parcel ID error");
                 throw new SingleOrDefaultException("More than one parcel with this ID exists.", ex);
             }
-            catch (Exception ex) when (ex is DbUpdateException or DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
@@ -89,6 +89,11 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             {
                 _logger.LogError(ex, "Parcel ID error");
                 throw new SingleOrDefaultException("More than one parcel with this ID exists.", ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
     }
