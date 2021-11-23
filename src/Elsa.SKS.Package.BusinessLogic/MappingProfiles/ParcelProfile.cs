@@ -24,6 +24,10 @@ namespace Elsa.SKS.Package.BusinessLogic.MappingProfiles
             
             CreateMap<Package.DataAccess.Entities.HopArrival, HopArrival>().IncludeMembers(h => h.Hop);
             CreateMap<Package.DataAccess.Entities.Hop, HopArrival>();
+            
+            // Service Agent Mapping
+            CreateMap<User, Package.ServiceAgents.Entities.Address>()
+                .ForMember(dest => dest.Query, act => act.Ignore());
         }
     }
 

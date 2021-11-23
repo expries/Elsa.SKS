@@ -19,6 +19,8 @@ using Elsa.SKS.Package.BusinessLogic.Validators;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql;
+using Elsa.SKS.Package.ServiceAgents;
+using Elsa.SKS.Package.ServiceAgents.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -69,11 +71,13 @@ namespace Elsa.SKS
             
             services.AddTransient<IParcelRepository, SqlParcelRepository>();
             services.AddTransient<IHopRepository, SqlHopRepository>();
+            services.AddTransient<IGeocodingAgent, OsmCodingAgent>();
             services.AddTransient<IAppDbContext, AppDbContext>();
             
             // Add validators
             services.AddTransient<IValidator<Parcel>, ParcelValidator>();
             services.AddTransient<IValidator<Warehouse>, WarehouseValidator>();
+            
 
             // Add framework services.
             services
@@ -126,7 +130,9 @@ namespace Elsa.SKS
             services
                 .AddDbContextPool<AppDbContext>(options =>
                 {
-                    options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection"));
+                    //options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection"));
+                    options.UseSqlServer("Server=localhost;Initial Catalog=master;User=sa;Password=P@ssword;Data Source=localhost;MultipleActiveResultSets=True");
+
                     options.UseLazyLoadingProxies();
                 });
 

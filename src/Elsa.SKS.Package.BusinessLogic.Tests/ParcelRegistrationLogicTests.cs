@@ -6,6 +6,7 @@ using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
+using Elsa.SKS.Package.ServiceAgents.Interfaces;
 using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -27,6 +28,9 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         private readonly IMapper _mapper;
         
         private readonly ILogger<ParcelRegistrationLogic> _logger;
+        
+        private readonly IGeocodingAgent _geocodingAgent;
+
 
         public ParcelRegistrationLogicTests()
         {
@@ -34,7 +38,8 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
             _parcelValidator = A.Fake<IValidator<Parcel>>();
             _mapper = A.Fake<IMapper>();
             _logger = A.Fake<ILogger<ParcelRegistrationLogic>>();
-            _logic = new ParcelRegistrationLogic(_parcelRepository, _parcelValidator, _mapper, _logger);
+            _geocodingAgent = A.Fake<IGeocodingAgent>();
+            _logic = new ParcelRegistrationLogic(_parcelRepository, _parcelValidator, _mapper, _logger, _geocodingAgent);
         }
         
         [Fact]

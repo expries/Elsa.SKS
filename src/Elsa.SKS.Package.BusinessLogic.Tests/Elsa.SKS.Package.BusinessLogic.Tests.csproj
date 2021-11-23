@@ -26,6 +26,7 @@
       <ProjectReference Include="..\Elsa.SKS.Package.BusinessLogic.Entities\Elsa.SKS.Package.BusinessLogic.Entities.csproj" />
       <ProjectReference Include="..\Elsa.SKS.Package.BusinessLogic\Elsa.SKS.Package.BusinessLogic.csproj" />
       <ProjectReference Include="..\Elsa.SKS.Package.DataAccess.Sql\Elsa.SKS.Package.DataAccess.Sql.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Package.ServiceAgents.Interfaces\Elsa.SKS.Package.ServiceAgents.Interfaces.csproj" />
     </ItemGroup>
 
 </Project>
