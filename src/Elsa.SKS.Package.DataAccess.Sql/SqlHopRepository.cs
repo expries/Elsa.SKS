@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
@@ -76,6 +77,20 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
         }
 
+        public void DeleteAll()
+        {
+            try
+            {
+                _context.Hops.RemoveRange(_context.Hops);
+                _context.Parcels.RemoveRange(_context.Parcels);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new DataAccessException("Failed to clear database.", ex);
+            }
+        }
+
         public Hop? GetByCode(string code)
         {
             try
@@ -111,6 +126,18 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             {
                 _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
+            }
+        }
+
+        public IEnumerable<Truck> GetAllTrucks()
+        {
+            try
+            {
+                return _context.Trucks;
+            }
+            catch (Exception ex)
+            {
+                throw new DataAccessException("Failed to get all trucks.", ex);
             }
         }
 

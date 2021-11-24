@@ -9,7 +9,7 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// GeoJSON of the are covered by the truck.
         /// </summary>
         /// <value>GeoJSON of the are covered by the truck.</value>
-        public string RegionGeoJson { get; set; }
+        public virtual GeoRegion GeoRegion { get; set; }
 
         /// <summary>
         /// The truck&#x27;s number plate.

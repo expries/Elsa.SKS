@@ -15,6 +15,7 @@
     <ItemGroup>
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
       <PackageReference Include="FluentValidation" Version="10.3.4" />
+      <PackageReference Include="GeoJSON.Net" Version="1.2.19" />
     </ItemGroup>
 
 </Project>

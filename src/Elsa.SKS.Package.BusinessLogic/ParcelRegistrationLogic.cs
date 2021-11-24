@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using AutoMapper;
@@ -9,6 +11,7 @@ using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using Elsa.SKS.Package.ServiceAgents.Interfaces;
 using FluentValidation;
+using GeoJSON.Net.Geometry;
 using Microsoft.Extensions.Logging;
 
 namespace Elsa.SKS.Package.BusinessLogic
@@ -16,6 +19,8 @@ namespace Elsa.SKS.Package.BusinessLogic
     public class ParcelRegistrationLogic : IParcelRegistrationLogic
     {
         private readonly IParcelRepository _parcelRepository;
+
+        private readonly IHopRepository _hopRepository;
         
         private readonly IValidator<Parcel> _parcelValidator;
 
@@ -25,13 +30,14 @@ namespace Elsa.SKS.Package.BusinessLogic
 
         private readonly IGeocodingAgent _geocodingAgent;
 
-        public ParcelRegistrationLogic(IParcelRepository parcelRepository, IValidator<Parcel> parcelValidator, IMapper mapper, ILogger<ParcelRegistrationLogic> logger, IGeocodingAgent geocodingAgent)
+        public ParcelRegistrationLogic(IParcelRepository parcelRepository, IValidator<Parcel> parcelValidator, IMapper mapper, ILogger<ParcelRegistrationLogic> logger, IGeocodingAgent geocodingAgent, IHopRepository hopRepository)
         {
             _parcelRepository = parcelRepository;
             _parcelValidator = parcelValidator;
             _mapper = mapper;
             _logger = logger;
             _geocodingAgent = geocodingAgent;
+            _hopRepository = hopRepository;
         }
     
         public Parcel TransitionParcel(Parcel parcel, string trackingId)
@@ -76,11 +82,10 @@ namespace Elsa.SKS.Package.BusinessLogic
                 throw new InvalidParcelException(validation.ToString(" "));
             }
             
-            
             // generate new trackingId and check if id already exists
             var isNewTrackingIdValid = false;
             var newTrackingId = "";
-            
+
             while (!isNewTrackingIdValid)
             {
                 newTrackingId = GenerateTrackingId();
@@ -94,12 +99,14 @@ namespace Elsa.SKS.Package.BusinessLogic
             
             // get GPS coordinates for package sender/recipient
             var senderAddress = _mapper.Map<Elsa.SKS.Package.ServiceAgents.Entities.Address>(parcel.Sender);
-            var senderGPS = _geocodingAgent.GeocodeAddress(senderAddress);
+            var senderGps = _geocodingAgent.GeocodeAddress(senderAddress);
             var recipientAddress = _mapper.Map<Elsa.SKS.Package.ServiceAgents.Entities.Address>(parcel.Recipient);
-            var recipientGPS = _geocodingAgent.GeocodeAddress(recipientAddress);
-            
-            var parcelDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Parcel>(parcel);
+            var recipientGps = _geocodingAgent.GeocodeAddress(recipientAddress);
 
+            var trucks = _hopRepository.GetAllTrucks();
+
+            var parcelDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Parcel>(parcel);
+            
             try
             {
                 var parcelEntity = _parcelRepository.Create(parcelDal);

@@ -95,6 +95,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             try
             {
                 var warehouseDal = _mapper.Map<DataAccessWarehouse>(warehouse);
+                _hopRepository.DeleteAll();
                 _hopRepository.Create(warehouseDal);
             }
             catch (DataAccessException ex)

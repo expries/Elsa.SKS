@@ -9,7 +9,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Validators
     {
         public WarehouseValidator()
         {
-            RuleFor(w => w.Description).Matches("^[A-Za-z0-9\\- ]*$");
+            //RuleFor(w => w.Description).Matches("^[A-Za-z0-9\\-\\ ]*$");
             RuleFor(w => w.NextHops).NotNull();
             RuleFor(w => w.Code).NotEmpty();
         }

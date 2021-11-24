@@ -35,8 +35,15 @@ namespace Elsa.SKS.Package.Services.DTOs.Converters
             {
                 return null;
             }
+            
+            string stringContent = string.Empty;
 
-            var jObject = JObject.Load(reader);
+            if (reader.TokenType is JsonToken.String)
+            {
+                stringContent = reader.Value.ToString();
+            }
+            
+            var jObject = reader.TokenType is JsonToken.String ? JObject.Parse(stringContent) : JObject.Load(reader);
             var target = Create(objectType, jObject);
             serializer.Populate(jObject.CreateReader(), target);
             return target;
