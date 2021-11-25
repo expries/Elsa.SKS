@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Elsa.SKS.Package.DataAccess.Entities
@@ -36,6 +37,16 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// <value>Name of the location (village, city, ..) of the hop.</value>
         [Required]
         public string LocationName { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets HopArrivals
+        /// </summary>
+        public virtual ICollection<HopArrival> HopArrivals { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets WarehouseNextHops
+        /// </summary>
+        public virtual ICollection<WarehouseNextHops> WarehouseNextHops { get; set; }
 
         /// <summary>
         /// Gets or Sets LocationCoordinates

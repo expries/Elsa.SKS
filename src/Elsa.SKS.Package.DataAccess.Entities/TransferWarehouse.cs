@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using GeoJSON.Net;
+using NetTopologySuite.Geometries;
 
 namespace Elsa.SKS.Package.DataAccess.Entities
 {
@@ -7,10 +8,10 @@ namespace Elsa.SKS.Package.DataAccess.Entities
     public class TransferWarehouse : Hop
     {
         /// <summary>
-        /// GeoJSON of the are covered by the logistics partner.
+        /// GeoRegion of the area covered by the logistics partner.
         /// </summary>
         /// <value>GeoJSON of the are covered by the logistics partner.</value>
-        public virtual GeoRegion GeoRegion { get; set; }
+        public virtual Geometry GeoRegion { get; set; }
 
         /// <summary>
         /// Name of the logistics partner.

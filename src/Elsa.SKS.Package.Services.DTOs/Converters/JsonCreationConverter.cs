@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -36,14 +39,14 @@ namespace Elsa.SKS.Package.Services.DTOs.Converters
                 return null;
             }
             
-            string stringContent = string.Empty;
-
             if (reader.TokenType is JsonToken.String)
             {
-                stringContent = reader.Value.ToString();
+                string stringValue = reader.Value?.ToString();
+                var parsedJObject = JObject.Parse(stringValue ?? string.Empty);
+                return Create(objectType, parsedJObject);
             }
-            
-            var jObject = reader.TokenType is JsonToken.String ? JObject.Parse(stringContent) : JObject.Load(reader);
+   
+            var jObject = JObject.Load(reader);
             var target = Create(objectType, jObject);
             serializer.Populate(jObject.CreateReader(), target);
             return target;

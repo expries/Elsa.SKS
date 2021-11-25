@@ -22,6 +22,7 @@ using Elsa.SKS.Package.DataAccess.Sql;
 using Elsa.SKS.Package.ServiceAgents;
 using Elsa.SKS.Package.ServiceAgents.Interfaces;
 using FluentValidation;
+using GeoJSON.Net.Converters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.IO.Converters;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Parcel = Elsa.SKS.Package.BusinessLogic.Entities.Parcel;
@@ -78,7 +83,6 @@ namespace Elsa.SKS
             services.AddTransient<IValidator<Parcel>, ParcelValidator>();
             services.AddTransient<IValidator<Warehouse>, WarehouseValidator>();
             
-
             // Add framework services.
             services
                 .AddMvc(options =>
@@ -88,11 +92,17 @@ namespace Elsa.SKS
                 })
                 .AddNewtonsoftJson(opts =>
                 {
+                    opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     opts.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
+                    opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    
+                    foreach (var converter in GeoJsonSerializer.Create(new GeometryFactory(new PrecisionModel(), 4326)).Converters)
+                    {
+                        opts.SerializerSettings.Converters.Add(converter);
+                    }
                 })
                 .AddXmlSerializerFormatters();
-
 
             services
                 .AddSwaggerGen(c =>
@@ -130,12 +140,10 @@ namespace Elsa.SKS
             services
                 .AddDbContextPool<AppDbContext>(options =>
                 {
-                    //options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection"));
-                    options.UseSqlServer("Server=localhost;Initial Catalog=master;User=sa;Password=P@ssword;Data Source=localhost;MultipleActiveResultSets=True");
-
+                    options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection"), 
+                        x => x.UseNetTopologySuite());
                     options.UseLazyLoadingProxies();
                 });
-
         }
 
         /// <summary>

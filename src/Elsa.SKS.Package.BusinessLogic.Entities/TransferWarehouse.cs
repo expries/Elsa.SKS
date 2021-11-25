@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using NetTopologySuite.Geometries;
 
 namespace Elsa.SKS.Package.BusinessLogic.Entities
 {
@@ -9,7 +10,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
         /// GeoJSON of the are covered by the logistics partner.
         /// </summary>
         /// <value>GeoJSON of the are covered by the logistics partner.</value>
-        public string RegionGeoJson { get; set; }
+        public Geometry GeoRegion { get; set; }
 
         /// <summary>
         /// Name of the logistics partner.

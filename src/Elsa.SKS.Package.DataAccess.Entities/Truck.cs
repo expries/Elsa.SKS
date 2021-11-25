@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
+using NetTopologySuite.Geometries;
 
 namespace Elsa.SKS.Package.DataAccess.Entities
 {
@@ -6,10 +8,10 @@ namespace Elsa.SKS.Package.DataAccess.Entities
     public class Truck : Hop
     {
         /// <summary>
-        /// GeoJSON of the are covered by the truck.
+        /// GeoRegion of the area covered by the truck.
         /// </summary>
         /// <value>GeoJSON of the are covered by the truck.</value>
-        public virtual GeoRegion GeoRegion { get; set; }
+        public virtual Geometry GeoRegion { get; set; }
 
         /// <summary>
         /// The truck&#x27;s number plate.

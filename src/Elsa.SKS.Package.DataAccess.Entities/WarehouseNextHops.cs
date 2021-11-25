@@ -22,5 +22,10 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// Gets or Sets Hop
         /// </summary>
         public virtual Hop Hop { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets Warehouse
+        /// </summary>
+        public virtual Warehouse Warehouse { get; set; }
     }
 }
