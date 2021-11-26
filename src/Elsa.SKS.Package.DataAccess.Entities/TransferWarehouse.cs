@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using GeoJSON.Net;
 using NetTopologySuite.Geometries;
 
 namespace Elsa.SKS.Package.DataAccess.Entities

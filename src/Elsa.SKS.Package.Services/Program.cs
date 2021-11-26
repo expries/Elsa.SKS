@@ -1,8 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Logging;
 
 namespace Elsa.SKS
 {

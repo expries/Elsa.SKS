@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Elsa.SKS.Controllers;
 using Elsa.SKS.MappingProfiles;
-using Elsa.SKS.Package.BusinessLogic;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
@@ -9,7 +8,6 @@ using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using Xunit;
 

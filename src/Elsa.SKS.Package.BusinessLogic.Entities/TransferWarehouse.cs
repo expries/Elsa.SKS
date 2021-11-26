@@ -7,7 +7,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
     public class TransferWarehouse : Hop
     {
         /// <summary>
-        /// GeoJSON of the are covered by the logistics partner.
+        /// GeoRegion of the area covered by the logistics partner.
         /// </summary>
         /// <value>GeoJSON of the are covered by the logistics partner.</value>
         public Geometry GeoRegion { get; set; }
@@ -19,7 +19,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
         public string LogisticsPartner { get; set; }
 
         /// <summary>
-        /// BaseURL of the logistics partner&#x27;s REST service.
+        /// BaseURL of the logistics partner's REST service.
         /// </summary>
         /// <value>BaseURL of the logistics partner&#x27;s REST service.</value>
         public string LogisticsPartnerUrl { get; set; }

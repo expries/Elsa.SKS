@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Elsa.SKS.Package.BusinessLogic.Entities
@@ -22,19 +22,27 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
         /// Delay processing takes on the hop.
         /// </summary>
         /// <value>Delay processing takes on the hop.</value>
-        public int? ProcessingDelayMins { get; set; }
+        public int? ProcessingDelayMinutes { get; set; }
 
         /// <summary>
         /// Name of the location (village, city, ..) of the hop.
         /// </summary>
         /// <value>Name of the location (village, city, ..) of the hop.</value>
-        [Required]
         public string LocationName { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets PreviousHop
+        /// </summary>
+        public WarehouseNextHop PreviousHop { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets Arrivals
+        /// </summary>
+        public List<HopArrival> Arrivals { get; set; }
 
         /// <summary>
         /// Gets or Sets LocationCoordinates
         /// </summary>
-        [Required]
-        public GeoCoordinate LocationCoordinates { get; set; }
+        public GeoCoordinates LocationCoordinates { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Elsa.SKS.Package.Services.DTOs.Converters
 {
-    public class GeoJsonObjectConverter : JsonCreationConverter<Geometry>
+    public class GeometryConverter : JsonCreationConverter<Geometry>
     {
         protected override Geometry Create(Type objectType, JObject jObject)
         {
@@ -17,11 +17,13 @@ namespace Elsa.SKS.Package.Services.DTOs.Converters
             using var jsonReader = new JsonTextReader(stringReader);
             var geometry = geoSerializer.Deserialize<Geometry>(jsonReader);
 
+            // reverse polygon coordinates if not counter-clock-wise
             if (geometry is Polygon polygon && !polygon.Shell.IsCCW)
             {
                 geometry = polygon.Reverse();
             }
-
+            
+            // coordinates of polygons inside multipolygon if not counter-clock-wise
             if (geometry is MultiPolygon multiPolygon)
             {
                 for (int i = 0; i < multiPolygon.Geometries.Length; i++)

@@ -3,7 +3,7 @@
 namespace Elsa.SKS.Package.BusinessLogic.Entities
 {
     [ExcludeFromCodeCoverage]
-    public class GeoCoordinate
+    public class GeoCoordinates
     {
         /// <summary>
         /// Latitude of the coordinate.

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Elsa.SKS.Package.Services.DTOs;
 
@@ -16,8 +15,8 @@ namespace Elsa.SKS.MappingProfiles
         /// </summary>
         public WarehouseProfile()
         {
-            CreateMap<WarehouseNextHops, Package.BusinessLogic.Entities.WarehouseNextHops>().ReverseMap();
-            CreateMap<GeoCoordinate, Package.BusinessLogic.Entities.GeoCoordinate>().ReverseMap();
+            CreateMap<WarehouseNextHops, Package.BusinessLogic.Entities.WarehouseNextHop>().ReverseMap();
+            CreateMap<GeoCoordinates, Package.BusinessLogic.Entities.GeoCoordinates>().ReverseMap();
         }
     }
 

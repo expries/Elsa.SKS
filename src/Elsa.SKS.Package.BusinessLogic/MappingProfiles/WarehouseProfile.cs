@@ -15,8 +15,8 @@ namespace Elsa.SKS.Package.BusinessLogic.MappingProfiles
         /// </summary>
         public WarehouseProfile()
         {
-            CreateMap<WarehouseNextHops, DataAccess.Entities.WarehouseNextHops>().ReverseMap();
-            CreateMap<GeoCoordinate, Package.DataAccess.Entities.GeoCoordinates>().ReverseMap();
+            CreateMap<WarehouseNextHop, DataAccess.Entities.WarehouseNextHop>().ReverseMap();
+            CreateMap<GeoCoordinates, Package.DataAccess.Entities.GeoCoordinates>().ReverseMap();
 
             
         }

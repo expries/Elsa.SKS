@@ -7,7 +7,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
     public class Truck : Hop
     {
         /// <summary>
-        /// GeoJSON of the are covered by the truck.
+        /// GeoRegion of the area covered by the truck.
         /// </summary>
         /// <value>GeoJSON of the are covered by the truck.</value>
         public Geometry GeoRegion { get; set; }

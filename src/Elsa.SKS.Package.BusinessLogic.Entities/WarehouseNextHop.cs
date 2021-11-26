@@ -3,16 +3,21 @@
 namespace Elsa.SKS.Package.BusinessLogic.Entities
 {
     [ExcludeFromCodeCoverage]
-    public class WarehouseNextHops
+    public class WarehouseNextHop
     {
         /// <summary>
-        /// Gets or Sets TraveltimeMins
+        /// Gets or Sets TravelTimeInMinutes
         /// </summary>
         public int? TravelTimeInMinutes { get; set; }
 
         /// <summary>
         /// Gets or Sets Hop
         /// </summary>
-        public Hop Hop { get; set; }
+        public Hop NextHop { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets Warehouse
+        /// </summary>
+        public Warehouse Warehouse { get; set; }
     }
 }

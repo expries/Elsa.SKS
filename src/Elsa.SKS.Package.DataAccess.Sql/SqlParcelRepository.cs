@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Elsa.SKS.Package.DataAccess.Sql

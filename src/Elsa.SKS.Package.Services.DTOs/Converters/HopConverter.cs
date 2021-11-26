@@ -1,6 +1,5 @@
 ﻿using System;
 using Elsa.SKS.Package.Services.DTOs.Enums;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Elsa.SKS.Package.Services.DTOs.Converters

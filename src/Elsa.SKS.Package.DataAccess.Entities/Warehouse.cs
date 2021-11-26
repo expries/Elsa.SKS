@@ -15,6 +15,6 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// Next hops after this warehouse (warehouses or trucks).
         /// </summary>
         /// <value>Next hops after this warehouse (warehouses or trucks).</value>
-        public virtual List<WarehouseNextHops> NextHops { get; set; }
+        public virtual List<WarehouseNextHop> NextHops { get; set; }
     }
 }

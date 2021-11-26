@@ -15,7 +15,6 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
         /// Next hops after this warehouse (warehouses or trucks).
         /// </summary>
         /// <value>Next hops after this warehouse (warehouses or trucks).</value>
-        public List<WarehouseNextHops> NextHops { get; set; }
-        
+        public List<WarehouseNextHop> NextHops { get; set; }
     }
 }

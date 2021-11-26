@@ -9,7 +9,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Validators
     {
         public WarehouseNextHopsValidator()
         {
-            RuleFor(h => h.Hop).NotNull();
+            RuleFor(h => h.NextHop).NotNull();
         }   
     }
 }

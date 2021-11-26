@@ -29,29 +29,27 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// Delay processing takes on the hop.
         /// </summary>
         /// <value>Delay processing takes on the hop.</value>
-        public int? ProcessingDelayMins { get; set; }
+        public int? ProcessingDelayMinutes { get; set; }
 
         /// <summary>
         /// Name of the location (village, city, ..) of the hop.
         /// </summary>
         /// <value>Name of the location (village, city, ..) of the hop.</value>
-        [Required]
         public string LocationName { get; set; }
         
         /// <summary>
-        /// Gets or Sets HopArrivals
+        /// Gets or Sets PreviousHop
         /// </summary>
-        public virtual ICollection<HopArrival> HopArrivals { get; set; }
+        public virtual WarehouseNextHop PreviousHop { get; set; }
         
         /// <summary>
-        /// Gets or Sets WarehouseNextHops
+        /// Gets or Sets Arrivals
         /// </summary>
-        public virtual ICollection<WarehouseNextHops> WarehouseNextHops { get; set; }
+        public virtual List<HopArrival> Arrivals { get; set; }
 
         /// <summary>
         /// Gets or Sets LocationCoordinates
         /// </summary>
-        [Required]
         public virtual GeoCoordinates LocationCoordinates { get; set; }
     }
 }

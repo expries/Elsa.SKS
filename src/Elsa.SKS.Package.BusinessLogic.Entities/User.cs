@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Elsa.SKS.Package.BusinessLogic.Entities
 {
@@ -34,7 +35,5 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
         /// </summary>
         /// <value>Country</value>
         public string Country { get; set; }
-        
     }
-
 }

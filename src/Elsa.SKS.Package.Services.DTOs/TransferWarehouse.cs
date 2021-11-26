@@ -12,10 +12,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Elsa.SKS.Package.Services.DTOs.Converters;
 using Elsa.SKS.Package.Services.DTOs.Enums;
-using GeoJSON.Net;
-using GeoJSON.Net.Converters;
-using GeoJSON.Net.Geometry;
-using NetTopologySuite.IO;
+using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.Services.DTOs
@@ -32,8 +29,8 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// </summary>
         /// <value>GeoJSON of the are covered by the logistics partner.</value>
         [DataMember(Name="regionGeoJson")]
-        [JsonConverter(typeof(GeoJsonObjectConverter))]
-        public NetTopologySuite.Geometries.Geometry GeoRegion { get; set; }
+        [JsonConverter(typeof(GeometryConverter))]
+        public Geometry GeoRegion { get; set; }
 
         /// <summary>
         /// Name of the logistics partner.
