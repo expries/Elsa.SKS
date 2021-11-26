@@ -31,6 +31,8 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         
         private readonly IGeocodingAgent _geocodingAgent;
 
+        private readonly IHopRepository _hopRepository;
+
 
         public ParcelRegistrationLogicTests()
         {
@@ -39,7 +41,8 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
             _mapper = A.Fake<IMapper>();
             _logger = A.Fake<ILogger<ParcelRegistrationLogic>>();
             _geocodingAgent = A.Fake<IGeocodingAgent>();
-            _logic = new ParcelRegistrationLogic(_parcelRepository, _parcelValidator, _mapper, _logger, _geocodingAgent);
+            _hopRepository = A.Fake<IHopRepository>();
+            _logic = new ParcelRegistrationLogic(_parcelRepository, _parcelValidator, _mapper, _logger, _geocodingAgent, _hopRepository);
         }
         
         [Fact]

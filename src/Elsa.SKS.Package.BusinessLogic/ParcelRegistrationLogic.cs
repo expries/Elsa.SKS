@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
+using Elsa.SKS.Package.BusinessLogic.Entities.Enums;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
@@ -11,6 +13,7 @@ using Elsa.SKS.Package.ServiceAgents.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using NetTopologySuite.Geometries;
+using Truck = Elsa.SKS.Package.DataAccess.Entities.Truck;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
@@ -84,7 +87,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             {
                 // generate new trackingId and check if id already exists
                 var isNewTrackingIdValid = false;
-                var newTrackingId = "";
+                var newTrackingId = string.Empty;
 
                 while (!isNewTrackingIdValid)
                 {
@@ -96,25 +99,8 @@ namespace Elsa.SKS.Package.BusinessLogic
                 }
 
                 parcel.TrackingId = newTrackingId;
-                
-                // get GPS coordinates for package sender/recipient
-                var senderAddress = _mapper.Map<Elsa.SKS.Package.ServiceAgents.Entities.Address>(parcel.Sender);
-                var recipientAddress = _mapper.Map<Elsa.SKS.Package.ServiceAgents.Entities.Address>(parcel.Recipient);
-                var senderGps = _geocodingAgent.GeocodeAddress(senderAddress);
-                var recipientGps = _geocodingAgent.GeocodeAddress(recipientAddress);
-
-                // convert GPS coordinates to points
-                var senderLocation = new Point(senderGps.Latitude, senderGps.Longitude);
-                var recipientLocation = new Point(recipientGps.Latitude, recipientGps.Longitude);
-                
-                // get trucks that cover sender/recipient location
-                var trucks = _hopRepository.GetAllTrucks();
-                var senderTruck = trucks.First(t => t.GeoRegion.Contains(senderLocation));
-                var recipientTruck = trucks.First(t => t.GeoRegion.Contains(recipientLocation));
-
-                // get nearest warehouses
-                var nearestWarehouseSender = senderTruck.PreviousHop.Warehouse;
-                var nearestWarehouseReceiver = recipientTruck.PreviousHop.Warehouse;
+                parcel.FutureHops = GetFutureHops(parcel.Sender, parcel.Recipient);
+                parcel.State = ParcelState.Pickup;
 
                 var parcelDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Parcel>(parcel);
                 var parcelEntity = _parcelRepository.Create(parcelDal);
@@ -144,6 +130,63 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
 
             return randomId.ToString();
+        }
+        
+        
+        private List<Hop> GetHopRoute(Truck senderHop, Truck receiverHop)
+        {
+            // if sender and receiver truck is the same truck
+            if (senderHop.Code == receiverHop.Code)
+            {
+                return null;
+            }
+            
+            var routeSender = new List<Hop>();
+            var routeReceiver = new List<Hop>();
+            var currHopSender = _hopRepository.GetByCode(senderHop.Code); // start hop
+            var currHopReceiver = _hopRepository.GetByCode(receiverHop.Code); // end hop
+            
+            routeReceiver.Add(_mapper.Map<Hop>(currHopReceiver));
+            
+            while (currHopSender.Code != currHopReceiver.Code)
+            {
+                currHopSender = _hopRepository.GetByCode(currHopSender.PreviousHop.Warehouse.Code);
+                currHopReceiver = _hopRepository.GetByCode(currHopReceiver.PreviousHop.Warehouse.Code);
+                
+                routeSender.Add(_mapper.Map<Hop>(currHopSender));
+                routeReceiver.Add(_mapper.Map<Hop>(currHopReceiver));
+            }
+
+            var routeCombined = new List<Hop>();
+            routeCombined.AddRange(routeSender);
+            
+            for (var i = routeReceiver.Count-2; i == 0; i--)
+            {
+                routeCombined.Add(routeReceiver[i]);
+            }
+
+            return routeCombined;
+        }
+        
+        private List<HopArrival> GetFutureHops(User parcelSender, User parcelRecipient)
+        {
+            // get GPS coordinates for package sender/recipient
+            var senderAddress = _mapper.Map<Elsa.SKS.Package.ServiceAgents.Entities.Address>(parcelSender);
+            var recipientAddress = _mapper.Map<Elsa.SKS.Package.ServiceAgents.Entities.Address>(parcelRecipient);
+            var senderGps = _geocodingAgent.GeocodeAddress(senderAddress);
+            var recipientGps = _geocodingAgent.GeocodeAddress(recipientAddress);
+
+            // convert GPS coordinates to points
+            var senderLocation = new Point(senderGps.Longitude, senderGps.Latitude);
+            var recipientLocation = new Point(recipientGps.Longitude, recipientGps.Latitude);
+
+            // get trucks that cover sender/recipient location
+            var trucks = _hopRepository.GetAllTrucks();
+            var senderTruck = trucks.First(t => t.GeoRegion.Contains(senderLocation));
+            var recipientTruck = trucks.First(t => t.GeoRegion.Contains(recipientLocation));
+            var route = GetHopRoute(senderTruck, recipientTruck);
+                
+            return route.Select(hop => new HopArrival() { Hop = hop }).ToList();
         }
     }
 }

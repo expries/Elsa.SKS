@@ -146,7 +146,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
         {
             try
             {
-                return _context.Warehouses.SingleOrDefault(w => w.Code == code);
+                return _context.Hops.OfType<Warehouse>().SingleOrDefault(h => h.Code == code);
             }
             catch (InvalidOperationException ex)
             {
