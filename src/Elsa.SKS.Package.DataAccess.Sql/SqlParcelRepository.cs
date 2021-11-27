@@ -23,6 +23,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
         {
             try
             {
+                parcel.FutureHops.ForEach(ha => ha.Hop = _context.Hops.Single(_ => _.Id == ha.Hop.Id));
                 _context.Parcels.Add(parcel);
                 _context.SaveChanges();
                 return parcel;
