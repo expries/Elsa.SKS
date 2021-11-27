@@ -6,6 +6,8 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
     [ExcludeFromCodeCoverage]
     public class Hop
     {
+        public int? Id { get; set; }
+        
         /// <summary>
         /// Unique CODE of the hop.
         /// </summary>

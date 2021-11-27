@@ -10,15 +10,10 @@ namespace Elsa.SKS.Package.DataAccess.Sql
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
         }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<WarehouseNextHop>()
-                .HasOne(_ => _.NextHop)
-                .WithOne(_ => _.PreviousHop)
-                .HasForeignKey<WarehouseNextHop>(_ => _.Id);
         }
 
         public virtual DbSet<Hop> Hops { get; set; }

@@ -17,6 +17,7 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// Reference of Hop.
         /// </summary>
         /// <value>Reference of Hop.</value>
+        [Required]
         public virtual Hop Hop { get; set; }
         
         /// <summary>

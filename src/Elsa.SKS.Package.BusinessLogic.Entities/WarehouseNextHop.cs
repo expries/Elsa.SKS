@@ -14,10 +14,5 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
         /// Gets or Sets Hop
         /// </summary>
         public Hop NextHop { get; set; }
-        
-        /// <summary>
-        /// Gets or Sets Warehouse
-        /// </summary>
-        public Warehouse Warehouse { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Elsa.SKS.Package.DataAccess.Entities
@@ -20,11 +21,13 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// <summary>
         /// Gets or Sets Hop
         /// </summary>
+        [ForeignKey("NextHopId")]
         public virtual Hop NextHop { get; set; }
         
         /// <summary>
         /// Gets or Sets Warehouse
         /// </summary>
+        [Required]
         public virtual Warehouse Warehouse { get; set; }
     }
 }

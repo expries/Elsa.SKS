@@ -150,8 +150,8 @@ namespace Elsa.SKS.Package.BusinessLogic
             
             while (currHopSender.Code != currHopReceiver.Code)
             {
-                currHopSender = _hopRepository.GetByCode(currHopSender.PreviousHop.Warehouse.Code);
-                currHopReceiver = _hopRepository.GetByCode(currHopReceiver.PreviousHop.Warehouse.Code);
+                currHopSender = _hopRepository.GetByCode(currHopSender.ParentHop.Warehouse.Code);
+                currHopReceiver = _hopRepository.GetByCode(currHopReceiver.ParentHop.Warehouse.Code);
                 
                 routeSender.Add(_mapper.Map<Hop>(currHopSender));
                 routeReceiver.Add(_mapper.Map<Hop>(currHopReceiver));

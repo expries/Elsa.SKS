@@ -81,7 +81,11 @@ namespace Elsa.SKS.Package.DataAccess.Sql
         {
             try
             {
-                _context.Warehouses.RemoveRange(_context.Warehouses);
+                foreach (var warehouse in _context.Warehouses)
+                {
+                    warehouse.NextHops.ToList().ForEach(r => r.NextHop = null);
+                }
+                
                 _context.Hops.RemoveRange(_context.Hops);
                 _context.Parcels.RemoveRange(_context.Parcels);
                 _context.SaveChanges();

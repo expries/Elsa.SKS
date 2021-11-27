@@ -36,20 +36,21 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// </summary>
         /// <value>Name of the location (village, city, ..) of the hop.</value>
         public string LocationName { get; set; }
+
+        /// <summary>
+        /// Gets or Sets LocationCoordinates
+        /// </summary>
+        [Required]
+        public virtual GeoCoordinates LocationCoordinates { get; set; }
         
         /// <summary>
-        /// Gets or Sets PreviousHop
+        /// Gets or Sets ParentHop
         /// </summary>
-        public virtual WarehouseNextHop PreviousHop { get; set; }
+        public virtual WarehouseNextHop ParentHop { get; set; }
         
         /// <summary>
         /// Gets or Sets Arrivals
         /// </summary>
         public virtual List<HopArrival> Arrivals { get; set; }
-
-        /// <summary>
-        /// Gets or Sets LocationCoordinates
-        /// </summary>
-        public virtual GeoCoordinates LocationCoordinates { get; set; }
     }
 }
