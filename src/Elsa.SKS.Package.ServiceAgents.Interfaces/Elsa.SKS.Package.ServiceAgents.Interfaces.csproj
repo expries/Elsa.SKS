@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Elsa.SKS.Package.BusinessLogic.Entities\Elsa.SKS.Package.BusinessLogic.Entities.csproj" />
       <ProjectReference Include="..\Elsa.SKS.Package.ServiceAgents.Entities\Elsa.SKS.Package.ServiceAgents.Entities.csproj" />
     </ItemGroup>
 

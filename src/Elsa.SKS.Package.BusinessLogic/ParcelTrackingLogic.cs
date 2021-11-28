@@ -2,12 +2,13 @@
 using System.Linq;
 using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
+using Elsa.SKS.Package.BusinessLogic.Entities.Enums;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
+using Elsa.SKS.Package.ServiceAgents.Interfaces;
 using Microsoft.Extensions.Logging;
-using Parcel = Elsa.SKS.Package.BusinessLogic.Entities.Parcel;
 using DataAccessParcel = Elsa.SKS.Package.DataAccess.Entities.Parcel;
 
 namespace Elsa.SKS.Package.BusinessLogic
@@ -17,15 +18,18 @@ namespace Elsa.SKS.Package.BusinessLogic
         private readonly IParcelRepository _parcelRepository;
         
         private readonly IHopRepository _hopRepository;
+        
+        private readonly ILogisticsPartnerAgent _logisticsPartner;
 
         private readonly IMapper _mapper;
         
         private readonly ILogger<ParcelTrackingLogic> _logger;
 
-        public ParcelTrackingLogic(IParcelRepository parcelRepository, IHopRepository hopRepository, IMapper mapper, ILogger<ParcelTrackingLogic> logger)
+        public ParcelTrackingLogic(IParcelRepository parcelRepository, IHopRepository hopRepository, ILogisticsPartnerAgent logisticsPartner, IMapper mapper, ILogger<ParcelTrackingLogic> logger)
         {
             _parcelRepository = parcelRepository;
             _hopRepository = hopRepository;
+            _logisticsPartner = logisticsPartner;
             _mapper = mapper;
             _logger = logger;
         }
@@ -95,7 +99,24 @@ namespace Elsa.SKS.Package.BusinessLogic
                 // add hop arrival to parcel's visited hops
                 var hopArrival = new HopArrival { Hop = hop, DateTime = DateTime.Now };
                 parcel.VisitedHops.Add(hopArrival);
-            
+
+                // update parcel state
+                switch (hop)
+                {
+                    case Warehouse:
+                        parcel.State = ParcelState.InTransport;
+                        break;
+                    
+                    case Truck:
+                        parcel.State = ParcelState.InTruckDelivery;
+                        break;
+                    
+                    case TransferWarehouse transferWarehouse:
+                        _logisticsPartner.TransferParcel(transferWarehouse, parcel);
+                        parcel.State = ParcelState.Transferred;
+                        break;
+                }
+
                 parcelEntity = _mapper.Map<DataAccessParcel>(parcel);
                 _parcelRepository.Update(parcelEntity);
             }
