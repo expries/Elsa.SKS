@@ -5,10 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="GeoJSON.Net" Version="1.2.19" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
-      <PackageReference Include="NetTopologySuite" Version="2.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.12" />
+      <PackageReference Include="NetTopologySuite" Version="2.4.0" />
     </ItemGroup>
 
 </Project>

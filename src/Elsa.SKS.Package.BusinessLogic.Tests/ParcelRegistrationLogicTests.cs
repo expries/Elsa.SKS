@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Entities.Enums;
@@ -18,9 +17,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Index.Strtree;
 using Xunit;
-using Xunit.Sdk;
 using Truck = Elsa.SKS.Package.DataAccess.Entities.Truck;
 
 namespace Elsa.SKS.Package.BusinessLogic.Tests
@@ -68,15 +65,30 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
             var parcelEntity = Builder<DataAccess.Entities.Parcel>
                 .CreateNew()
                 .Build();
+            
+            var geoLocation = Builder<Geolocation>
+                .CreateNew()
+                .With(_ => _.Latitude = PointInsideSamplePolygon.Y)
+                .With(_ => _.Longitude = PointInsideSamplePolygon.X)
+                .Build();
+
+            var truck = Builder<Truck>
+                .CreateNew()
+                .With(_ => _.GeoRegion = SamplePolygon)
+                .Build();
+
+            var trucks = new List<Truck> { truck };
 
             A.CallTo(() => _parcelValidator.Validate(A<Parcel>._)).Returns(validationResult);
             A.CallTo(() => _parcelRepository.GetByTrackingId(A<string>._)).Returns(null);
+            A.CallTo(() => _geocodingAgent.GeocodeAddress(A<Address>._)).Returns(geoLocation);
+            A.CallTo(() => _hopRepository.GetAllTrucks()).Returns(trucks);
             A.CallTo(() => _parcelRepository.Create(A<DataAccess.Entities.Parcel>._)).Returns(parcelEntity);
             A.CallTo(() => _mapper.Map<Parcel>(A<DataAccess.Entities.Parcel>._)).Returns(parcel);
             
-            var parcelReturned = _logic.TransitionParcel(parcel, parcel.TrackingId);
+            var transitionParcel = _logic.TransitionParcel(parcel, parcel.TrackingId);
             
-            parcelReturned.Should().Be(parcel);
+            transitionParcel.State.Should().Be(ParcelState.Pickup);
         }
         
         [Fact]
