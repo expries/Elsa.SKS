@@ -54,7 +54,7 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenAValidParcel_WhenTransitioningTheParcel_ThenReturnParcel()
+        public void GivenAValidParcel_WhenTransitioningTheParcel_ThenReturnParcelWithStatusPickup()
         {
             var validationResult = new ValidationResult();
 
