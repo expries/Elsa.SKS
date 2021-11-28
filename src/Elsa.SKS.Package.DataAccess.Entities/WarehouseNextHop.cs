@@ -21,7 +21,6 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// <summary>
         /// Gets or Sets Hop
         /// </summary>
-        [ForeignKey("NextHopId")]
         public virtual Hop NextHop { get; set; }
         
         /// <summary>

@@ -11,6 +11,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Net.Http;
 using Elsa.SKS.Filters;
 using Elsa.SKS.MappingProfiles;
 using Elsa.SKS.Package.BusinessLogic;
@@ -73,7 +74,12 @@ namespace Elsa.SKS
             
             services.AddTransient<IParcelRepository, SqlParcelRepository>();
             services.AddTransient<IHopRepository, SqlHopRepository>();
+            
             services.AddTransient<IGeocodingAgent, OsmCodingAgent>();
+            services.AddTransient<ILogisticsPartnerAgent, LogisticsPartnerAgent>();
+            
+            services.AddTransient(_ => new HttpClient());
+            
             services.AddTransient<IAppDbContext, AppDbContext>();
             
             // Add validators

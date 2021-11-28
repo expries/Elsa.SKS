@@ -24,6 +24,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             try
             {
                 parcel.FutureHops.ForEach(ha => ha.Hop = _context.Hops.Single(_ => _.Id == ha.Hop.Id));
+                parcel.VisitedHops.ForEach(ha => ha.Hop = _context.Hops.Single(_ => _.Id == ha.Hop.Id));
                 _context.Parcels.Add(parcel);
                 _context.SaveChanges();
                 return parcel;
@@ -39,6 +40,16 @@ namespace Elsa.SKS.Package.DataAccess.Sql
         {
             try
             {
+                parcel.FutureHops.ForEach(ha => ha.Hop = _context.Hops.Single(_ => _.Id == ha.Hop.Id));
+                parcel.VisitedHops.ForEach(ha => ha.Hop = _context.Hops.Single(_ => _.Id == ha.Hop.Id));
+                var storedParcel = _context.Parcels.FirstOrDefault(_ => _.TrackingId == parcel.TrackingId);
+                
+                if (storedParcel is not null)
+                {
+                    _context.Parcels.Remove(storedParcel);
+                    _context.SaveChanges();
+                }
+                
                 _context.Parcels.Update(parcel);
                 _context.SaveChanges();
                 return parcel;

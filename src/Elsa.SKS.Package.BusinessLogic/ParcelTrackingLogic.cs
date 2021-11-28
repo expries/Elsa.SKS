@@ -99,8 +99,11 @@ namespace Elsa.SKS.Package.BusinessLogic
                 parcel.FutureHops.RemoveAll(ha => ha.Hop.Code == code);
 
                 // add hop arrival to parcel's visited hops
-                var hopArrival = new HopArrival { Hop = hop, DateTime = DateTime.Now };
-                parcel.VisitedHops.Add(hopArrival);
+                if (parcel.VisitedHops.All(_ => _.Hop.Id != hop.Id))
+                {
+                    var hopArrival = new HopArrival { Hop = hop, DateTime = DateTime.Now };
+                    parcel.VisitedHops.Add(hopArrival);
+                }
 
                 // update parcel state
                 switch (hop)

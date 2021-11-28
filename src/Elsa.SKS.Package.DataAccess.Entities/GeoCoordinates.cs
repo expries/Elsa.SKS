@@ -23,5 +23,11 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// </summary>
         /// <value>Longitude of the coordinate.</value>
         public double? Lon { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets Hop
+        /// </summary>
+        [Required]
+        public virtual Hop Hop { get; set; }
     }
 }
