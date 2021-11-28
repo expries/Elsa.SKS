@@ -35,6 +35,7 @@ namespace Elsa.SKS.Package.DataAccess.Tests
             var parcel = Builder<Parcel>
                 .CreateNew()
                 .With(_ => _.FutureHops = new List<HopArrival>())
+                .With(_ => _.VisitedHops = new List<HopArrival>())
                 .Build();
             
             _parcelRepository.Create(parcel);
@@ -48,6 +49,8 @@ namespace Elsa.SKS.Package.DataAccess.Tests
         {
             var parcel = Builder<Parcel>
                 .CreateNew()
+                .With(_ => _.FutureHops = new List<HopArrival>())
+                .With(_ => _.VisitedHops = new List<HopArrival>())
                 .Build();
 
             A.CallTo(() => _context.Parcels.Add(A<Parcel>._)).Throws<DbUpdateException>();
@@ -62,6 +65,8 @@ namespace Elsa.SKS.Package.DataAccess.Tests
         {
             var parcel = Builder<Parcel>
                 .CreateNew()
+                .With(_ => _.FutureHops = new List<HopArrival>())
+                .With(_ => _.VisitedHops = new List<HopArrival>())
                 .Build();
 
             A.CallTo(() => _context.Parcels.Add(A<Parcel>._)).Throws<DbUpdateConcurrencyException>();
@@ -76,6 +81,8 @@ namespace Elsa.SKS.Package.DataAccess.Tests
         {
             var parcel = Builder<Parcel>
                 .CreateNew()
+                .With(_ => _.FutureHops = new List<HopArrival>())
+                .With(_ => _.VisitedHops = new List<HopArrival>())
                 .Build();
 
             _context.Parcels.Update(parcel);
@@ -90,6 +97,8 @@ namespace Elsa.SKS.Package.DataAccess.Tests
         {
             var parcel = Builder<Parcel>
                 .CreateNew()
+                .With(_ => _.FutureHops = new List<HopArrival>())
+                .With(_ => _.VisitedHops = new List<HopArrival>())
                 .Build();
 
             A.CallTo(() => _context.Parcels.Update(A<Parcel>._)).Throws<DbUpdateException>();
@@ -104,6 +113,8 @@ namespace Elsa.SKS.Package.DataAccess.Tests
         {
             var parcel = Builder<Parcel>
                 .CreateNew()
+                .With(_ => _.FutureHops = new List<HopArrival>())
+                .With(_ => _.VisitedHops = new List<HopArrival>())
                 .Build();
 
             A.CallTo(() => _context.Parcels.Update(A<Parcel>._)).Throws<DbUpdateConcurrencyException>();
