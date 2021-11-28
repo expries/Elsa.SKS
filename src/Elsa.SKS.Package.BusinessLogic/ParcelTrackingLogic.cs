@@ -49,13 +49,8 @@ namespace Elsa.SKS.Package.BusinessLogic
 
                 var parcel = _mapper.Map<Parcel>(parcelEntity);
 
-                // on delivery, mark all future hop arrivals with the current timestamp and add to visited hop
-                parcel.FutureHops.ToList().ForEach(ha =>
-                {
-                    parcel.FutureHops.Remove(ha);
-                    ha.DateTime = DateTime.Now;
-                    parcel.VisitedHops.Add(ha);
-                });
+                // update parcel state
+                parcel.State = ParcelState.Delivered;
 
                 parcelEntity = _mapper.Map<DataAccessParcel>(parcel);
                 _parcelRepository.Update(parcelEntity);
