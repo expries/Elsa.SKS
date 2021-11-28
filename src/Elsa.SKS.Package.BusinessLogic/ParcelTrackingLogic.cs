@@ -52,6 +52,14 @@ namespace Elsa.SKS.Package.BusinessLogic
                 // update parcel state
                 parcel.State = ParcelState.Delivered;
 
+                // mark all future hops (if any) as reached
+                parcel.FutureHops.ToList().ForEach(ha =>
+                {
+                    parcel.FutureHops.Remove(ha);
+                    ha.DateTime = DateTime.Now;
+                    parcel.VisitedHops.Add(ha);
+                });
+
                 parcelEntity = _mapper.Map<DataAccessParcel>(parcel);
                 _parcelRepository.Update(parcelEntity);
             }
@@ -87,9 +95,8 @@ namespace Elsa.SKS.Package.BusinessLogic
                 var parcel = _mapper.Map<Parcel>(parcelEntity);
                 var hop = _mapper.Map<Hop>(hopEntity);
             
-                // remove all future/visited hop arrivals with the given code
+                // remove hop with given code from future hops 
                 parcel.FutureHops.RemoveAll(ha => ha.Hop.Code == code);
-                parcel.VisitedHops.RemoveAll(ha => ha.Hop.Code == code);
 
                 // add hop arrival to parcel's visited hops
                 var hopArrival = new HopArrival { Hop = hop, DateTime = DateTime.Now };
