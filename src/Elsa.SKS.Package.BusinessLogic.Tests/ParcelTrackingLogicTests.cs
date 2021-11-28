@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
+using Elsa.SKS.Package.BusinessLogic.Entities.Enums;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
+using Elsa.SKS.Package.ServiceAgents.Interfaces;
 using FakeItEasy;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -22,6 +24,8 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         private readonly IParcelRepository _parcelRepository;
 
         private readonly IHopRepository _hopRepository;
+        
+        private readonly ILogisticsPartnerAgent _logisticsPartner;
 
         private readonly IMapper _mapper;
         
@@ -31,32 +35,26 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         {
             _parcelRepository = A.Fake<IParcelRepository>();
             _hopRepository = A.Fake<IHopRepository>();
+            _logisticsPartner = A.Fake<ILogisticsPartnerAgent>();
             _mapper = A.Fake<IMapper>();
             _logger = A.Fake<ILogger<ParcelTrackingLogic>>();
-            _logic = new ParcelTrackingLogic(_parcelRepository, _hopRepository, _mapper, _logger);
+            _logic = new ParcelTrackingLogic(_parcelRepository, _hopRepository, _logisticsPartner, _mapper, _logger);
         }
         
         [Fact]
-        public void GivenAParcelExists_WhenReportingParcelDelivery_ThenReturnSuccessfully()
+        public void GivenAParcelExists_WhenReportingParcelDelivery_ThenParcelStatusIsDelivered()
         {
             const string trackingId = "my_trackingId";
 
             var parcel = Builder<Parcel>
                 .CreateNew()
-                .With(p => p.FutureHops = new List<HopArrival>
-                {
-                    new HopArrival()
-                })
                 .Build();
 
-            A.CallTo(() => _mapper.Map<Parcel>(A<DataAccess.Entities.Parcel>._))
-                .Returns(parcel);
+            A.CallTo(() => _mapper.Map<Parcel>(A<DataAccess.Entities.Parcel>._)).Returns(parcel);
             
-            Action reportParcelDelivery = () => _logic.ReportParcelDelivery(trackingId);
-
-            reportParcelDelivery.Should().NotThrow<Exception>();
-            parcel.FutureHops.Count.Should().Be(0);
-            parcel.VisitedHops.Count.Should().Be(1);
+            _logic.ReportParcelDelivery(trackingId);
+            
+            parcel.State.Should().Be(ParcelState.Delivered);
         }
         
         [Fact]
@@ -136,44 +134,66 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         }
         
         [Fact]
-        public void GivenAParcelWithVisitedHops_WhenReportingParcelHop_ThenTheHopIsRemovedFromVisitedHops()
+        public void GivenAParcel_WhenReportingWarehouseHop_ThenParcelStatusIsInTransport()
         {
             const string trackingId = "my_trackingId";
             
-            var hop = Builder<BusinessLogic.Entities.Hop>
+            var warehouse = Builder<Warehouse>
                 .CreateNew()
                 .Build();
-
-            var hopArrivals = new List<HopArrival>
-            {
-                new HopArrival
-                {
-                    DateTime = DateTime.Now,
-                    Hop = hop
-                },
-                new HopArrival
-                {
-                    DateTime = DateTime.Now,
-                    Hop = hop
-                },
-                new HopArrival
-                {
-                    DateTime = DateTime.Now,
-                    Hop = new Entities.Hop()
-                }
-            };
 
             var parcel = Builder<Parcel>
                 .CreateNew()
-                .With(p => p.VisitedHops = hopArrivals)
                 .Build();
 
             A.CallTo(() => _mapper.Map<Parcel>(A<DataAccess.Entities.Parcel>._)).Returns(parcel);
-            A.CallTo(() => _mapper.Map<BusinessLogic.Entities.Hop>(A<Hop>._)).Returns(hop);
+            A.CallTo(() => _mapper.Map<BusinessLogic.Entities.Hop>(A<Hop>._)).Returns(warehouse);
 
-            _logic.ReportParcelHop(trackingId, hop.Code);
+            _logic.ReportParcelHop(trackingId, warehouse.Code);
 
-            parcel.VisitedHops.Count.Should().Be(2);
+            parcel.State.Should().Be(ParcelState.InTransport);
+        }
+        
+        [Fact]
+        public void GivenAParcel_WhenReportingTruckHop_ThenParcelStatusIsInTruckDelivery()
+        {
+            const string trackingId = "my_trackingId";
+            
+            var truck = Builder<Truck>
+                .CreateNew()
+                .Build();
+
+            var parcel = Builder<Parcel>
+                .CreateNew()
+                .Build();
+
+            A.CallTo(() => _mapper.Map<Parcel>(A<DataAccess.Entities.Parcel>._)).Returns(parcel);
+            A.CallTo(() => _mapper.Map<BusinessLogic.Entities.Hop>(A<Hop>._)).Returns(truck);
+
+            _logic.ReportParcelHop(trackingId, truck.Code);
+
+            parcel.State.Should().Be(ParcelState.InTruckDelivery);
+        }
+        
+        [Fact]
+        public void GivenAParcel_WhenReportingTransferWarehouseHop_ThenParcelStatusIsTransferred()
+        {
+            const string trackingId = "my_trackingId";
+            
+            var transferWarehouse = Builder<TransferWarehouse>
+                .CreateNew()
+                .Build();
+
+            var parcel = Builder<Parcel>
+                .CreateNew()
+                .Build();
+
+            A.CallTo(() => _mapper.Map<Parcel>(A<DataAccess.Entities.Parcel>._)).Returns(parcel);
+            A.CallTo(() => _mapper.Map<BusinessLogic.Entities.Hop>(A<Hop>._)).Returns(transferWarehouse);
+
+            _logic.ReportParcelHop(trackingId, transferWarehouse.Code);
+
+            parcel.State.Should().Be(ParcelState.Transferred);
         }
         
         [Fact]

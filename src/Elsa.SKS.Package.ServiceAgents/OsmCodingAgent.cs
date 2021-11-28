@@ -47,7 +47,7 @@ namespace Elsa.SKS.Package.ServiceAgents
                 _logger.LogInformation("Given address was not found");
                 throw new AddressNotFoundException("Given address was not found.");
             }
-            catch (Exception ex) when (ex is not AddressNotFoundException)
+            catch (Exception ex) when (ex is not ServiceAgentException)
             {
                 _logger.LogError(ex, "Request Error");
                 throw new ServiceAgentException("Error in requesting geolocation data occured.", ex);

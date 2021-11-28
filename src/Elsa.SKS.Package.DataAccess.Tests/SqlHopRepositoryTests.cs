@@ -260,7 +260,7 @@ namespace Elsa.SKS.Package.DataAccess.Tests
                 .With(w => w.Level = 0)
                 .Build();
             
-            _context.Warehouses.Add(storedWarehouse);
+            _context.Hops.Add(storedWarehouse);
             var warehouse = _hopRepository.GetWarehouseByCode(storedWarehouse.Code);
 
             warehouse.Should().Be(storedWarehouse);
@@ -270,7 +270,7 @@ namespace Elsa.SKS.Package.DataAccess.Tests
         public void GivenAInvalidOperationExceptionIsThrown_WhenGettingWarehouseByCode_ThenASingleOrDefaultExceptionIsThrown()
         {
             const string warehouseCode = "warehouse_code";
-            A.CallTo(() => _context.Warehouses).Throws<InvalidOperationException>();
+            A.CallTo(() => _context.Hops).Throws<InvalidOperationException>();
             
             Action getAllWarehouses = () => _hopRepository.GetWarehouseByCode(warehouseCode);
 

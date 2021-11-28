@@ -31,6 +31,9 @@ namespace Elsa.SKS.MappingProfiles
 
             CreateMap<Package.BusinessLogic.Entities.Truck, Truck>()
                 .ForMember(_ => _.RegionGeoJson, o => o.ConvertUsing(new GeometryConverter(), _ => _.GeoRegion));
+            
+            CreateMap<WarehouseNextHops, Package.BusinessLogic.Entities.WarehouseNextHop>().ReverseMap();
+            CreateMap<GeoCoordinates, Package.BusinessLogic.Entities.GeoCoordinates>().ReverseMap();
         }
     }
 }

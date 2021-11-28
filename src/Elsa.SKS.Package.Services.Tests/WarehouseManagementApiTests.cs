@@ -140,14 +140,5 @@ namespace Elsa.SKS.Package.Services.Tests
             
             actionResult.Should().BeOfType<BadRequestObjectResult>();
         }
-        
-        [Fact]
-        public void AutomapperConfigurationTester()
-        {
-            var configuration = new MapperConfiguration(cfg =>
-                cfg.AddProfile(new WarehouseProfile()));
-
-            configuration.AssertConfigurationIsValid();
-        }
     }
 }

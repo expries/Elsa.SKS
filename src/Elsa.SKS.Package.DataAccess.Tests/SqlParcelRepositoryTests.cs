@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
@@ -33,6 +34,7 @@ namespace Elsa.SKS.Package.DataAccess.Tests
         {
             var parcel = Builder<Parcel>
                 .CreateNew()
+                .With(_ => _.FutureHops = new List<HopArrival>())
                 .Build();
             
             _parcelRepository.Create(parcel);
