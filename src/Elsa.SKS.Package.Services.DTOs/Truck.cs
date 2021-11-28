@@ -10,13 +10,10 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
-using Elsa.SKS.Package.Services.DTOs.Converters;
 using Elsa.SKS.Package.Services.DTOs.Enums;
-using NetTopologySuite.Geometries;
-using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.Services.DTOs
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -29,8 +26,7 @@ namespace Elsa.SKS.Package.Services.DTOs
         /// </summary>
         /// <value>GeoJSON of the are covered by the truck.</value>
         [DataMember(Name="regionGeoJson")]
-        [JsonConverter(typeof(GeometryConverter))]
-        public Geometry GeoRegion { get; set; }
+        public string RegionGeoJson { get; set; }
 
         /// <summary>
         /// The truck&#x27;s number plate.

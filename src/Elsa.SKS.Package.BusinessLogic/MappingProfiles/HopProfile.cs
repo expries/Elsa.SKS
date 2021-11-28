@@ -15,11 +15,11 @@ namespace Elsa.SKS.Package.BusinessLogic.MappingProfiles
         /// </summary>
         public HopProfile()
         {
-            CreateMap<Hop, Package.DataAccess.Entities.Hop>().IncludeAllDerived();
-            CreateMap<Package.DataAccess.Entities.Hop, Hop>().IncludeAllDerived();
-            CreateMap<Warehouse, Package.DataAccess.Entities.Warehouse>().ReverseMap();
-            CreateMap<TransferWarehouse, Package.DataAccess.Entities.TransferWarehouse>().ReverseMap();
-            CreateMap<Truck, Package.DataAccess.Entities.Truck>().ReverseMap();
+            CreateMap<Hop, DataAccess.Entities.Hop>().IncludeAllDerived();
+            CreateMap<DataAccess.Entities.Hop, Hop>().IncludeAllDerived();
+            CreateMap<Warehouse, DataAccess.Entities.Warehouse>().ReverseMap();
+            CreateMap<TransferWarehouse, DataAccess.Entities.TransferWarehouse>().ReverseMap();
+            CreateMap<Truck, DataAccess.Entities.Truck>().ReverseMap();
         }
 
     }

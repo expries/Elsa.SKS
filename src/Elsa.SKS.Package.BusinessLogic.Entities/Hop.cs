@@ -36,15 +36,15 @@ namespace Elsa.SKS.Package.BusinessLogic.Entities
         /// Gets or Sets PreviousHop
         /// </summary>
         public WarehouseNextHop PreviousHop { get; set; }
-        
-        /// <summary>
-        /// Gets or Sets Arrivals
-        /// </summary>
-        public List<HopArrival> Arrivals { get; set; }
 
         /// <summary>
         /// Gets or Sets LocationCoordinates
         /// </summary>
         public GeoCoordinates LocationCoordinates { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Arrivals
+        /// </summary>
+        public List<HopArrival> Arrivals { get; set; }
     }
 }
