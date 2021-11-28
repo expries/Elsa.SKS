@@ -60,7 +60,11 @@ namespace Elsa.SKS.Package.BusinessLogic
                     _logger.LogInformation("A parcel with this tracking Id is already being tracked");
                     throw new TransferException("A parcel with this tracking Id is already being tracked.");
                 }
-            
+
+                parcel.TrackingId = trackingId;
+                parcel.FutureHops = GetFutureHops(parcel.Sender, parcel.Recipient);
+                parcel.State = ParcelState.Pickup;
+
                 var parcelDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Parcel>(parcel);
                 var parcelEntity = _parcelRepository.Create(parcelDal);
                 var result = _mapper.Map<Parcel>(parcelEntity);
@@ -86,8 +90,8 @@ namespace Elsa.SKS.Package.BusinessLogic
             try
             {
                 // generate new trackingId and check if id already exists
-                var isNewTrackingIdValid = false;
-                var newTrackingId = string.Empty;
+                bool isNewTrackingIdValid = false;
+                string newTrackingId = string.Empty;
 
                 while (!isNewTrackingIdValid)
                 {
@@ -118,20 +122,40 @@ namespace Elsa.SKS.Package.BusinessLogic
         private string GenerateTrackingId()
         {
             const int stringLength = 9;
-            var allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
+            char[] allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
                 
             var randomId = new StringBuilder();
             var random = new Random();
 
-            for (var i = 0; i < stringLength; i++)
+            for (int i = 0; i < stringLength; i++)
             {
-                var randomCharSelected = random.Next(0, (allowedChars.Length - 1));
+                int randomCharSelected = random.Next(0, (allowedChars.Length - 1));
                 randomId.Append(allowedChars[randomCharSelected]);
             }
 
             return randomId.ToString();
         }
-        
+
+        private List<HopArrival> GetFutureHops(User parcelSender, User parcelRecipient)
+        {
+            // get GPS coordinates for package sender/recipient
+            var senderAddress = _mapper.Map<Elsa.SKS.Package.ServiceAgents.Entities.Address>(parcelSender);
+            var recipientAddress = _mapper.Map<Elsa.SKS.Package.ServiceAgents.Entities.Address>(parcelRecipient);
+            var senderGps = _geocodingAgent.GeocodeAddress(senderAddress);
+            var recipientGps = _geocodingAgent.GeocodeAddress(recipientAddress);
+
+            // convert GPS coordinates to points
+            var senderLocation = new Point(senderGps.Longitude, senderGps.Latitude);
+            var recipientLocation = new Point(recipientGps.Longitude, recipientGps.Latitude);
+
+            // get trucks that cover sender/recipient location
+            var trucks = _hopRepository.GetAllTrucks();
+            var senderTruck = trucks.First(t => t.GeoRegion.Contains(senderLocation));
+            var recipientTruck = trucks.First(t => t.GeoRegion.Contains(recipientLocation));
+            var route = GetHopRoute(senderTruck, recipientTruck);
+                
+            return route?.Select(hop => new HopArrival { Hop = hop }).ToList() ?? new List<HopArrival>();
+        }
         
         private List<Hop> GetHopRoute(Truck senderHop, Truck receiverHop)
         {
@@ -166,27 +190,6 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
 
             return routeCombined;
-        }
-        
-        private List<HopArrival> GetFutureHops(User parcelSender, User parcelRecipient)
-        {
-            // get GPS coordinates for package sender/recipient
-            var senderAddress = _mapper.Map<Elsa.SKS.Package.ServiceAgents.Entities.Address>(parcelSender);
-            var recipientAddress = _mapper.Map<Elsa.SKS.Package.ServiceAgents.Entities.Address>(parcelRecipient);
-            var senderGps = _geocodingAgent.GeocodeAddress(senderAddress);
-            var recipientGps = _geocodingAgent.GeocodeAddress(recipientAddress);
-
-            // convert GPS coordinates to points
-            var senderLocation = new Point(senderGps.Longitude, senderGps.Latitude);
-            var recipientLocation = new Point(recipientGps.Longitude, recipientGps.Latitude);
-
-            // get trucks that cover sender/recipient location
-            var trucks = _hopRepository.GetAllTrucks();
-            var senderTruck = trucks.First(t => t.GeoRegion.Contains(senderLocation));
-            var recipientTruck = trucks.First(t => t.GeoRegion.Contains(recipientLocation));
-            var route = GetHopRoute(senderTruck, recipientTruck);
-                
-            return route.Select(hop => new HopArrival() { Hop = hop }).ToList();
         }
     }
 }
