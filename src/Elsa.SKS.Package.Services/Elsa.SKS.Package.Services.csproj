@@ -46,6 +46,7 @@
     <ProjectReference Include="..\Elsa.SKS.Package.ServiceAgents\Elsa.SKS.Package.ServiceAgents.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.Services.DTOs\Elsa.SKS.Package.Services.DTOs.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.Webhooks.Interfaces\Elsa.SKS.Package.Webhooks.Interfaces.csproj" />
+    <ProjectReference Include="..\Elsa.SKS.Package.Webhooks\Elsa.SKS.Package.Webhooks.csproj" />
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

@@ -14,6 +14,8 @@ namespace Elsa.SKS.Package.DataAccess.Interfaces
         public DbSet<TransferWarehouse> TransferWarehouses { get; }
         
         public DbSet<Truck> Trucks { get; }
+        
+        public DbSet<Subscription> Subscriptions { get; }
 
         public int SaveChanges();
     }

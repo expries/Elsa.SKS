@@ -1,29 +1,87 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
+using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace Elsa.SKS.Package.DataAccess.Sql
 {
     public class SubscriberRepository : ISubscriberRepository
     {
+        private readonly IAppDbContext _context;
+        
+        private readonly ILogger<SubscriberRepository> _logger;
+        
+        public SubscriberRepository(IAppDbContext context, ILogger<SubscriberRepository> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
+        
         public Subscription Create(Subscription subscription)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                _context.Subscriptions.Add(subscription);
+                _context.SaveChanges();
+                return subscription;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
+            }
         }
 
         public Subscription Update(Subscription subscription)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                _context.Subscriptions.Update(subscription);
+                _context.SaveChanges();
+                return subscription;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
+            }
         }
 
         public bool Delete(Subscription subscription)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var result = _context.Subscriptions.SingleOrDefault(s => s.Id == subscription.Id);
+                
+                if (result is null)
+                {
+                    return false;
+                }
+
+                _context.Subscriptions.Remove(result);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
+            }
         }
 
         public IEnumerable<Subscription> GetByTrackingId(string trackingId)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return _context.Subscriptions.Where(s => s.TrackingId == trackingId);
+            }
+            catch (Exception ex)
+            {
+                throw new DataAccessException("Failed to get subscriptions for trackingId.", ex);
+            }
         }
     }
 }

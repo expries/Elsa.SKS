@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Elsa.SKS.Package.DataAccess.Entities
 {
@@ -8,6 +9,7 @@ namespace Elsa.SKS.Package.DataAccess.Entities
         /// Gets or Sets Id
         /// </summary>
 
+        [Key]
         public long? Id { get; set; }
 
         /// <summary>

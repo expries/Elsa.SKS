@@ -21,6 +21,8 @@ using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql;
 using Elsa.SKS.Package.ServiceAgents;
 using Elsa.SKS.Package.ServiceAgents.Interfaces;
+using Elsa.SKS.Package.Webhooks;
+using Elsa.SKS.Package.Webhooks.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -71,12 +73,16 @@ namespace Elsa.SKS
             services.AddTransient<IWarehouseLogic, WarehouseLogic>();
             services.AddTransient<IParcelTrackingLogic, ParcelTrackingLogic>();
             services.AddTransient<IParcelRegistrationLogic, ParcelRegistrationLogic>();
-            
+            services.AddTransient<IWebhookLogic, WebhookLogic>();
+
             services.AddTransient<IParcelRepository, SqlParcelRepository>();
             services.AddTransient<IHopRepository, SqlHopRepository>();
-            
+            services.AddTransient<ISubscriberRepository, SubscriberRepository>();
+
             services.AddTransient<IGeocodingAgent, OsmCodingAgent>();
             services.AddTransient<ILogisticsPartnerAgent, LogisticsPartnerAgent>();
+            services.AddTransient<IWebhookManager, WebhookManager>();
+
             
             services.AddTransient(_ => new HttpClient());
             

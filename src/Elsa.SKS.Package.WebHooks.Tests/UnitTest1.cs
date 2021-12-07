@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace Elsa.SKS.Package.WebHooks.Tests
+namespace Elsa.SKS.Package.Webhooks.Tests
 {
     public class UnitTest1
     {

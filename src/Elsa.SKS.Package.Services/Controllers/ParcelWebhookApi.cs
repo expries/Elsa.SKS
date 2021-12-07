@@ -13,10 +13,12 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Elsa.SKS.Attributes;
+using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.Services.DTOs;
-using Elsa.SKS.Package.WebHooks.Interfaces;
+using Elsa.SKS.Package.Webhooks.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Elsa.SKS.Controllers
@@ -28,17 +30,21 @@ namespace Elsa.SKS.Controllers
     public class ParcelWebhookApiController : ControllerBase
     { 
         private readonly IWebhookLogic _webhookLogic;
+        
+        private readonly IMapper _mapper;
 
         private readonly ILogger<ParcelWebhookApiController> _logger;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="webhookManager"></param>
+        /// <param name="webhookLogic"></param>
+        /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public ParcelWebhookApiController(IWebhookLogic webhookLogic, ILogger<ParcelWebhookApiController> logger)
+        public ParcelWebhookApiController(IWebhookLogic webhookLogic, IMapper mapper, ILogger<ParcelWebhookApiController> logger)
         {
             _webhookLogic = webhookLogic;
+            _mapper = mapper;
             _logger = logger;
         }
         
@@ -56,8 +62,8 @@ namespace Elsa.SKS.Controllers
         public virtual IActionResult ListParcelWebhooks([FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")]string trackingId)
         {
             var response = _webhookLogic.GetParcelWebhooks(trackingId);
+            // mapping to response
             return Ok(response);
-            
             /*
             
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
@@ -89,20 +95,22 @@ namespace Elsa.SKS.Controllers
         [ValidateModelState]
         [SwaggerOperation("SubscribeParcelWebhook")]
         [SwaggerResponse(statusCode: 200, type: typeof(WebhookResponse), description: "Successful response")]
-        public virtual IActionResult SubscribeParcelWebhook([FromRoute][Required][RegularExpression("/^[A-Z0-9]{9}$/")]string trackingId, [FromQuery][Required()]string url)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(WebhookResponse));
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-            string exampleJson = null;
-            exampleJson = "{\n  \"created_at\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"id\" : 0,\n  \"url\" : \"url\",\n  \"trackingId\" : \"trackingId\"\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<WebhookResponse>(exampleJson)
-                        : default(WebhookResponse);            //TODO: Change the data returned
-            return new ObjectResult(example);
+        public virtual IActionResult SubscribeParcelWebhook([FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")]string trackingId, [FromQuery][Required()]string url)
+        {
+            try
+            {
+                var subscription = _webhookLogic.SubscribeParcelWebhook(trackingId, url);
+                Console.WriteLine("test");
+                var webhookResponse = _mapper.Map<WebhookResponse>(subscription);
+                _logger.LogInformation("Subscribe ParcelWebhook response: Created");
+                return Created("/" + subscription.TrackingId, webhookResponse);
+            }
+            catch (BusinessException ex)
+            {
+                _logger.LogError(ex, "Subscribe parcel error");
+                var error = new Error { ErrorMessage = ex.Message };
+                return BadRequest(error);
+            }
         }
 
         /// <summary>
