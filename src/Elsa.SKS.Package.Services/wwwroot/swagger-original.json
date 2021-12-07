@@ -6,7 +6,7 @@
       "name" : "SKS",
       "url" : "http://www.technikum-wien.at/"
     },
-    "version" : "1.20.0"
+    "version" : "1.20.2"
   },
   "servers" : [ {
     "url" : "/"
@@ -15,7 +15,7 @@
     "name" : "sender",
     "description" : "Operations for the sender of a parcel."
   }, {
-    "name" : "receipient",
+    "name" : "recipient",
     "description" : "Operations for the receiver of a parcel."
   }, {
     "name" : "warehouse-management",
@@ -44,7 +44,7 @@
           "required" : true
         },
         "responses" : {
-          "200" : {
+          "201" : {
             "description" : "Successfully submitted the new parcel",
             "content" : {
               "application/json" : {
@@ -69,7 +69,7 @@
     },
     "/parcel/{trackingId}" : {
       "get" : {
-        "tags" : [ "receipient" ],
+        "tags" : [ "recipient" ],
         "summary" : "Find the latest state of a parcel by its tracking ID.\n",
         "operationId" : "trackParcel",
         "parameters" : [ {
@@ -157,19 +157,22 @@
                 }
               }
             }
+          },
+          "409" : {
+            "description" : "A parcel with the specified trackingID is already in the system."
           }
         }
       }
     },
     "/parcel/{trackingId}/reportHop/{code}" : {
       "post" : {
-        "tags" : [ "receipient" ],
-        "summary" : "Report that a Parcel has arrived at a certain hop either warehouse or Truck.\n",
-        "operationId" : "trackParcelx",
+        "tags" : [ "staff" ],
+        "summary" : "Report that a Parcel has arrived at a certain hop either Warehouse or Truck.\n",
+        "operationId" : "reportParcelHop",
         "parameters" : [ {
           "name" : "trackingId",
           "in" : "path",
-          "description" : "The tracking ID of the parcel.",
+          "description" : "The tracking ID of the parcel.\nE.g. PYJRB4HZ6\n",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -191,11 +194,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "Successfully reported hop.",
-            "content" : { }
+            "description" : "Successfully reported hop."
           },
-          "500" : {
-            "description" : "An error occurred.",
+          "400" : {
+            "description" : "The operation failed due to an error.",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -203,6 +205,9 @@
                 }
               }
             }
+          },
+          "404" : {
+            "description" : "Parcel does not exist with this tracking ID or hop with code not found.\n"
           }
         }
       }
@@ -331,7 +336,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/warehouse"
+                  "$ref" : "#/components/schemas/hop"
                 }
               }
             }
@@ -347,7 +352,7 @@
             }
           },
           "404" : {
-            "description" : "Warehouse id not found"
+            "description" : "No hop with the specified id could be found."
           }
         }
       }
@@ -355,8 +360,8 @@
     "/parcel/{trackingId}/webhooks" : {
       "get" : {
         "tags" : [ "parcelWebhook" ],
-        "description" : "Gets all registered subscriptions for the parcel webhook.",
-        "operationId" : "ApiParcelByTrackingIdWebhooksGet",
+        "summary" : "Get all registered subscriptions for the parcel webhook.",
+        "operationId" : "listParcelWebhooks",
         "parameters" : [ {
           "name" : "trackingId",
           "in" : "path",
@@ -387,8 +392,8 @@
       },
       "post" : {
         "tags" : [ "parcelWebhook" ],
-        "description" : "Subscribes to a webhook notification for the specific parcel.",
-        "operationId" : "ApiParcelByTrackingIdWebhooksPost",
+        "summary" : "Subscribe to a webhook notification for the specific parcel.",
+        "operationId" : "subscribeParcelWebhook",
         "parameters" : [ {
           "name" : "trackingId",
           "in" : "path",
@@ -413,17 +418,7 @@
           "200" : {
             "description" : "Successful response",
             "content" : {
-              "text/plain" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/webhookResponse"
-                }
-              },
               "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/webhookResponse"
-                }
-              },
-              "text/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/webhookResponse"
                 }
@@ -463,8 +458,8 @@
     "/parcel/webhooks/{id}" : {
       "delete" : {
         "tags" : [ "parcelWebhook" ],
-        "description" : "Removes an existing webhook subscription.",
-        "operationId" : "ApiParcelWebhooksByIdDelete",
+        "summary" : "Remove an existing webhook subscription.",
+        "operationId" : "unsubscribeParcelWebhook",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -492,23 +487,23 @@
   "components" : {
     "schemas" : {
       "parcel" : {
-        "required" : [ "receipient", "sender", "weight" ],
+        "required" : [ "recipient", "sender", "weight" ],
         "type" : "object",
         "properties" : {
           "weight" : {
             "type" : "number",
             "format" : "float"
           },
-          "receipient" : {
-            "$ref" : "#/components/schemas/receipient"
+          "recipient" : {
+            "$ref" : "#/components/schemas/recipient"
           },
           "sender" : {
-            "$ref" : "#/components/schemas/receipient"
+            "$ref" : "#/components/schemas/recipient"
           }
         },
         "example" : {
           "weight" : 5.2,
-          "receipient" : {
+          "recipient" : {
             "name" : "Microsoft",
             "street" : "Am Europlatz 3",
             "postalCode" : "A-1120",
@@ -524,7 +519,7 @@
           }
         }
       },
-      "receipient" : {
+      "recipient" : {
         "required" : [ "city", "country", "name", "postalCode", "street" ],
         "type" : "object",
         "properties" : {
@@ -585,6 +580,17 @@
             "$ref" : "#/components/schemas/geoCoordinate"
           }
         },
+        "example" : {
+          "code" : "code",
+          "locationName" : "locationName",
+          "processingDelayMins" : 0,
+          "hopType" : "hopType",
+          "description" : "description",
+          "locationCoordinates" : {
+            "lon" : 1.4658129805029452,
+            "lat" : 6.027456183070403
+          }
+        },
         "discriminator" : {
           "propertyName" : "hopType"
         }
@@ -618,7 +624,7 @@
           "properties" : {
             "regionGeoJson" : {
               "type" : "string",
-              "description" : "GeoJSON of the are covered by the logistics partner."
+              "description" : "GeoJSON (https://geojson.org/) of the area covered by the logistics partner."
             },
             "logisticsPartner" : {
               "type" : "string",
@@ -640,7 +646,7 @@
           "properties" : {
             "regionGeoJson" : {
               "type" : "string",
-              "description" : "GeoJSON of the are covered by the truck."
+              "description" : "GeoJSON (https://geojson.org/) of the area covered by the truck."
             },
             "numberPlate" : {
               "type" : "string",
@@ -750,6 +756,10 @@
             "description" : "Longitude of the coordinate.",
             "format" : "double"
           }
+        },
+        "example" : {
+          "lon" : 1.4658129805029452,
+          "lat" : 6.027456183070403
         }
       },
       "webhookResponse" : {

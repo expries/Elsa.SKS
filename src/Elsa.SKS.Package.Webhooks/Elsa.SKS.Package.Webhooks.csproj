@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Elsa.SKS.Package.WebHooks</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Elsa.SKS.Package.DataAccess.Entities\Elsa.SKS.Package.DataAccess.Entities.csproj" />
+    <ProjectReference Include="..\Elsa.SKS.Package.DataAccess.Interfaces\Elsa.SKS.Package.DataAccess.Interfaces.csproj" />
+    <ProjectReference Include="..\Elsa.SKS.Package.Webhooks.Interfaces\Elsa.SKS.Package.Webhooks.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
