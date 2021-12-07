@@ -5,7 +5,8 @@ namespace Elsa.SKS.Package.BusinessLogic.Interfaces
 {
     public interface IWebhookLogic
     {
-        Subscription SubscribeParcelWebhook(string trackingId, string url);
-        List<Subscription> GetParcelWebhooks(string trackingId);
+        public Subscription SubscribeParcelWebhook(string trackingId, string url);
+        public bool UnsubscribeParcelWebhook(long? id);
+        public List<Subscription> GetParcelWebhooks(string trackingId);
     }
 }

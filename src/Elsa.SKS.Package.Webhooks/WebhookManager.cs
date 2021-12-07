@@ -14,11 +14,14 @@ namespace Elsa.SKS.Package.Webhooks
     {
         private readonly ISubscriberRepository _subscriberRepository;
         
+        private readonly IParcelRepository _parcelRepository;
+
         private readonly ILogger<WebhookManager> _logger;
 
-        public WebhookManager(ISubscriberRepository subscriberRepository, ILogger<WebhookManager> logger)
+        public WebhookManager(ISubscriberRepository subscriberRepository, IParcelRepository parcelRepository, ILogger<WebhookManager> logger)
         {
             _subscriberRepository = subscriberRepository;
+            _parcelRepository = parcelRepository;
             _logger = logger;
         }
 
@@ -26,6 +29,13 @@ namespace Elsa.SKS.Package.Webhooks
         {
             try
             {
+                // checks if parcel exists
+                if (_parcelRepository.GetByTrackingId(newSubscription.TrackingId) == null)
+                {
+                    _logger.LogInformation("Parcel with tracking id was not found");
+                    throw new ParcelNotFoundException($"Parcel with tracking id {newSubscription.TrackingId} was not found");
+                }
+                
                 var subscription = _subscriberRepository.Create(newSubscription);
                 return subscription;
             }
@@ -35,23 +45,46 @@ namespace Elsa.SKS.Package.Webhooks
                 throw new DataAccessException("A database error has occurred.", ex);
             }
         }
+        
+        public bool DeleteSubscriptionById(long? id)
+        {
+            try
+            {
+                // checks if subscription id exists
+                if (_subscriberRepository.GetById(id) == null)
+                {
+                    _logger.LogInformation("Subscription with this id was not found");
+                    throw new SubscriptionNotFoundException($"Subscription with id {id} was not found");
+                }
+                return _subscriberRepository.Delete(id);
+
+            }
+            catch (DataAccessException ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error has occurred.", ex);
+            }
+
+        }
 
         public List<Subscription> GetParcelWebhooks(string trackingId)
         {
-            var result = new List<Subscription>();
-            
             try
             {
-                result = _subscriberRepository.GetByTrackingId(trackingId).ToList();
+                if (_subscriberRepository.GetByTrackingId(trackingId).ToList().Count == 0)
+                {
+                    _logger.LogInformation("Parcel with tracking id was not found");
+                    throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
+                }
+                return _subscriberRepository.GetByTrackingId(trackingId).ToList();
             }
-            catch (Exception e)
+            catch (DataAccessException ex)
             {
-                Console.WriteLine(e);
-                throw;
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error has occurred.", ex);
             }
-            
-            //
-            return result;
+
         }
+        
     }
 }

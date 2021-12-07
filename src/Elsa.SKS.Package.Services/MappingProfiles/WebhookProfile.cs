@@ -17,6 +17,8 @@ namespace Elsa.SKS.MappingProfiles
         public WebhookProfile()
         {
             CreateMap<WebhookResponse, Subscription>().ReverseMap();
+            CreateMap<WebhookResponses, WebhookResponse>().ReverseMap();
+
         }
     }
 }

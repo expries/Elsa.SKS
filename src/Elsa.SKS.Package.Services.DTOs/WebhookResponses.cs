@@ -28,6 +28,5 @@ namespace Elsa.SKS.Package.Services.DTOs
     [ExcludeFromCodeCoverage]
     public class WebhookResponses : List<WebhookResponse>
     {
-        //public List<WebhookResponse> Responses { get; set; }
     }
 }

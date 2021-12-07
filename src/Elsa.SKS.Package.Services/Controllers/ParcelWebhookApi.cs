@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Newtonsoft.Json;
@@ -61,26 +62,23 @@ namespace Elsa.SKS.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(WebhookResponses), description: "List of webooks for the &#x60;trackingId&#x60;")]
         public virtual IActionResult ListParcelWebhooks([FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")]string trackingId)
         {
-            var response = _webhookLogic.GetParcelWebhooks(trackingId);
-            // mapping to response
-            return Ok(response);
-            /*
-            
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(WebhookResponses));
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-            string exampleJson = null;
-            exampleJson = "[ {\n  \"created_at\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"id\" : 0,\n  \"url\" : \"url\",\n  \"trackingId\" : \"trackingId\"\n}, {\n  \"created_at\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"id\" : 0,\n  \"url\" : \"url\",\n  \"trackingId\" : \"trackingId\"\n} ]";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<WebhookResponses>(exampleJson)
-                        : default(WebhookResponses);            //TODO: Change the data returned
-            return new ObjectResult(example);
-            
-            */
-
+            try
+            {
+                var allWebhooks = _webhookLogic.GetParcelWebhooks(trackingId);
+                var response = _mapper.Map<WebhookResponses>(allWebhooks);
+                return Ok(response);
+            }
+            catch (ParcelNotFoundException ex)
+            {
+                _logger.LogInformation("Parcel not found");
+                return NotFound();
+            }
+            catch (BusinessException ex)
+            {
+                _logger.LogError(ex, "Subscribe parcel error");
+                var error = new Error { ErrorMessage = ex.Message };
+                return BadRequest(error);
+            }
         }
 
         /// <summary>
@@ -100,10 +98,14 @@ namespace Elsa.SKS.Controllers
             try
             {
                 var subscription = _webhookLogic.SubscribeParcelWebhook(trackingId, url);
-                Console.WriteLine("test");
                 var webhookResponse = _mapper.Map<WebhookResponse>(subscription);
                 _logger.LogInformation("Subscribe ParcelWebhook response: Created");
                 return Created("/" + subscription.TrackingId, webhookResponse);
+            }
+            catch (ParcelNotFoundException ex)
+            {
+                _logger.LogInformation("Parcel not found");
+                return NotFound();
             }
             catch (BusinessException ex)
             {
@@ -124,14 +126,24 @@ namespace Elsa.SKS.Controllers
         [ValidateModelState]
         [SwaggerOperation("UnsubscribeParcelWebhook")]
         public virtual IActionResult UnsubscribeParcelWebhook([FromRoute][Required]long? id)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            throw new NotImplementedException();
+        {
+            try
+            {
+                _webhookLogic.UnsubscribeParcelWebhook(id);
+                _logger.LogInformation("Unsubscribe ParcelWebhook response: Successfully deleted");
+                return Ok();
+            }
+            catch (SubscriptionNotFoundException ex)
+            {
+                _logger.LogInformation("Subscription not found");
+                return NotFound();
+            }
+            catch (BusinessException ex)
+            {
+                _logger.LogError(ex, "Unsubscribe parcel error");
+                var error = new Error { ErrorMessage = ex.Message };
+                return BadRequest(error);
+            }
         }
     }
 }

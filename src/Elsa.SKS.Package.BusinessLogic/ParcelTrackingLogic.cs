@@ -59,7 +59,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                     ha.DateTime = DateTime.Now;
                     parcel.VisitedHops.Add(ha);
                 });
-
+                
                 parcelEntity = _mapper.Map<DataAccessParcel>(parcel);
                 _parcelRepository.Update(parcelEntity);
             }

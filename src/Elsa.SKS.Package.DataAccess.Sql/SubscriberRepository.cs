@@ -50,11 +50,11 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
         }
 
-        public bool Delete(Subscription subscription)
+        public bool Delete(long? id)
         {
             try
             {
-                var result = _context.Subscriptions.SingleOrDefault(s => s.Id == subscription.Id);
+                var result = _context.Subscriptions.SingleOrDefault(s => s.Id == id);
                 
                 if (result is null)
                 {
@@ -77,6 +77,18 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             try
             {
                 return _context.Subscriptions.Where(s => s.TrackingId == trackingId);
+            }
+            catch (Exception ex)
+            {
+                throw new DataAccessException("Failed to get subscriptions for trackingId.", ex);
+            }
+        }
+
+        public Subscription? GetById(long? id)
+        {
+            try
+            {
+                return _context.Subscriptions.SingleOrDefault(s => s.Id == id);
             }
             catch (Exception ex)
             {

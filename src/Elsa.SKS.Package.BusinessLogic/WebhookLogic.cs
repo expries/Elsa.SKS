@@ -46,19 +46,27 @@ namespace Elsa.SKS.Package.BusinessLogic
                 _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database error has occurred.", ex);
             }
-            catch (Exception ex)
+        }
+
+        public bool UnsubscribeParcelWebhook(long? id)
+        {
+            try
             {
-                _logger.LogError(ex, "Error in webhook manager");
-                throw new BusinessException("Error in webhook manager", ex);
+                var isUnsubscribed = _webhookManager.DeleteSubscriptionById(id);
+                return isUnsubscribed;
+            }
+            catch (DataAccessException ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new BusinessException("A database error has occurred.", ex);
             }
         }
 
         public List<Subscription> GetParcelWebhooks(string trackingId)
         {
             var subscriptions = _webhookManager.GetParcelWebhooks(trackingId);
-            // mapping
-            var subBL = new List<Subscription>();
-            return subBL;
+            var result = _mapper.Map<List<Subscription>>(subscriptions);
+            return result;
         }
     }
 }

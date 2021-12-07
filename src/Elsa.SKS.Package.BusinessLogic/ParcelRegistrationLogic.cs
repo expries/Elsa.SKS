@@ -90,8 +90,8 @@ namespace Elsa.SKS.Package.BusinessLogic
             try
             {
                 // generate new trackingId and check if id already exists
-                bool isNewTrackingIdValid = false;
-                string newTrackingId = string.Empty;
+                var isNewTrackingIdValid = false;
+                var newTrackingId = string.Empty;
 
                 while (!isNewTrackingIdValid)
                 {
