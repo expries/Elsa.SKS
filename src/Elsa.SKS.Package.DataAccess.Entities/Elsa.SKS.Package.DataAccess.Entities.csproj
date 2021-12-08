@@ -10,4 +10,8 @@
       <PackageReference Include="NetTopologySuite" Version="2.4.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Elsa.SKS.Package.Services.DTOs\Elsa.SKS.Package.Services.DTOs.csproj" />
+    </ItemGroup>
+
 </Project>

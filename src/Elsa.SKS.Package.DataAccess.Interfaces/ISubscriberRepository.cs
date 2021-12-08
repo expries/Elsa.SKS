@@ -11,8 +11,12 @@ namespace Elsa.SKS.Package.DataAccess.Interfaces
         
         public bool Delete(long? id);
         
+        public bool DeleteAllByTrackingId(string trackingId);
+        
         public IEnumerable<Subscription> GetByTrackingId(string trackingId);
         
         public Subscription? GetById(long? id);
+        
+
     }
 }

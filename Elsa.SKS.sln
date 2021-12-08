@@ -39,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Webhooks",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Webhooks.Interfaces", "src\Elsa.SKS.Package.Webhooks.Interfaces\Elsa.SKS.Package.Webhooks.Interfaces.csproj", "{18EAA84A-03E0-4537-A60E-E6BA542F85CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.WebHooks.Tests", "src\Elsa.SKS.Package.WebHooks.Tests\Elsa.SKS.Package.WebHooks.Tests.csproj", "{689CE661-4F3D-4751-A439-0FDA08BBD872}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Webhooks.Tests", "src\Elsa.SKS.Package.Webhooks.Tests\Elsa.SKS.Package.Webhooks.Tests.csproj", "{689CE661-4F3D-4751-A439-0FDA08BBD872}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Entities.Enums;
+using Elsa.SKS.Package.BusinessLogic.Entities.Events;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
@@ -25,13 +26,24 @@ namespace Elsa.SKS.Package.BusinessLogic
         
         private readonly ILogger<ParcelTrackingLogic> _logger;
 
-        public ParcelTrackingLogic(IParcelRepository parcelRepository, IHopRepository hopRepository, ILogisticsPartnerAgent logisticsPartner, IMapper mapper, ILogger<ParcelTrackingLogic> logger)
+        private readonly IWebhookLogic _webhookLogic;
+        
+        public event EventHandler<ParcelEventArgs> ParcelDelivered;
+        
+        public event EventHandler<ParcelEventArgs> ParcelStatusChanged;
+
+
+        public ParcelTrackingLogic(IParcelRepository parcelRepository, IHopRepository hopRepository, ILogisticsPartnerAgent logisticsPartner, IMapper mapper, ILogger<ParcelTrackingLogic> logger, IWebhookLogic webhookLogic)
         {
             _parcelRepository = parcelRepository;
             _hopRepository = hopRepository;
             _logisticsPartner = logisticsPartner;
             _mapper = mapper;
             _logger = logger;
+            _webhookLogic = webhookLogic;
+
+            ParcelDelivered += webhookLogic.OnParcelDelivered;
+            ParcelStatusChanged += webhookLogic.OnParcelStatusChanged;
         }
 
         public void ReportParcelDelivery(string trackingId)
@@ -51,6 +63,12 @@ namespace Elsa.SKS.Package.BusinessLogic
 
                 // update parcel state
                 parcel.State = ParcelState.Delivered;
+                
+                // fire events
+                _logger.LogInformation("ParcelStatusChanged event is fired");
+                OnParcelStatusChanged(parcel);
+                _logger.LogInformation("ParcelDelivered event is fired");
+                OnParcelDelivered(parcel);
 
                 // mark all future hops (if any) as reached
                 parcel.FutureHops.ToList().ForEach(ha =>
@@ -59,7 +77,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                     ha.DateTime = DateTime.Now;
                     parcel.VisitedHops.Add(ha);
                 });
-                
+
                 parcelEntity = _mapper.Map<DataAccessParcel>(parcel);
                 _parcelRepository.Update(parcelEntity);
             }
@@ -110,15 +128,21 @@ namespace Elsa.SKS.Package.BusinessLogic
                 {
                     case Warehouse:
                         parcel.State = ParcelState.InTransport;
+                        _logger.LogInformation("ParcelStatusChanged event is fired");
+                        OnParcelStatusChanged(parcel);
                         break;
                     
                     case Truck:
                         parcel.State = ParcelState.InTruckDelivery;
+                        _logger.LogInformation("ParcelStatusChanged event is fired");
+                        OnParcelStatusChanged(parcel);
                         break;
                     
                     case TransferWarehouse transferWarehouse:
                         _logisticsPartner.TransferParcel(transferWarehouse, parcel);
                         parcel.State = ParcelState.Transferred;
+                        _logger.LogInformation("ParcelStatusChanged event is fired");
+                        OnParcelStatusChanged(parcel);
                         break;
                 }
 
@@ -153,6 +177,16 @@ namespace Elsa.SKS.Package.BusinessLogic
                 _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database error has occurred.", ex);
             }
+        }
+        
+        protected virtual void OnParcelDelivered(Parcel parcel)
+        {
+            ParcelDelivered?.Invoke(this, new ParcelEventArgs() { Parcel = parcel });
+        }
+        
+        protected virtual void OnParcelStatusChanged(Parcel parcel)
+        {
+            ParcelStatusChanged?.Invoke(this, new ParcelEventArgs() { Parcel = parcel });
         }
     }
 }

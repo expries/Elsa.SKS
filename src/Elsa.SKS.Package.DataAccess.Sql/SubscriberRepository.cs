@@ -71,6 +71,28 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
+        
+        public bool DeleteAllByTrackingId(string trackingId)
+        {
+            try
+            {
+                var result = _context.Subscriptions.Where(s => s.TrackingId == trackingId);
+                
+                if (!result.Any())
+                {
+                    _logger.LogInformation("No subscriptions found for this id");
+                }
+
+                _context.Subscriptions.RemoveRange(result);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
+            }
+        }
 
         public IEnumerable<Subscription> GetByTrackingId(string trackingId)
         {
@@ -95,5 +117,6 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 throw new DataAccessException("Failed to get subscriptions for trackingId.", ex);
             }
         }
+        
     }
 }

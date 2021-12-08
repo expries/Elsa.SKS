@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
+using Elsa.SKS.Package.BusinessLogic.Entities.Events;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using Elsa.SKS.Package.Webhooks.Interfaces;
 using Microsoft.Extensions.Logging;
+using WebhookMessage = Elsa.SKS.Package.DataAccess.Entities.WebhookMessage;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
@@ -38,6 +40,11 @@ namespace Elsa.SKS.Package.BusinessLogic
 
                 var subscriptionDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Subscription>(newSubscription);
                 var subscriptionEntity = _webhookManager.AddSubscription(subscriptionDal);
+                subscriptionDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Subscription>(subscriptionEntity);
+                
+                // send confirmation to client
+                _webhookManager.ConfirmRegistration(subscriptionDal);
+                
                 var result = _mapper.Map<Subscription>(subscriptionEntity);
                 return result;
             }
@@ -67,6 +74,23 @@ namespace Elsa.SKS.Package.BusinessLogic
             var subscriptions = _webhookManager.GetParcelWebhooks(trackingId);
             var result = _mapper.Map<List<Subscription>>(subscriptions);
             return result;
+        }
+        
+                
+        public void OnParcelDelivered(object source, ParcelEventArgs args)
+        {
+            _logger.LogInformation($"Webhook received Parcel delivered event of parcel {args.Parcel.TrackingId}");
+            Console.WriteLine();
+            _webhookManager.DeleteAllSubscriptionsByTrackingId(args.Parcel.TrackingId);
+        }
+
+        public void OnParcelStatusChanged(object sender, ParcelEventArgs args)
+        {
+            _logger.LogInformation($"Webhook received Parcel status changed event of parcel {args.Parcel.TrackingId}");
+            var parcelDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Parcel>(args.Parcel);
+            // map parcel to webhook message
+            var webhookMessage = _mapper.Map<WebhookMessage>(parcelDal);
+            _webhookManager.NotifySubscribers(webhookMessage);
         }
     }
 }

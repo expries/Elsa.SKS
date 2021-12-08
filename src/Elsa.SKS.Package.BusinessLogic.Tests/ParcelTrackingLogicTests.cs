@@ -30,6 +30,8 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
         private readonly IMapper _mapper;
         
         private readonly ILogger<ParcelTrackingLogic> _logger;
+        
+        private readonly IWebhookLogic _webhookLogic;
 
         public ParcelTrackingLogicTests()
         {
@@ -38,7 +40,8 @@ namespace Elsa.SKS.Package.BusinessLogic.Tests
             _logisticsPartner = A.Fake<ILogisticsPartnerAgent>();
             _mapper = A.Fake<IMapper>();
             _logger = A.Fake<ILogger<ParcelTrackingLogic>>();
-            _logic = new ParcelTrackingLogic(_parcelRepository, _hopRepository, _logisticsPartner, _mapper, _logger);
+            _webhookLogic = A.Fake<IWebhookLogic>();
+            _logic = new ParcelTrackingLogic(_parcelRepository, _hopRepository, _logisticsPartner, _mapper, _logger, _webhookLogic);
         }
         
         [Fact]

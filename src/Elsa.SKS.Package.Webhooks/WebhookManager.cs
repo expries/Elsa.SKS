@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using Elsa.SKS.Package.Webhooks.Interfaces;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.Webhooks
 {
@@ -45,6 +50,19 @@ namespace Elsa.SKS.Package.Webhooks
                 throw new DataAccessException("A database error has occurred.", ex);
             }
         }
+        public bool DeleteAllSubscriptionsByTrackingId(string trackingId)
+        {
+            try
+            {
+                return _subscriberRepository.DeleteAllByTrackingId(trackingId);
+            }
+            catch (DataAccessException ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error has occurred.", ex);
+            }
+
+        }
         
         public bool DeleteSubscriptionById(long? id)
         {
@@ -64,7 +82,6 @@ namespace Elsa.SKS.Package.Webhooks
                 _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error has occurred.", ex);
             }
-
         }
 
         public List<Subscription> GetParcelWebhooks(string trackingId)
@@ -85,6 +102,49 @@ namespace Elsa.SKS.Package.Webhooks
             }
 
         }
-        
+
+        public async Task ConfirmRegistration(Subscription subscription)
+        {
+            using (var client = new HttpClient())
+            {
+                var clientAddress = new Uri(subscription.Url);
+                client.BaseAddress = clientAddress;
+                var response = await client.GetAsync(client.BaseAddress + $"/?echo={subscription.Id}");
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    _logger.LogInformation("Two way handshake was successful");
+                }
+                var result = response.Content.ReadAsStringAsync().Result;
+                _logger.LogInformation("Client response: " + result);
+            }
+        }
+
+        public async Task NotifySubscribers(WebhookMessage message)
+        {
+            var subscribers = _subscriberRepository.GetByTrackingId(message.TrackingId);
+            foreach (var subscriber in subscribers)
+            {
+                // send message with parcel infos
+                await SendParcelInfosToClient(message, subscriber.Url);
+            }
+        }
+
+        private async Task SendParcelInfosToClient(WebhookMessage body, string subscriberUrl)
+        {
+            using (var client = new HttpClient())
+            {
+                var clientAddress = new Uri(subscriberUrl);
+                client.BaseAddress = clientAddress;
+                var json = JsonConvert.SerializeObject(body);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync($"{client.BaseAddress}?id={body.TrackingId}", data);
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    _logger.LogInformation("Notification was successful");
+                }
+                var result = response.Content.ReadAsStringAsync().Result;
+                _logger.LogInformation("Client response: " + result);
+            }
+        }
     }
 }
