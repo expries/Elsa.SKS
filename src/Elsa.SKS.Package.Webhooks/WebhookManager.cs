@@ -88,10 +88,13 @@ namespace Elsa.SKS.Package.Webhooks
         {
             try
             {
+                if (_parcelRepository.GetByTrackingId(trackingId) == null)
+                {
+                    throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
+                }
                 if (_subscriberRepository.GetByTrackingId(trackingId).ToList().Count == 0)
                 {
-                    _logger.LogInformation("Parcel with tracking id was not found");
-                    throw new ParcelNotFoundException($"Parcel with tracking id {trackingId} was not found");
+                    _logger.LogInformation("No webhooks for this parcel available");
                 }
                 return _subscriberRepository.GetByTrackingId(trackingId).ToList();
             }
