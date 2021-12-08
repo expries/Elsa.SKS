@@ -82,13 +82,13 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             try
             {
                 // solve foreign-key constraints for warehouses
-                foreach (var warehouse in _context.Warehouses)
+                foreach (var warehouse in _context.Warehouses.ToList())
                 {
                     warehouse.NextHops.ToList().ForEach(r => r.NextHop = null);
                 }
 
                 // solve foreign-key constraints for parcels
-                foreach (var parcel in _context.Parcels)
+                foreach (var parcel in _context.Parcels.ToList())
                 {
                     parcel.VisitedHops.ToList().ForEach(r => r.Hop = null);
                     parcel.FutureHops.ToList().ForEach(r => r.Hop = null);
