@@ -2,15 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>Elsa.SKS.Package.WebHooks</RootNamespace>
+    <RootNamespace>Elsa.SKS.Package.Webhooks</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Elsa.SKS.Package.Webhooks.DTOs\Elsa.SKS.Package.Webhooks.DTOs.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.BusinessLogic\Elsa.SKS.Package.BusinessLogic.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.DataAccess.Entities\Elsa.SKS.Package.DataAccess.Entities.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.DataAccess.Interfaces\Elsa.SKS.Package.DataAccess.Interfaces.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.DataAccess.Sql\Elsa.SKS.Package.DataAccess.Sql.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.Webhooks.Interfaces\Elsa.SKS.Package.Webhooks.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

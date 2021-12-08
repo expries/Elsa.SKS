@@ -143,7 +143,8 @@ namespace Elsa.SKS
             services
                 .AddAutoMapper(
                     typeof(ParcelProfile).Assembly,
-                    typeof(Package.BusinessLogic.MappingProfiles.ParcelProfile).Assembly
+                    typeof(Package.BusinessLogic.MappingProfiles.ParcelProfile).Assembly,
+                    typeof(Package.Webhooks.MappingProfiles.WebhookProfile).Assembly
                 );
 
             services

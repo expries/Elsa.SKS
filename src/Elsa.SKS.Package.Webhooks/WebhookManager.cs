@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.DataAccess.Entities;
 using Elsa.SKS.Package.DataAccess.Interfaces;
@@ -12,6 +13,7 @@ using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using Elsa.SKS.Package.Webhooks.Interfaces;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using WebhookMessage = Elsa.SKS.Package.DataAccess.Entities.WebhookMessage;
 
 namespace Elsa.SKS.Package.Webhooks
 {
@@ -21,12 +23,15 @@ namespace Elsa.SKS.Package.Webhooks
         
         private readonly IParcelRepository _parcelRepository;
 
+        private readonly IMapper _mapper;
+        
         private readonly ILogger<WebhookManager> _logger;
 
-        public WebhookManager(ISubscriberRepository subscriberRepository, IParcelRepository parcelRepository, ILogger<WebhookManager> logger)
+        public WebhookManager(ISubscriberRepository subscriberRepository, IParcelRepository parcelRepository, IMapper mapper, ILogger<WebhookManager> logger)
         {
             _subscriberRepository = subscriberRepository;
             _parcelRepository = parcelRepository;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -105,18 +110,16 @@ namespace Elsa.SKS.Package.Webhooks
 
         public async Task ConfirmRegistration(Subscription subscription)
         {
-            using (var client = new HttpClient())
+            using var client = new HttpClient();
+            var clientAddress = new Uri(subscription.Url);
+            client.BaseAddress = clientAddress;
+            var response = await client.GetAsync(client.BaseAddress + $"/?echo={subscription.Id}");
+            if (response.StatusCode == HttpStatusCode.OK)
             {
-                var clientAddress = new Uri(subscription.Url);
-                client.BaseAddress = clientAddress;
-                var response = await client.GetAsync(client.BaseAddress + $"/?echo={subscription.Id}");
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    _logger.LogInformation("Two way handshake was successful");
-                }
-                var result = response.Content.ReadAsStringAsync().Result;
-                _logger.LogInformation("Client response: " + result);
+                _logger.LogInformation("Two way handshake was successful");
             }
+            var result = response.Content.ReadAsStringAsync().Result;
+            _logger.LogInformation("Client response: " + result);
         }
 
         public async Task NotifySubscribers(WebhookMessage message)
@@ -131,20 +134,23 @@ namespace Elsa.SKS.Package.Webhooks
 
         private async Task SendParcelInfosToClient(WebhookMessage body, string subscriberUrl)
         {
-            using (var client = new HttpClient())
+            using var client = new HttpClient();
+            var clientAddress = new Uri(subscriberUrl);
+            client.BaseAddress = clientAddress;
+
+            var dto = _mapper.Map<DTOs.WebhookMessage>(body);
+            var json = JsonConvert.SerializeObject(dto);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            
+            var response = await client.PostAsync($"{client.BaseAddress}?id={body.TrackingId}", data);
+            
+            if (response.StatusCode == HttpStatusCode.OK)
             {
-                var clientAddress = new Uri(subscriberUrl);
-                client.BaseAddress = clientAddress;
-                var json = JsonConvert.SerializeObject(body);
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync($"{client.BaseAddress}?id={body.TrackingId}", data);
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    _logger.LogInformation("Notification was successful");
-                }
-                var result = response.Content.ReadAsStringAsync().Result;
-                _logger.LogInformation("Client response: " + result);
+                _logger.LogInformation("Notification was successful");
             }
+            
+            var result = response.Content.ReadAsStringAsync().Result;
+            _logger.LogInformation("Client response: " + result);
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
-using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.Services.DTOs;
 
-namespace Elsa.SKS.MappingProfiles
+namespace Elsa.SKS.Package.Webhooks.MappingProfiles
 {
     /// <summary>
     /// 
@@ -16,8 +15,9 @@ namespace Elsa.SKS.MappingProfiles
         [ExcludeFromCodeCoverage]
         public WebhookProfile()
         {
-            CreateMap<WebhookResponse, Subscription>().ReverseMap();
-            CreateMap<WebhookResponses, WebhookResponse>().ReverseMap();
+            CreateMap<DataAccess.Entities.WebhookMessage, DTOs.WebhookMessage>().ReverseMap();
+            CreateMap<DataAccess.Entities.HopArrival, HopArrival>().IncludeMembers(h => h.Hop);
+            CreateMap<DataAccess.Entities.Hop, HopArrival>(MemberList.None);
         }
     }
 }

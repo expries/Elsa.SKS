@@ -9,18 +9,15 @@
  */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
 using Elsa.SKS.Package.DataAccess.Entities.Enums;
-using Newtonsoft.Json;
 
 namespace Elsa.SKS.Package.DataAccess.Entities
 { 
     /// <summary>
     /// 
     /// </summary>
-    [DataContract]
-    [ExcludeFromCodeCoverage]
+    //[DataContract]
+    //[ExcludeFromCodeCoverage]
     public class WebhookMessage
     { 
         /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Elsa.SKS.Package.BusinessLogic.Entities;
 using Elsa.SKS.Package.BusinessLogic.Entities.Events;
@@ -9,7 +8,6 @@ using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
 using Elsa.SKS.Package.Webhooks.Interfaces;
 using Microsoft.Extensions.Logging;
-using WebhookMessage = Elsa.SKS.Package.DataAccess.Entities.WebhookMessage;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
@@ -87,9 +85,8 @@ namespace Elsa.SKS.Package.BusinessLogic
         public void OnParcelStatusChanged(object sender, ParcelEventArgs args)
         {
             _logger.LogInformation($"Webhook received Parcel status changed event of parcel {args.Parcel.TrackingId}");
-            var parcelDal = _mapper.Map<Elsa.SKS.Package.DataAccess.Entities.Parcel>(args.Parcel);
             // map parcel to webhook message
-            var webhookMessage = _mapper.Map<WebhookMessage>(parcelDal);
+            var webhookMessage = _mapper.Map<Package.DataAccess.Entities.WebhookMessage>(args.Parcel);
             _webhookManager.NotifySubscribers(webhookMessage);
         }
     }

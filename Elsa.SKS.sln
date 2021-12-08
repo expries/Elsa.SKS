@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Webhooks.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Webhooks.Tests", "src\Elsa.SKS.Package.Webhooks.Tests\Elsa.SKS.Package.Webhooks.Tests.csproj", "{689CE661-4F3D-4751-A439-0FDA08BBD872}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Webhooks.DTOs", "Elsa.SKS.Package.Webhooks.DTOs\Elsa.SKS.Package.Webhooks.DTOs.csproj", "{D689BADB-4FB2-4685-ACD1-EFD98794BA61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{689CE661-4F3D-4751-A439-0FDA08BBD872}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{689CE661-4F3D-4751-A439-0FDA08BBD872}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{689CE661-4F3D-4751-A439-0FDA08BBD872}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D689BADB-4FB2-4685-ACD1-EFD98794BA61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D689BADB-4FB2-4685-ACD1-EFD98794BA61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D689BADB-4FB2-4685-ACD1-EFD98794BA61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D689BADB-4FB2-4685-ACD1-EFD98794BA61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
