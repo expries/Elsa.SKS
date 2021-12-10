@@ -150,8 +150,9 @@ namespace Elsa.SKS.Package.BusinessLogic
 
             // get trucks that cover sender/recipient location
             var trucks = _hopRepository.GetAllTrucks();
-            var senderTruck = trucks.First(t => t.GeoRegion.Contains(senderLocation));
-            var recipientTruck = trucks.First(t => t.GeoRegion.Contains(recipientLocation));
+            // var senderTruckOld = trucks.First(t => t.GeoRegion.Contains(senderLocation));
+            var senderTruck = trucks.OrderBy(t => t.GeoRegion.Distance(senderLocation)).First();
+            var recipientTruck = trucks.OrderBy(t => t.GeoRegion.Distance(recipientLocation)).First();
             var route = GetHopRoute(senderTruck, recipientTruck);
                 
             return route?.Select(hop => new HopArrival { Hop = hop }).ToList() ?? new List<HopArrival>();

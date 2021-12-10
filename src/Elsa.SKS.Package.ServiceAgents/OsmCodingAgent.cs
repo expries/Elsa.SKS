@@ -25,11 +25,11 @@ namespace Elsa.SKS.Package.ServiceAgents
                 var encoder = new ForwardGeocoder();
                 var request = encoder.Geocode(new ForwardGeocodeRequest
                 {
-                    queryString = address.Query ?? null,
-                    StreetAddress = address.Street ?? null,
-                    City = address.City ?? null,
-                    ShowGeoJSON = true,
-                    LimitResults = 1
+                    StreetAddress = address.Street,
+                    PostalCode = address.PostalCode,
+                    City = address.City,
+                    Country = address.Country,
+                    ShowGeoJSON = true
                 });
                 request.Wait();
 

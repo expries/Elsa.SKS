@@ -35,13 +35,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.ServiceAge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.ServiceAgents.Entities", "src\Elsa.SKS.Package.ServiceAgents.Entities\Elsa.SKS.Package.ServiceAgents.Entities.csproj", "{BBFBBA7C-A1E9-452E-8A3B-734869ECC13F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Webhooks", "src\Elsa.SKS.Package.Webhooks\Elsa.SKS.Package.Webhooks.csproj", "{F9DC28FD-81AE-423C-A308-D7A8B9B49C77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Webhooks", "src\Elsa.SKS.Package.Webhooks\Elsa.SKS.Package.Webhooks.csproj", "{F9DC28FD-81AE-423C-A308-D7A8B9B49C77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Webhooks.Interfaces", "src\Elsa.SKS.Package.Webhooks.Interfaces\Elsa.SKS.Package.Webhooks.Interfaces.csproj", "{18EAA84A-03E0-4537-A60E-E6BA542F85CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Webhooks.Interfaces", "src\Elsa.SKS.Package.Webhooks.Interfaces\Elsa.SKS.Package.Webhooks.Interfaces.csproj", "{18EAA84A-03E0-4537-A60E-E6BA542F85CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Webhooks.Tests", "src\Elsa.SKS.Package.Webhooks.Tests\Elsa.SKS.Package.Webhooks.Tests.csproj", "{689CE661-4F3D-4751-A439-0FDA08BBD872}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Webhooks.Tests", "src\Elsa.SKS.Package.Webhooks.Tests\Elsa.SKS.Package.Webhooks.Tests.csproj", "{689CE661-4F3D-4751-A439-0FDA08BBD872}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.Webhooks.DTOs", "src\Elsa.SKS.Package.Webhooks.DTOs\Elsa.SKS.Package.Webhooks.DTOs.csproj", "{D689BADB-4FB2-4685-ACD1-EFD98794BA61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Webhooks.DTOs", "src\Elsa.SKS.Package.Webhooks.DTOs\Elsa.SKS.Package.Webhooks.DTOs.csproj", "{D689BADB-4FB2-4685-ACD1-EFD98794BA61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elsa.SKS.Package.IntegrationTests", "src\Elsa.SKS.Package.IntegrationTests\Elsa.SKS.Package.IntegrationTests.csproj", "{297B0DC9-B635-492B-88D7-79DDDB99C187}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +131,10 @@ Global
 		{D689BADB-4FB2-4685-ACD1-EFD98794BA61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D689BADB-4FB2-4685-ACD1-EFD98794BA61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D689BADB-4FB2-4685-ACD1-EFD98794BA61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{297B0DC9-B635-492B-88D7-79DDDB99C187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{297B0DC9-B635-492B-88D7-79DDDB99C187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{297B0DC9-B635-492B-88D7-79DDDB99C187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{297B0DC9-B635-492B-88D7-79DDDB99C187}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
