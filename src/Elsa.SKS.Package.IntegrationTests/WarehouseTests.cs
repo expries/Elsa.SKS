@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Elsa.SKS.Package.IntegrationTests
 {
-    [Trait("Category", "IntegrationTests")]
+    [Trait("TestCategory", "IntegrationTests")]
     public class WarehouseTests
     {
         private readonly HttpClient _client;
