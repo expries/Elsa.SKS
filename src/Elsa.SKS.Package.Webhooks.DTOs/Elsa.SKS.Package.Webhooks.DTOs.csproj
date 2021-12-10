@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\Elsa.SKS.Package.Services.DTOs\Elsa.SKS.Package.Services.DTOs.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Package.Services.DTOs\Elsa.SKS.Package.Services.DTOs.csproj" />
     </ItemGroup>
 
     <ItemGroup>

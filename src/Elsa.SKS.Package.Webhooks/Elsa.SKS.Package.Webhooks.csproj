@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Elsa.SKS.Package.Webhooks.DTOs\Elsa.SKS.Package.Webhooks.DTOs.csproj" />
+    <ProjectReference Include="..\Elsa.SKS.Package.Webhooks.DTOs\Elsa.SKS.Package.Webhooks.DTOs.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.BusinessLogic\Elsa.SKS.Package.BusinessLogic.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.DataAccess.Entities\Elsa.SKS.Package.DataAccess.Entities.csproj" />
     <ProjectReference Include="..\Elsa.SKS.Package.DataAccess.Interfaces\Elsa.SKS.Package.DataAccess.Interfaces.csproj" />
