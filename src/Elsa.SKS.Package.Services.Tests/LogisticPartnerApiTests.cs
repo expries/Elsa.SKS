@@ -50,7 +50,7 @@ namespace Elsa.SKS.Package.Services.Tests
         }
         
         [Fact]
-        public void GivenAnTransferExceptionsIsThrown_WhenTransitioningAParcel_ThenReturn400()
+        public void GivenAnTransferExceptionsIsThrown_WhenTransitioningAParcel_ThenReturn409()
         {
             const string trackingId = "tracking_id";
             
@@ -63,7 +63,7 @@ namespace Elsa.SKS.Package.Services.Tests
 
             var actionResult = _controller.TransitionParcel(parcelDto, trackingId);
             
-            actionResult.Should().BeOfType<BadRequestObjectResult>();
+            actionResult.Should().BeOfType<ConflictResult>();
         }
         
         [Fact]

@@ -21,7 +21,7 @@ namespace Elsa.SKS.Package.IntegrationTests
         {
             _client = new HttpClient
             {
-                BaseAddress = new Uri("http://localhost:5000")
+                BaseAddress = new Uri(TestConfiguration.BaseUrl)
             };
         }
         
