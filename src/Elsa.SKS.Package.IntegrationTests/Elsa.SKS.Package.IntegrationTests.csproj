@@ -26,16 +26,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\warehouses.json">
+    <Content Include="Configuration/testsettings.json">
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Configuration\testsettings.json">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <None Remove="Data\warehouses.json" />
+    <Content Include="Data\warehouses.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
 
