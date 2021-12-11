@@ -34,7 +34,7 @@ steps:
   displayName: 'Publish application'
   inputs:
     command: 'publish'
-    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-build'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
 - task: reportgenerator@4
   displayName: 'Merge code coverage reports'
