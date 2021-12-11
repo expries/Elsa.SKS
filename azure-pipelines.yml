@@ -11,30 +11,30 @@ variables:
 
 steps:
 
-- task: DotNetCoreCLI@2
-  displayName: 'Restore dependencies'
-  inputs:
-    command: 'restore'
-    configuration: $(buildConfiguration)
+#- task: DotNetCoreCLI@2
+#  displayName: 'Restore dependencies'
+#  inputs:
+#    command: 'restore'
+#    configuration: $(buildConfiguration)
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build application'
-  inputs:
-    command: 'build'
-    arguments: '--configuration $(buildConfiguration) --no-restore'
+#- task: DotNetCoreCLI@2
+#  displayName: 'Build application'
+#  inputs:
+#    command: 'build'
+#    arguments: '--configuration $(buildConfiguration) --no-restore'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Perform tests'
-  inputs:
-    command: 'test'
-    arguments: '--configuration $(buildConfiguration) --no-build --filter TestCategory!=IntegrationTests --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
-    publishTestResults: true
+#- task: DotNetCoreCLI@2
+#  displayName: 'Perform tests'
+#  inputs:
+#    command: 'test'
+#    arguments: '--configuration $(buildConfiguration) --no-build --filter TestCategory!=IntegrationTests --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+#    publishTestResults: true
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish application'
   inputs:
     command: 'publish'
-    arguments: '--configuration $(buildConfiguration) ./src/Elsa.SKS.Package.Services/Elsa.SKS.Package.Services.csproj --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(buildConfiguration) src/Elsa.SKS.Package.Services/Elsa.SKS.Package.Services.csproj --output $(Build.ArtifactStagingDirectory)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish integration tests'
