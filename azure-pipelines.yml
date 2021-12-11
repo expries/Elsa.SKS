@@ -34,7 +34,7 @@ steps:
   displayName: 'Publish application'
   inputs:
     command: 'publish'
-    arguments: '--configuration $(buildConfiguration) $(Pipeline.Workspace)/src/Elsa.SKS.Package.Services/Elsa.SKS.Package.Services.csproj --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(buildConfiguration) Elsa.SKS.Package.Services.csproj --output $(Build.ArtifactStagingDirectory)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish integration tests'
