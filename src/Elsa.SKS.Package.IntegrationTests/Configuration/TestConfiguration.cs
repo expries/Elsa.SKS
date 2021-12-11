@@ -1,20 +1,21 @@
-using System.IO;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Configuration;
 
-namespace Elsa.SKS.Package.IntegrationTests
+namespace Elsa.SKS.Package.IntegrationTests.Configuration
 {
     public static class TestConfiguration
     {
-        public static readonly string BaseUrl = GetBaseUrl();
+        public static string BaseUrl => Configuration.GetSection("BaseUrl").Value;
+        
+        private static readonly IConfiguration Configuration = GetConfiguration();
 
-        private static string GetBaseUrl()
+        private static IConfiguration GetConfiguration()
         {
-            using var file = File.OpenText("Configuration/testsettings.json");
-            var reader = new JsonTextReader(file);
-            var jObject = JObject.Load(reader);
-            var baseUrl = jObject["BaseUrl"]?.Value<string>() ?? string.Empty;
-            return baseUrl;
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("Configuration/testsettings.json", true, true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            return configuration;
         }
     }
 }

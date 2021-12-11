@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Elsa.SKS.Package.IntegrationTests.Configuration;
 using Elsa.SKS.Package.IntegrationTests.Data;
 using Elsa.SKS.Package.IntegrationTests.Extensions;
 using Elsa.SKS.Package.Services.DTOs;
