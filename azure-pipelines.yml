@@ -35,13 +35,13 @@ steps:
   inputs:
     command: 'publish'
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    projects: 'src/Elsa.SKS.Package.Services/Elsa.SKS.Package.Services.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish integration tests'
   inputs:
     command: 'publish'
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/IntegrationTests'
+    publishWebProjects: false
     projects: 'src/Elsa.SKS.Package.IntegrationTests/Elsa.SKS.Package.IntegrationTests.csproj'
 
 - task: reportgenerator@4
