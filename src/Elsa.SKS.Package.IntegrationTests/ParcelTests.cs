@@ -24,7 +24,7 @@ namespace Elsa.SKS.Package.IntegrationTests
                 BaseAddress = new Uri(TestConfiguration.BaseUrl)
             };
         }
-        
+         
         [Fact]
         public async Task ParcelJourneyOfSubmittedParcel()
         {
