@@ -27,7 +27,7 @@ steps:
   displayName: 'Perform tests'
   inputs:
     command: 'test'
-    arguments: '--configuration $(buildConfiguration) --no-build --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+    arguments: '--configuration $(buildConfiguration) --no-build --filter TestCategory!=IntegrationTests --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
     publishTestResults: true
 
 - task: DotNetCoreCLI@2
