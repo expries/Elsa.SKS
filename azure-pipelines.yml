@@ -34,13 +34,13 @@ steps:
   displayName: 'Publish application'
   inputs:
     command: 'publish'
-    arguments: '--configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(buildConfiguration) ./src/Elsa.SKS.Package.Services/Elsa.SKS.Package.Services.csproj --no-build --output $(Build.ArtifactStagingDirectory)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish integration tests'
   inputs:
     command: 'publish'
-    arguments: '--configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/IntegrationTests'
+    arguments: '--configuration $(buildConfiguration) ./src/Elsa.SKS.Package.IntegrationTests/Elsa.SKS.Package.IntegrationTests.csproj --output $(Build.ArtifactStagingDirectory)/IntegrationTests'
 
 - task: reportgenerator@4
   displayName: 'Merge code coverage reports'
