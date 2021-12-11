@@ -11,24 +11,24 @@ variables:
 
 steps:
 
-#- task: DotNetCoreCLI@2
-#  displayName: 'Restore dependencies'
-#  inputs:
-#    command: 'restore'
-#    configuration: $(buildConfiguration)
+- task: DotNetCoreCLI@2
+  displayName: 'Restore dependencies'
+  inputs:
+    command: 'restore'
+    configuration: $(buildConfiguration)
 
-#- task: DotNetCoreCLI@2
-#  displayName: 'Build application'
-#  inputs:
-#    command: 'build'
-#    arguments: '--configuration $(buildConfiguration) --no-restore'
+- task: DotNetCoreCLI@2
+  displayName: 'Build application'
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration) --no-restore'
 
-#- task: DotNetCoreCLI@2
-#  displayName: 'Perform tests'
-#  inputs:
-#    command: 'test'
-#    arguments: '--configuration $(buildConfiguration) --no-build --filter TestCategory!=IntegrationTests --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
-#    publishTestResults: true
+- task: DotNetCoreCLI@2
+  displayName: 'Perform tests'
+  inputs:
+    command: 'test'
+    arguments: '--configuration $(buildConfiguration) --no-build --filter TestCategory!=IntegrationTests --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+    publishTestResults: true
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish application'
