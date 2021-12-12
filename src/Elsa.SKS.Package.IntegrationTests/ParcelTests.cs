@@ -32,6 +32,14 @@ namespace Elsa.SKS.Package.IntegrationTests
         [Fact]
         public async Task ParcelJourneyOfSubmittedParcel()
         {
+            // Import warehouse
+            var warehouse = WarehouseData.RootWarehouse;
+            var jsonContent = warehouse.ToJsonContent();
+            
+            var importResponse = await _client.PostAsync("/warehouse", jsonContent);
+
+            importResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            
             // Submit parcel
             var parcel = ParcelData.Parcel;
             var content = parcel.ToJsonContent();
@@ -84,6 +92,14 @@ namespace Elsa.SKS.Package.IntegrationTests
         [Fact]
         public async Task ParcelJourneyOfTransitionedParcel()
         {
+            // Import warehouse
+            var warehouse = WarehouseData.RootWarehouse;
+            var jsonContent = warehouse.ToJsonContent();
+            
+            var importResponse = await _client.PostAsync("/warehouse", jsonContent);
+
+            importResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            
             // Transition parcel
             string trackingId = GenerateTrackingId();
             var parcel = ParcelData.Parcel;
