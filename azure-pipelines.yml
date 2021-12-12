@@ -40,9 +40,9 @@ steps:
   displayName: 'Publish integration tests'
   inputs:
     command: 'publish'
-    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/IntegrationTests'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     publishWebProjects: false
-    projects: 'src/Elsa.SKS.Package.IntegrationTests/Elsa.SKS.Package.IntegrationTests.csproj'
+    projects: '**/*IntegrationTests.csproj'
 
 - task: reportgenerator@4
   displayName: 'Merge code coverage reports'
