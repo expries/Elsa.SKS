@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -20,6 +21,8 @@ namespace Elsa.SKS.Package.IntegrationTests
 
         public ParcelTests()
         {
+            Debug.WriteLine($"Base URL is {TestConfiguration.BaseUrl}");
+            
             _client = new HttpClient
             {
                 BaseAddress = new Uri(TestConfiguration.BaseUrl)
