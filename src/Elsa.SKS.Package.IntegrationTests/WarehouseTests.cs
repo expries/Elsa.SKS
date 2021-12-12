@@ -28,14 +28,8 @@ namespace Elsa.SKS.Package.IntegrationTests
         [Fact]
         public async Task ImportAndExportWarehouse()
         {
-            // Import warehouse
             var warehouse = WarehouseData.RootWarehouse;
-            var jsonContent = warehouse.ToJsonContent();
-            
-            var importResponse = await _client.PostAsync("/warehouse", jsonContent);
 
-            importResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            
             // Get warehouse by code
             var getWarehouseResponse = await _client.GetAsync($"/warehouse/{warehouse.Code}");
             var warehouseFromGet = await getWarehouseResponse.Content.ToJsonAsync<Warehouse>();
