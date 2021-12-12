@@ -122,6 +122,24 @@ namespace Elsa.SKS.Package.DataAccess.Sql
                 throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
             }
         }
+        
+        public Warehouse? GetWarehouseByCode(string code)
+        {
+            try
+            {
+                return _context.Hops.OfType<Warehouse>().SingleOrDefault(h => h.Code == code);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Warehouse not unique");
+                throw new SingleOrDefaultException("More than one warehouse with this code exists.", ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Database error");
+                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
+            }
+        }
 
         public Warehouse? GetAllWarehouses()
         {
@@ -150,25 +168,21 @@ namespace Elsa.SKS.Package.DataAccess.Sql
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Failed to get all trucks.");
                 throw new DataAccessException("Failed to get all trucks.", ex);
             }
         }
 
-        public Warehouse? GetWarehouseByCode(string code)
+        public IEnumerable<TransferWarehouse> GetAllTransferWarehouses()
         {
             try
             {
-                return _context.Hops.OfType<Warehouse>().SingleOrDefault(h => h.Code == code);
-            }
-            catch (InvalidOperationException ex)
-            {
-                _logger.LogWarning(ex, "Warehouse not unique");
-                throw new SingleOrDefaultException("More than one warehouse with this code exists.", ex);
+                return _context.TransferWarehouses;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Database error");
-                throw new DataAccessException("A database error occurred, see inner exception for details.", ex);
+                _logger.LogError(ex, "Failed to get all transfer warehouses.");
+                throw new DataAccessException("Failed to get all transfer warehouses.", ex);
             }
         }
     }

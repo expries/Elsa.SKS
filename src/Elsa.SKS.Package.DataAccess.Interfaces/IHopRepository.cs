@@ -14,11 +14,13 @@ namespace Elsa.SKS.Package.DataAccess.Interfaces
         public void DeleteAll();
         
         public Hop? GetByCode(string code);
+        
+        public Warehouse? GetWarehouseByCode(string code);
 
         public Warehouse? GetAllWarehouses();
 
         public IEnumerable<Truck> GetAllTrucks();
-        
-        public Warehouse? GetWarehouseByCode(string code);
+
+        public IEnumerable<TransferWarehouse> GetAllTransferWarehouses();
     }
 }

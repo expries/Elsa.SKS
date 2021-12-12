@@ -150,15 +150,23 @@ namespace Elsa.SKS.Package.BusinessLogic
 
             // get trucks that cover sender/recipient location
             var trucks = _hopRepository.GetAllTrucks();
-            // var senderTruckOld = trucks.First(t => t.GeoRegion.Contains(senderLocation));
-            var senderTruck = trucks.OrderBy(t => t.GeoRegion.Distance(senderLocation)).First();
-            var recipientTruck = trucks.OrderBy(t => t.GeoRegion.Distance(recipientLocation)).First();
+            DataAccess.Entities.Hop senderTruck = trucks.FirstOrDefault(t => t.GeoRegion.Contains(senderLocation));
+            DataAccess.Entities.Hop recipientTruck = trucks.FirstOrDefault(t => t.GeoRegion.Contains(recipientLocation));
+
+            // if no truck covers location, check if transfer warehouse covers it
+            if (senderTruck is null || recipientTruck is null)
+            {
+                var transferWarehouses = _hopRepository.GetAllTransferWarehouses();
+                senderTruck ??= transferWarehouses.First(x => x.GeoRegion.Contains(senderLocation));
+                recipientTruck ??= transferWarehouses.First(x => x.GeoRegion.Contains(recipientLocation));
+            }
+            
             var route = GetHopRoute(senderTruck, recipientTruck);
                 
             return route?.Select(hop => new HopArrival { Hop = hop }).ToList() ?? new List<HopArrival>();
         }
         
-        private List<Hop> GetHopRoute(Truck senderHop, Truck receiverHop)
+        private List<Hop> GetHopRoute(DataAccess.Entities.Hop senderHop, DataAccess.Entities.Hop receiverHop)
         {
             // if sender and receiver truck is the same truck
             if (senderHop.Code == receiverHop.Code)
