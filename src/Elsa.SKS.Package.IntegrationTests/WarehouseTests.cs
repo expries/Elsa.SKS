@@ -19,8 +19,6 @@ namespace Elsa.SKS.Package.IntegrationTests
 
         public WarehouseTests()
         {
-            Debug.WriteLine($"Base URL is {TestConfiguration.BaseUrl}");
-            
             _client = new HttpClient
             {
                 BaseAddress = new Uri(TestConfiguration.BaseUrl)
