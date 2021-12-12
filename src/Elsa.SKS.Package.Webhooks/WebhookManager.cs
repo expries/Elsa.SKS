@@ -55,6 +55,7 @@ namespace Elsa.SKS.Package.Webhooks
                 throw new DataAccessException("A database error has occurred.", ex);
             }
         }
+        
         public bool DeleteAllSubscriptionsByTrackingId(string trackingId)
         {
             try
@@ -66,7 +67,6 @@ namespace Elsa.SKS.Package.Webhooks
                 _logger.LogError(ex, "Database error");
                 throw new DataAccessException("A database error has occurred.", ex);
             }
-
         }
         
         public bool DeleteSubscriptionById(long? id)
@@ -113,16 +113,24 @@ namespace Elsa.SKS.Package.Webhooks
 
         public async Task ConfirmRegistration(Subscription subscription)
         {
-            using var client = new HttpClient();
-            var clientAddress = new Uri(subscription.Url);
-            client.BaseAddress = clientAddress;
-            var response = await client.GetAsync(client.BaseAddress + $"/?echo={subscription.Id}");
-            if (response.StatusCode == HttpStatusCode.OK)
+            try
             {
-                _logger.LogInformation("Two way handshake was successful");
+                using var client = new HttpClient();
+                var clientAddress = new Uri(subscription.Url);
+                client.BaseAddress = clientAddress;
+                var response = await client.GetAsync(client.BaseAddress + $"/?echo={subscription.Id}");
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    _logger.LogInformation("Two way handshake was successful");
+                }
+                var result = response.Content.ReadAsStringAsync().Result;
+                _logger.LogInformation("Client response: " + result);
             }
-            var result = response.Content.ReadAsStringAsync().Result;
-            _logger.LogInformation("Client response: " + result);
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError(ex, "Request error");
+                throw new DataAccessException("Request error occured.", ex);
+            }
         }
 
         public async Task NotifySubscribers(WebhookMessage message)

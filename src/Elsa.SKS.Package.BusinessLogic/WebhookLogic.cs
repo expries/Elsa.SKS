@@ -48,8 +48,8 @@ namespace Elsa.SKS.Package.BusinessLogic
             }
             catch (DataAccessException ex)
             {
-                _logger.LogError(ex, "Database error");
-                throw new BusinessException("A database error has occurred.", ex);
+                _logger.LogError(ex, "Data access error");
+                throw new BusinessException("A data access error has occurred.", ex);
             }
         }
 
