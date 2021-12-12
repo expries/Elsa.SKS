@@ -26,7 +26,7 @@ namespace Elsa.SKS.Package.IntegrationTests
         }
 
         [Fact]
-        public async Task ImportAndExportWarehouse()
+        public async Task ExportWarehouses()
         {
             var warehouse = WarehouseData.RootWarehouse;
 

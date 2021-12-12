@@ -50,21 +50,22 @@ namespace Elsa.SKS.Package.IntegrationTests
             trackingInformation.State.Should().Be(ParcelState.Pickup);
             trackingInformation.FutureHops.Count.Should().BeGreaterThan(0);
             trackingInformation.VisitedHops.Count.Should().Be(0);
-            
-            // Report first hop
-            var hop = trackingInformation.FutureHops[0];
 
-            var reportHopResponse = await _client.PostAsync($"/parcel/{parcelInfo.TrackingId}/reportHop/{hop.Code}", null);
+            // Report first hop
+            var nextHop = trackingInformation.FutureHops[0];
+
+            var reportHopResponse = await _client.PostAsync($"/parcel/{parcelInfo.TrackingId}/reportHop/{nextHop.Code}", null);
 
             reportHopResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            
+
             // Get parcel after first hop
             var getAfterFirstHop = await _client.GetAsync($"/parcel/{parcelInfo.TrackingId}");
             var trackingInformationPastHop = await getAfterFirstHop.Content.ToJsonAsync<TrackingInformation>();
 
             getAfterFirstHop.StatusCode.Should().Be(HttpStatusCode.OK);
-            trackingInformationPastHop.VisitedHops.Count.Should().BeGreaterThan(0);
-            trackingInformationPastHop.State.Should().BeOneOf(ParcelState.InTruckDelivery, ParcelState.InTransport);
+            trackingInformationPastHop.State.Should().Be(ParcelState.InTruckDelivery);
+            trackingInformationPastHop.FutureHops.Count.Should().BeGreaterThan(0);
+            trackingInformationPastHop.VisitedHops.Count.Should().Be(1);
             
             // Report parcel delivery
             var reportDeliveryResponse = await _client.PostAsync($"/parcel/{parcelInfo.TrackingId}/reportDelivery", null);
@@ -78,7 +79,7 @@ namespace Elsa.SKS.Package.IntegrationTests
             getAfterDeliveryResponse.StatusCode.Should().Be(HttpStatusCode.OK);
             trackingInformationPastDelivery.State.Should().Be(ParcelState.Delivered);
             trackingInformationPastDelivery.FutureHops.Count.Should().Be(0);
-            trackingInformationPastDelivery.VisitedHops.Count.Should().BeGreaterThan(0);
+            trackingInformationPastDelivery.VisitedHops.Count.Should().BeGreaterThan(1);
         }
 
         [Fact]
@@ -108,19 +109,20 @@ namespace Elsa.SKS.Package.IntegrationTests
             trackingInformation.VisitedHops.Count.Should().Be(0);
             
             // Report first hop
-            var hop = trackingInformation.FutureHops[0];
+            var nextHop = trackingInformation.FutureHops[0];
 
-            var reportHopResponse = await _client.PostAsync($"/parcel/{trackingId}/reportHop/{hop.Code}", null);
+            var reportHopResponse = await _client.PostAsync($"/parcel/{trackingId}/reportHop/{nextHop.Code}", null);
 
             reportHopResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            
+
             // Get parcel after first hop
             var getAfterFirstHop = await _client.GetAsync($"/parcel/{trackingId}");
             var trackingInformationPastHop = await getAfterFirstHop.Content.ToJsonAsync<TrackingInformation>();
 
             getAfterFirstHop.StatusCode.Should().Be(HttpStatusCode.OK);
-            trackingInformationPastHop.VisitedHops.Count.Should().BeGreaterThan(0);
-            trackingInformationPastHop.State.Should().BeOneOf(ParcelState.InTruckDelivery, ParcelState.InTransport);
+            trackingInformationPastHop.State.Should().Be(ParcelState.InTruckDelivery);
+            trackingInformationPastHop.FutureHops.Count.Should().BeGreaterThan(0);
+            trackingInformationPastHop.VisitedHops.Count.Should().Be(1);
             
             // Report parcel delivery
             var reportDeliveryResponse = await _client.PostAsync($"/parcel/{trackingId}/reportDelivery", null);
@@ -134,7 +136,7 @@ namespace Elsa.SKS.Package.IntegrationTests
             getAfterDeliveryResponse.StatusCode.Should().Be(HttpStatusCode.OK);
             trackingInformationPastDelivery.State.Should().Be(ParcelState.Delivered);
             trackingInformationPastDelivery.FutureHops.Count.Should().Be(0);
-            trackingInformationPastDelivery.VisitedHops.Count.Should().BeGreaterThan(0);
+            trackingInformationPastDelivery.VisitedHops.Count.Should().BeGreaterThan(1);
         }
         
         private static string GenerateTrackingId()

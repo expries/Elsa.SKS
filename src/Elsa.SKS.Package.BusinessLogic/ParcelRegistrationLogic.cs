@@ -13,7 +13,6 @@ using Elsa.SKS.Package.ServiceAgents.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using NetTopologySuite.Geometries;
-using Truck = Elsa.SKS.Package.DataAccess.Entities.Truck;
 
 namespace Elsa.SKS.Package.BusinessLogic
 {
@@ -150,20 +149,31 @@ namespace Elsa.SKS.Package.BusinessLogic
 
             // get trucks that cover sender/recipient location
             var trucks = _hopRepository.GetAllTrucks();
-            DataAccess.Entities.Hop senderTruck = trucks.FirstOrDefault(t => t.GeoRegion.Contains(senderLocation));
-            DataAccess.Entities.Hop recipientTruck = trucks.FirstOrDefault(t => t.GeoRegion.Contains(recipientLocation));
+            DataAccess.Entities.Hop senderHop = trucks.FirstOrDefault(t => t.GeoRegion.Contains(senderLocation));
+            DataAccess.Entities.Hop recipientHop = trucks.FirstOrDefault(t => t.GeoRegion.Contains(recipientLocation));
 
             // if no truck covers location, check if transfer warehouse covers it
-            if (senderTruck is null || recipientTruck is null)
+            if (senderHop is null || recipientHop is null)
             {
                 var transferWarehouses = _hopRepository.GetAllTransferWarehouses();
-                senderTruck ??= transferWarehouses.First(x => x.GeoRegion.Contains(senderLocation));
-                recipientTruck ??= transferWarehouses.First(x => x.GeoRegion.Contains(recipientLocation));
+                senderHop ??= transferWarehouses.FirstOrDefault(x => x.GeoRegion.Contains(senderLocation));
+                recipientHop ??= transferWarehouses.FirstOrDefault(x => x.GeoRegion.Contains(recipientLocation));
+            }
+
+            if (senderHop is null)
+            {
+                _logger.LogWarning("Could not find truck/logistics partner for sender address.");
+                throw new BusinessException("Could not find truck/logistics partner for sender address.");
             }
             
-            var route = GetHopRoute(senderTruck, recipientTruck);
-                
-            return route?.Select(hop => new HopArrival { Hop = hop }).ToList() ?? new List<HopArrival>();
+            if (recipientHop is null)
+            {
+                _logger.LogWarning("Could not find truck/logistics partner for recipient address.");
+                throw new BusinessException("Could not find truck/logistics partner for sender address.");
+            }
+
+            var hopRoute = GetHopRoute(senderHop, recipientHop);
+            return hopRoute.Select(hop => new HopArrival { Hop = hop }).ToList();
         }
         
         private List<Hop> GetHopRoute(DataAccess.Entities.Hop senderHop, DataAccess.Entities.Hop receiverHop)
@@ -171,7 +181,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             // if sender and receiver truck is the same truck
             if (senderHop.Code == receiverHop.Code)
             {
-                return null;
+                return new List<Hop>();
             }
             
             var routeSender = new List<Hop>();
@@ -179,6 +189,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             var currHopSender = _hopRepository.GetByCode(senderHop.Code); // start hop
             var currHopReceiver = _hopRepository.GetByCode(receiverHop.Code); // end hop
             
+            routeSender.Add(_mapper.Map<Hop>(currHopSender));
             routeReceiver.Add(_mapper.Map<Hop>(currHopReceiver));
             
             while (currHopSender.Code != currHopReceiver.Code)
@@ -193,7 +204,7 @@ namespace Elsa.SKS.Package.BusinessLogic
             var routeCombined = new List<Hop>();
             routeCombined.AddRange(routeSender);
             
-            for (var i = routeReceiver.Count-2; i == 0; i--)
+            for (var i = routeReceiver.Count - 2; i == 0; i--)
             {
                 routeCombined.Add(routeReceiver[i]);
             }
