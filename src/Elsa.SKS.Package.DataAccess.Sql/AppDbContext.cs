@@ -35,8 +35,7 @@ namespace Elsa.SKS.Package.DataAccess.Sql
         public virtual DbSet<TransferWarehouse> TransferWarehouses { get; set; }
         
         public virtual DbSet<Truck> Trucks { get; set; }
-        
-        
+
         public virtual DbSet<Subscription> Subscriptions { get; set; }
 
     }

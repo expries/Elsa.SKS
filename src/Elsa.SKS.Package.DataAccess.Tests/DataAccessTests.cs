@@ -15,13 +15,15 @@ namespace Elsa.SKS.Package.DataAccess.Tests
             var hopSet = GetQueryableMockDbSet<Hop>();
             var parcelSet = GetQueryableMockDbSet<Parcel>();
             var warehouseSet = GetQueryableMockDbSet<Warehouse>();
-            
+            var subscriptionSet = GetQueryableMockDbSet<Subscription>();
+
             var appDbContext = A.Fake<IAppDbContext>();
             
             A.CallTo(() => appDbContext.Hops).Returns(hopSet);
             A.CallTo(() => appDbContext.Parcels).Returns(parcelSet);
             A.CallTo(() => appDbContext.Warehouses).Returns(warehouseSet);
-            
+            A.CallTo(() => appDbContext.Subscriptions).Returns(subscriptionSet);
+
             return appDbContext;
         }
 

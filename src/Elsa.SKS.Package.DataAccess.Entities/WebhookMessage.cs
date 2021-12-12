@@ -9,6 +9,7 @@
  */
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Elsa.SKS.Package.DataAccess.Entities.Enums;
 
 namespace Elsa.SKS.Package.DataAccess.Entities
@@ -16,8 +17,7 @@ namespace Elsa.SKS.Package.DataAccess.Entities
     /// <summary>
     /// 
     /// </summary>
-    //[DataContract]
-    //[ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage]
     public class WebhookMessage
     { 
         /// <summary>
