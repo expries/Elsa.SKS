@@ -8,16 +8,19 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Elsa.SKS.Frontend;
-public class Program
+namespace Elsa.SKS.Frontend
 {
-    public static async Task Main(string[] args)
+    public class Program
     {
-        var builder = WebAssemblyHostBuilder.CreateDefault(args);
-        builder.RootComponents.Add<App>("#app");
+        public static async Task Main(string[] args)
+        {
+            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            builder.RootComponents.Add<App>("#app");
 
-        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-        await builder.Build().RunAsync();
+            await builder.Build().RunAsync();
+        }
     }
 }
+
