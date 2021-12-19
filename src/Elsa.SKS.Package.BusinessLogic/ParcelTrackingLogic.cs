@@ -8,6 +8,7 @@ using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
+using Elsa.SKS.Package.ServiceAgents.Exceptions;
 using Elsa.SKS.Package.ServiceAgents.Interfaces;
 using Microsoft.Extensions.Logging;
 using DataAccessParcel = Elsa.SKS.Package.DataAccess.Entities.Parcel;
@@ -153,6 +154,11 @@ namespace Elsa.SKS.Package.BusinessLogic
             {
                 _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database error has occurred.", ex);
+            }
+            catch (ServiceAgentException ex)
+            {
+                _logger.LogError(ex, "");
+                throw new BusinessException(ex.Message, ex);
             }
         }
 

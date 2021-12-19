@@ -9,6 +9,7 @@ using Elsa.SKS.Package.BusinessLogic.Exceptions;
 using Elsa.SKS.Package.BusinessLogic.Interfaces;
 using Elsa.SKS.Package.DataAccess.Interfaces;
 using Elsa.SKS.Package.DataAccess.Sql.Exceptions;
+using Elsa.SKS.Package.ServiceAgents.Exceptions;
 using Elsa.SKS.Package.ServiceAgents.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -85,7 +86,7 @@ namespace Elsa.SKS.Package.BusinessLogic
                 _logger.LogDebug("Validation failed");
                 throw new InvalidParcelException(validation.ToString(" "));
             }
-            
+
             try
             {
                 // generate new trackingId and check if id already exists
@@ -115,7 +116,11 @@ namespace Elsa.SKS.Package.BusinessLogic
                 _logger.LogError(ex, "Database error");
                 throw new BusinessException("A database error has occurred.", ex);
             }
-            
+            catch (ServiceAgentException ex)
+            {
+                _logger.LogError(ex, "Service agent error");
+                throw new BusinessException(ex.Message, ex);
+            }
         }
 
         private string GenerateTrackingId()
