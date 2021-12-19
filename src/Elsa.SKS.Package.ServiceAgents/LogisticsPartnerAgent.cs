@@ -29,11 +29,8 @@ namespace Elsa.SKS.Package.ServiceAgents
             }
             catch (Exception ex)
             {
-                if (ex is HttpRequestException || ex is InvalidOperationException)
-                {
-                    throw new ServiceAgentException("Request error occured.", ex);
-
-                }
+                _logger.LogError(ex, "Failed to contact logistics partner.");
+                throw new ServiceAgentException("Failed to contact logistics partner.", ex);
             }
         }
     }

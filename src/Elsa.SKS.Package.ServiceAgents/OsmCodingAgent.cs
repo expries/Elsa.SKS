@@ -31,6 +31,7 @@ namespace Elsa.SKS.Package.ServiceAgents
                     Country = address.Country,
                     ShowGeoJSON = true
                 });
+                
                 request.Wait();
 
                 if (request.Result.Length > 0)
