@@ -8,7 +8,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  backendProjectName: "Elsa.SKS.Package.Services"
+  backendProjectName: "Elsa.SKS.Backend.Services"
   frontendProjectName: "Elsa.SKS.Frontend.Server"
 
 steps:
