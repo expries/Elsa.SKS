@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Elsa.SKS.Frontend.Client
+namespace Elsa.SKS.Frontend
 {
     public class Program
     {
@@ -19,3 +19,4 @@ namespace Elsa.SKS.Frontend.Client
         }
     }
 }
+

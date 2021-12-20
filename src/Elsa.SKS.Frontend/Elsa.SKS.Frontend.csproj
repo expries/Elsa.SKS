@@ -10,8 +10,4 @@
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Elsa.SKS.Frontend.Shared\Elsa.SKS.Frontend.Shared.csproj" />
-  </ItemGroup>
-
 </Project>

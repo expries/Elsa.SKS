@@ -45,11 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.Webhooks.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.IntegrationTests", "src\Elsa.SKS.Backend.IntegrationTests\Elsa.SKS.Backend.IntegrationTests.csproj", "{297B0DC9-B635-492B-88D7-79DDDB99C187}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Frontend.Server", "src\Elsa.SKS.Frontend.Server\Elsa.SKS.Frontend.Server.csproj", "{2F38D3F3-167E-4B01-9B15-5BA6F67FDB20}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Frontend.Client", "src\Elsa.SKS.Frontend.Client\Elsa.SKS.Frontend.Client.csproj", "{4219C79A-39A0-49DF-9C0A-928DA287E201}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Frontend.Shared", "src\Elsa.SKS.Frontend.Shared\Elsa.SKS.Frontend.Shared.csproj", "{D691406F-0898-41C4-81AC-ECDEEFE09A8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Frontend", "src\Elsa.SKS.Frontend\Elsa.SKS.Frontend.csproj", "{5A72F2E6-3B7D-4A8F-8E71-31A2C7DC6C64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,18 +137,10 @@ Global
 		{297B0DC9-B635-492B-88D7-79DDDB99C187}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{297B0DC9-B635-492B-88D7-79DDDB99C187}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{297B0DC9-B635-492B-88D7-79DDDB99C187}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F38D3F3-167E-4B01-9B15-5BA6F67FDB20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F38D3F3-167E-4B01-9B15-5BA6F67FDB20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F38D3F3-167E-4B01-9B15-5BA6F67FDB20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F38D3F3-167E-4B01-9B15-5BA6F67FDB20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4219C79A-39A0-49DF-9C0A-928DA287E201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4219C79A-39A0-49DF-9C0A-928DA287E201}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4219C79A-39A0-49DF-9C0A-928DA287E201}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4219C79A-39A0-49DF-9C0A-928DA287E201}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D691406F-0898-41C4-81AC-ECDEEFE09A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D691406F-0898-41C4-81AC-ECDEEFE09A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D691406F-0898-41C4-81AC-ECDEEFE09A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D691406F-0898-41C4-81AC-ECDEEFE09A8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A72F2E6-3B7D-4A8F-8E71-31A2C7DC6C64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A72F2E6-3B7D-4A8F-8E71-31A2C7DC6C64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A72F2E6-3B7D-4A8F-8E71-31A2C7DC6C64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A72F2E6-3B7D-4A8F-8E71-31A2C7DC6C64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
