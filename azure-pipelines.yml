@@ -75,4 +75,4 @@ steps:
   displayName: 'Publish build artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'elsa-sks-artifact'
+    ArtifactName: 'elsa-sks'
