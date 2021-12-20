@@ -3,47 +3,47 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Services", "src\Elsa.SKS.Package.Services\Elsa.SKS.Package.Services.csproj", "{223F9551-51BD-4DEE-B6E7-B09052E39510}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.Services", "src\Elsa.SKS.Backend.Services\Elsa.SKS.Backend.Services.csproj", "{223F9551-51BD-4DEE-B6E7-B09052E39510}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Services.DTOs", "src\Elsa.SKS.Package.Services.DTOs\Elsa.SKS.Package.Services.DTOs.csproj", "{7D32C915-C2D1-4F19-8B5D-832F1C287809}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.Services.DTOs", "src\Elsa.SKS.Backend.Services.DTOs\Elsa.SKS.Backend.Services.DTOs.csproj", "{7D32C915-C2D1-4F19-8B5D-832F1C287809}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Services.Interfaces", "src\Elsa.SKS.Package.Services.Interfaces\Elsa.SKS.Package.Services.Interfaces.csproj", "{FA16CC9E-169B-4435-A030-647F5179F580}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.Services.Interfaces", "src\Elsa.SKS.Backend.Services.Interfaces\Elsa.SKS.Backend.Services.Interfaces.csproj", "{FA16CC9E-169B-4435-A030-647F5179F580}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Services.Tests", "src\Elsa.SKS.Package.Services.Tests\Elsa.SKS.Package.Services.Tests.csproj", "{C0468991-989F-4E98-ABF1-334838DD667E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.Services.Tests", "src\Elsa.SKS.Backend.Services.Tests\Elsa.SKS.Backend.Services.Tests.csproj", "{C0468991-989F-4E98-ABF1-334838DD667E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.BusinessLogic", "src\Elsa.SKS.Package.BusinessLogic\Elsa.SKS.Package.BusinessLogic.csproj", "{C7CB0914-C2AF-4B21-9CE1-9C4F0519646F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.BusinessLogic", "src\Elsa.SKS.Backend.BusinessLogic\Elsa.SKS.Backend.BusinessLogic.csproj", "{C7CB0914-C2AF-4B21-9CE1-9C4F0519646F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.BusinessLogic.Entities", "src\Elsa.SKS.Package.BusinessLogic.Entities\Elsa.SKS.Package.BusinessLogic.Entities.csproj", "{7175189B-9A15-4922-97AF-D38C488113CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.BusinessLogic.Entities", "src\Elsa.SKS.Backend.BusinessLogic.Entities\Elsa.SKS.Backend.BusinessLogic.Entities.csproj", "{7175189B-9A15-4922-97AF-D38C488113CA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.BusinessLogic.Interfaces", "src\Elsa.SKS.Package.BusinessLogic.Interfaces\Elsa.SKS.Package.BusinessLogic.Interfaces.csproj", "{D24C49E9-BF66-49B6-AF63-FF90B2EFD5EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.BusinessLogic.Interfaces", "src\Elsa.SKS.Backend.BusinessLogic.Interfaces\Elsa.SKS.Backend.BusinessLogic.Interfaces.csproj", "{D24C49E9-BF66-49B6-AF63-FF90B2EFD5EA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.BusinessLogic.Tests", "src\Elsa.SKS.Package.BusinessLogic.Tests\Elsa.SKS.Package.BusinessLogic.Tests.csproj", "{13194EAA-BF19-4CD8-81E2-42A57CFBCF0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.BusinessLogic.Tests", "src\Elsa.SKS.Backend.BusinessLogic.Tests\Elsa.SKS.Backend.BusinessLogic.Tests.csproj", "{13194EAA-BF19-4CD8-81E2-42A57CFBCF0C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.DataAccess.Sql", "src\Elsa.SKS.Package.DataAccess.Sql\Elsa.SKS.Package.DataAccess.Sql.csproj", "{3CE34005-6335-4909-BD91-0C5FF5084BF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.DataAccess.Sql", "src\Elsa.SKS.Backend.DataAccess.Sql\Elsa.SKS.Backend.DataAccess.Sql.csproj", "{3CE34005-6335-4909-BD91-0C5FF5084BF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.DataAccess.Interfaces", "src\Elsa.SKS.Package.DataAccess.Interfaces\Elsa.SKS.Package.DataAccess.Interfaces.csproj", "{8B1C666B-2C8F-49C0-B817-F8DA704A0A90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.DataAccess.Interfaces", "src\Elsa.SKS.Backend.DataAccess.Interfaces\Elsa.SKS.Backend.DataAccess.Interfaces.csproj", "{8B1C666B-2C8F-49C0-B817-F8DA704A0A90}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.DataAccess.Entities", "src\Elsa.SKS.Package.DataAccess.Entities\Elsa.SKS.Package.DataAccess.Entities.csproj", "{B55C21F2-8B18-4902-8AFC-78AEC6754F41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.DataAccess.Entities", "src\Elsa.SKS.Backend.DataAccess.Entities\Elsa.SKS.Backend.DataAccess.Entities.csproj", "{B55C21F2-8B18-4902-8AFC-78AEC6754F41}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.DataAccess.Tests", "src\Elsa.SKS.Package.DataAccess.Tests\Elsa.SKS.Package.DataAccess.Tests.csproj", "{A123B0E5-5EF4-45AB-A192-E871E9E1DB42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.DataAccess.Tests", "src\Elsa.SKS.Backend.DataAccess.Tests\Elsa.SKS.Backend.DataAccess.Tests.csproj", "{A123B0E5-5EF4-45AB-A192-E871E9E1DB42}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.ServiceAgents", "src\Elsa.SKS.Package.ServiceAgents\Elsa.SKS.Package.ServiceAgents.csproj", "{C6E0AF22-CAFB-4F75-AFB2-CBC7E95E450D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.ServiceAgents", "src\Elsa.SKS.Backend.ServiceAgents\Elsa.SKS.Backend.ServiceAgents.csproj", "{C6E0AF22-CAFB-4F75-AFB2-CBC7E95E450D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.ServiceAgents.Interfaces", "src\Elsa.SKS.Package.ServiceAgents.Interfaces\Elsa.SKS.Package.ServiceAgents.Interfaces.csproj", "{87BD10EF-6151-44D6-B40B-FF32E5FAE3E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.ServiceAgents.Interfaces", "src\Elsa.SKS.Backend.ServiceAgents.Interfaces\Elsa.SKS.Backend.ServiceAgents.Interfaces.csproj", "{87BD10EF-6151-44D6-B40B-FF32E5FAE3E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.ServiceAgents.Tests", "src\Elsa.SKS.Package.ServiceAgents.Tests\Elsa.SKS.Package.ServiceAgents.Tests.csproj", "{4EDFBBF5-46F6-4295-8871-7AE708402725}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.ServiceAgents.Tests", "src\Elsa.SKS.Backend.ServiceAgents.Tests\Elsa.SKS.Backend.ServiceAgents.Tests.csproj", "{4EDFBBF5-46F6-4295-8871-7AE708402725}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.ServiceAgents.Entities", "src\Elsa.SKS.Package.ServiceAgents.Entities\Elsa.SKS.Package.ServiceAgents.Entities.csproj", "{BBFBBA7C-A1E9-452E-8A3B-734869ECC13F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.ServiceAgents.Entities", "src\Elsa.SKS.Backend.ServiceAgents.Entities\Elsa.SKS.Backend.ServiceAgents.Entities.csproj", "{BBFBBA7C-A1E9-452E-8A3B-734869ECC13F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Webhooks", "src\Elsa.SKS.Package.Webhooks\Elsa.SKS.Package.Webhooks.csproj", "{F9DC28FD-81AE-423C-A308-D7A8B9B49C77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.Webhooks", "src\Elsa.SKS.Backend.Webhooks\Elsa.SKS.Backend.Webhooks.csproj", "{F9DC28FD-81AE-423C-A308-D7A8B9B49C77}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Webhooks.Interfaces", "src\Elsa.SKS.Package.Webhooks.Interfaces\Elsa.SKS.Package.Webhooks.Interfaces.csproj", "{18EAA84A-03E0-4537-A60E-E6BA542F85CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.Webhooks.Interfaces", "src\Elsa.SKS.Backend.Webhooks.Interfaces\Elsa.SKS.Backend.Webhooks.Interfaces.csproj", "{18EAA84A-03E0-4537-A60E-E6BA542F85CB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Webhooks.Tests", "src\Elsa.SKS.Package.Webhooks.Tests\Elsa.SKS.Package.Webhooks.Tests.csproj", "{689CE661-4F3D-4751-A439-0FDA08BBD872}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.Webhooks.Tests", "src\Elsa.SKS.Backend.Webhooks.Tests\Elsa.SKS.Backend.Webhooks.Tests.csproj", "{689CE661-4F3D-4751-A439-0FDA08BBD872}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.Webhooks.DTOs", "src\Elsa.SKS.Package.Webhooks.DTOs\Elsa.SKS.Package.Webhooks.DTOs.csproj", "{D689BADB-4FB2-4685-ACD1-EFD98794BA61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.Webhooks.DTOs", "src\Elsa.SKS.Backend.Webhooks.DTOs\Elsa.SKS.Backend.Webhooks.DTOs.csproj", "{D689BADB-4FB2-4685-ACD1-EFD98794BA61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Package.IntegrationTests", "src\Elsa.SKS.Package.IntegrationTests\Elsa.SKS.Package.IntegrationTests.csproj", "{297B0DC9-B635-492B-88D7-79DDDB99C187}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Backend.IntegrationTests", "src\Elsa.SKS.Backend.IntegrationTests\Elsa.SKS.Backend.IntegrationTests.csproj", "{297B0DC9-B635-492B-88D7-79DDDB99C187}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.SKS.Frontend.Server", "src\Elsa.SKS.Frontend.Server\Elsa.SKS.Frontend.Server.csproj", "{2F38D3F3-167E-4B01-9B15-5BA6F67FDB20}"
 EndProject

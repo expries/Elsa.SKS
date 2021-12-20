@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Elsa.SKS.Backend.BusinessLogic.Entities\Elsa.SKS.Backend.BusinessLogic.Entities.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Backend.ServiceAgents.Entities\Elsa.SKS.Backend.ServiceAgents.Entities.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Backend.ServiceAgents.Interfaces\Elsa.SKS.Backend.ServiceAgents.Interfaces.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+      <PackageReference Include="Nominatim.API" Version="1.6.1" />
+    </ItemGroup>
+
+</Project>

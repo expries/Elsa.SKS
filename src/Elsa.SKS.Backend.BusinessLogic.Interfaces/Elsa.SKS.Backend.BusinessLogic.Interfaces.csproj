@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Elsa.SKS.Backend.BusinessLogic.Entities\Elsa.SKS.Backend.BusinessLogic.Entities.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Backend.Services.DTOs\Elsa.SKS.Backend.Services.DTOs.csproj" />
+    </ItemGroup>
+
+</Project>

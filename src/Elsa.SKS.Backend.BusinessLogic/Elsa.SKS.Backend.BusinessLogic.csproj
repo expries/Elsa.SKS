@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Elsa.SKS.Backend.BusinessLogic.Interfaces\Elsa.SKS.Backend.BusinessLogic.Interfaces.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Backend.DataAccess.Interfaces\Elsa.SKS.Backend.DataAccess.Interfaces.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Backend.DataAccess.Sql\Elsa.SKS.Backend.DataAccess.Sql.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Backend.ServiceAgents.Entities\Elsa.SKS.Backend.ServiceAgents.Entities.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Backend.ServiceAgents.Interfaces\Elsa.SKS.Backend.ServiceAgents.Interfaces.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Backend.ServiceAgents\Elsa.SKS.Backend.ServiceAgents.csproj" />
+      <ProjectReference Include="..\Elsa.SKS.Backend.Webhooks.Interfaces\Elsa.SKS.Backend.Webhooks.Interfaces.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+      <PackageReference Include="FluentValidation" Version="10.3.4" />
+      <PackageReference Include="NetTopologySuite" Version="2.4.0" />
+      <PackageReference Include="NetTopologySuite.IO.GeoJSON" Version="2.0.4" />
+    </ItemGroup>
+
+</Project>
