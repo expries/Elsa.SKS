@@ -3,7 +3,7 @@ using AutoMapper;
 using Elsa.SKS.Backend.Services.DTOs;
 using Elsa.SKS.Backend.Services.DTOs.Converters;
 
-namespace Elsa.SKS.MappingProfiles
+namespace Elsa.SKS.Backend.Services.MappingProfiles
 {
     /// <summary>
     /// 
@@ -16,24 +16,24 @@ namespace Elsa.SKS.MappingProfiles
         /// </summary>
         public HopProfile()
         {
-            CreateMap<Hop, Backend.BusinessLogic.Entities.Hop>().IncludeAllDerived();
-            CreateMap<Backend.BusinessLogic.Entities.Hop, Hop>().IncludeAllDerived();
-            CreateMap<Warehouse, Backend.BusinessLogic.Entities.Warehouse>().ReverseMap();
+            CreateMap<Hop, BusinessLogic.Entities.Hop>().IncludeAllDerived();
+            CreateMap<BusinessLogic.Entities.Hop, Hop>().IncludeAllDerived();
+            CreateMap<Warehouse, BusinessLogic.Entities.Warehouse>().ReverseMap();
 
-            CreateMap<TransferWarehouse, Backend.BusinessLogic.Entities.TransferWarehouse>()
+            CreateMap<TransferWarehouse, BusinessLogic.Entities.TransferWarehouse>()
                 .ForMember(_ => _.GeoRegion, o => o.ConvertUsing(new GeometryConverter(), _ => _.RegionGeoJson));
 
-            CreateMap<Backend.BusinessLogic.Entities.TransferWarehouse, TransferWarehouse>()
+            CreateMap<BusinessLogic.Entities.TransferWarehouse, TransferWarehouse>()
                 .ForMember(_ => _.RegionGeoJson, o => o.ConvertUsing(new GeometryConverter(), _ => _.GeoRegion));
 
-            CreateMap<Truck, Backend.BusinessLogic.Entities.Truck>()
+            CreateMap<Truck, BusinessLogic.Entities.Truck>()
                 .ForMember(_ => _.GeoRegion, o => o.ConvertUsing(new GeometryConverter(), _ => _.RegionGeoJson));
 
-            CreateMap<Backend.BusinessLogic.Entities.Truck, Truck>()
+            CreateMap<BusinessLogic.Entities.Truck, Truck>()
                 .ForMember(_ => _.RegionGeoJson, o => o.ConvertUsing(new GeometryConverter(), _ => _.GeoRegion));
-            
-            CreateMap<WarehouseNextHops, Backend.BusinessLogic.Entities.WarehouseNextHop>().ReverseMap();
-            CreateMap<GeoCoordinates, Backend.BusinessLogic.Entities.GeoCoordinates>().ReverseMap();
+
+            CreateMap<WarehouseNextHops, BusinessLogic.Entities.WarehouseNextHop>().ReverseMap();
+            CreateMap<GeoCoordinates, BusinessLogic.Entities.GeoCoordinates>().ReverseMap();
         }
     }
 }

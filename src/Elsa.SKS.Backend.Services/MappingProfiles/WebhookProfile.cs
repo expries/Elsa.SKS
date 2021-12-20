@@ -3,7 +3,7 @@ using AutoMapper;
 using Elsa.SKS.Backend.BusinessLogic.Entities;
 using Elsa.SKS.Backend.Services.DTOs;
 
-namespace Elsa.SKS.MappingProfiles
+namespace Elsa.SKS.Backend.Services.MappingProfiles
 {
     /// <summary>
     /// 

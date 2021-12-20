@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Elsa.SKS
+namespace Elsa.SKS.Backend.Services
 {
     /// <summary>
     /// Program

@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Elsa.SKS.Backend.BusinessLogic.Entities;
-using Elsa.SKS.Backend.ServiceAgents.Entities;
 using Elsa.SKS.Backend.ServiceAgents.Exceptions;
 using FakeItEasy;
 using Microsoft.Extensions.Logging;

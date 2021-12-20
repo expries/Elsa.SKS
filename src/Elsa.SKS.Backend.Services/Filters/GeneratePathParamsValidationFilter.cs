@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Elsa.SKS.Filters
+namespace Elsa.SKS.Backend.Services.Filters
 {
     /// <summary>
     /// Path Parameter Validation Rules Filter
@@ -44,7 +44,7 @@ namespace Elsa.SKS.Filters
                         string regex = (string)regexAttr.ConstructorArguments[0].Value;
                         if (swaggerParam is OpenApiParameter)
                         {
-                            ((OpenApiParameter)swaggerParam).Schema.Pattern = regex;
+                            swaggerParam.Schema.Pattern = regex;
                         }
                     }
 
@@ -74,8 +74,8 @@ namespace Elsa.SKS.Filters
 
                     if (swaggerParam is OpenApiParameter)
                     {
-                        ((OpenApiParameter)swaggerParam).Schema.MinLength = minLenght;
-                        ((OpenApiParameter)swaggerParam).Schema.MaxLength = maxLength;
+                        swaggerParam.Schema.MinLength = minLenght;
+                        swaggerParam.Schema.MaxLength = maxLength;
                     }
 
                     // Range [Range]
@@ -87,8 +87,8 @@ namespace Elsa.SKS.Filters
 
                         if (swaggerParam is OpenApiParameter)
                         {
-                            ((OpenApiParameter)swaggerParam).Schema.Minimum = rangeMin;
-                            ((OpenApiParameter)swaggerParam).Schema.Maximum = rangeMax;
+                            swaggerParam.Schema.Minimum = rangeMin;
+                            swaggerParam.Schema.Maximum = rangeMax;
                         }
                     }
                 }

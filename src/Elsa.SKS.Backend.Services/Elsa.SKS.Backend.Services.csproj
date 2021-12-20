@@ -5,8 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PreserveCompilationContext>true</PreserveCompilationContext>
-    <PackageId>Elsa.SKS.Package.Services</PackageId>
-    <RootNamespace>Elsa.SKS</RootNamespace>
+    <PackageId>Elsa.SKS.Backend.Services</PackageId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
     <UserSecretsId>d6d7f092-d18c-4d13-8ff2-c82aea4f5ab3</UserSecretsId>

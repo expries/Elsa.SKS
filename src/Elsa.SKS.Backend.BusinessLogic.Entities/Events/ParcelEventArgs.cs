@@ -1,5 +1,4 @@
-﻿using Elsa.SKS.Backend.BusinessLogic.Entities;
-using System;
+﻿using System;
 
 namespace Elsa.SKS.Backend.BusinessLogic.Entities.Events
 {

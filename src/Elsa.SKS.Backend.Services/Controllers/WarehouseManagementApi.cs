@@ -10,7 +10,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
-using Elsa.SKS.Attributes;
+using Elsa.SKS.Backend.Services.Attributes;
 using Elsa.SKS.Backend.BusinessLogic.Exceptions;
 using Elsa.SKS.Backend.BusinessLogic.Interfaces;
 using Elsa.SKS.Backend.Services.DTOs;
@@ -18,8 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Elsa.SKS.Controllers
-{ 
+namespace Elsa.SKS.Backend.Services.Controllers
+{
     /// <summary>
     /// 
     /// </summary>
@@ -27,9 +27,9 @@ namespace Elsa.SKS.Controllers
     public class WarehouseManagementApiController : ControllerBase
     {
         private readonly IWarehouseLogic _warehouseLogic;
-        
+
         private readonly IMapper _mapper;
-        
+
         private readonly ILogger<WarehouseManagementApiController> _logger;
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Elsa.SKS.Controllers
                 return Ok(result);
             }
             catch (WarehouseNotFoundException)
-            {                
+            {
                 _logger.LogInformation("Warehouse not found error");
                 return NotFound();
             }
@@ -129,7 +129,7 @@ namespace Elsa.SKS.Controllers
         {
             try
             {
-                var entity = _mapper.Map<Elsa.SKS.Backend.BusinessLogic.Entities.Warehouse>(body);
+                var entity = _mapper.Map<BusinessLogic.Entities.Warehouse>(body);
                 _warehouseLogic.ImportWarehouses(entity);
                 _logger.LogInformation("Import warehouse response: Ok");
                 return Ok();

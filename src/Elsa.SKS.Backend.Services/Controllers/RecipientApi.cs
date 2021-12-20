@@ -10,7 +10,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
-using Elsa.SKS.Attributes;
+using Elsa.SKS.Backend.Services.Attributes;
 using Elsa.SKS.Backend.BusinessLogic.Exceptions;
 using Elsa.SKS.Backend.BusinessLogic.Interfaces;
 using Elsa.SKS.Backend.Services.DTOs;
@@ -18,8 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Elsa.SKS.Controllers
-{ 
+namespace Elsa.SKS.Backend.Services.Controllers
+{
     /// <summary>
     /// 
     /// </summary>
@@ -27,9 +27,9 @@ namespace Elsa.SKS.Controllers
     public class RecipientApiController : ControllerBase
     {
         private readonly IParcelTrackingLogic _parcelTrackingLogic;
-        
+
         private readonly IMapper _mapper;
-        
+
         private readonly ILogger<RecipientApiController> _logger;
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Elsa.SKS.Controllers
             _mapper = mapper;
             _logger = logger;
         }
-        
+
         /// <summary>
         /// Find the latest state of a parcel by its tracking ID. 
         /// </summary>

@@ -12,8 +12,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net.Http;
-using Elsa.SKS.Filters;
-using Elsa.SKS.MappingProfiles;
 using Elsa.SKS.Backend.BusinessLogic;
 using Elsa.SKS.Backend.BusinessLogic.Interfaces;
 using Elsa.SKS.Backend.BusinessLogic.Validators;
@@ -39,8 +37,10 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Parcel = Elsa.SKS.Backend.BusinessLogic.Entities.Parcel;
 using Warehouse = Elsa.SKS.Backend.BusinessLogic.Entities.Warehouse;
+using Elsa.SKS.Backend.Services.Filters;
+using Elsa.SKS.Backend.Services.MappingProfiles;
 
-namespace Elsa.SKS
+namespace Elsa.SKS.Backend.Services
 {
     /// <summary>
     /// Startup
@@ -86,15 +86,15 @@ namespace Elsa.SKS
             services.AddTransient<ILogisticsPartnerAgent, LogisticsPartnerAgent>();
             services.AddTransient<IWebhookManager, WebhookManager>();
 
-            
+
             services.AddTransient(_ => new HttpClient());
-            
+
             services.AddTransient<IAppDbContext, AppDbContext>();
-            
+
             // Add validators
             services.AddTransient<IValidator<Parcel>, ParcelValidator>();
             services.AddTransient<IValidator<Warehouse>, WarehouseValidator>();
-            
+
             // Add framework services.
             services
                 .AddMvc(options =>
@@ -108,7 +108,7 @@ namespace Elsa.SKS
                     opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     opts.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
                     opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    
+
                     foreach (var converter in GeoJsonSerializer.Create(new GeometryFactory(new PrecisionModel(), 4326)).Converters)
                     {
                         opts.SerializerSettings.Converters.Add(converter);
@@ -126,9 +126,9 @@ namespace Elsa.SKS
                         Description = "Parcel Logistics Service (ASP.NET Core 3.1)",
                         Contact = new OpenApiContact()
                         {
-                           Name = "SKS",
-                           Url = new Uri("http://www.technikum-wien.at/"),
-                           Email = ""
+                            Name = "SKS",
+                            Url = new Uri("http://www.technikum-wien.at/"),
+                            Email = ""
                         },
                         //TermsOfService = new Uri("")
                     });
@@ -146,14 +146,14 @@ namespace Elsa.SKS
             services
                 .AddAutoMapper(
                     typeof(ParcelProfile).Assembly,
-                    typeof(Backend.BusinessLogic.MappingProfiles.ParcelProfile).Assembly,
-                    typeof(Backend.Webhooks.MappingProfiles.WebhookProfile).Assembly
+                    typeof(BusinessLogic.MappingProfiles.ParcelProfile).Assembly,
+                    typeof(Webhooks.MappingProfiles.WebhookProfile).Assembly
                 );
 
             services
                 .AddDbContextPool<AppDbContext>(options =>
                 {
-                    options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection"), 
+                    options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection"),
                         x => x.UseNetTopologySuite());
                     options.UseLazyLoadingProxies();
                 });
@@ -206,7 +206,7 @@ namespace Elsa.SKS
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+
         }
     }
 }
