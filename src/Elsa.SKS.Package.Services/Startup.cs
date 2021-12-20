@@ -69,6 +69,9 @@ namespace Elsa.SKS
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+
             // Add business layer components
             services.AddTransient<IWarehouseLogic, WarehouseLogic>();
             services.AddTransient<IParcelTrackingLogic, ParcelTrackingLogic>();
@@ -164,10 +167,10 @@ namespace Elsa.SKS
         /// <param name="loggerFactory"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseRouting();
+            app.UseBlazorFrameworkFiles();
+            app.UseStaticFiles();
 
-            //TODO: Uncomment this if you need wwwroot folder
-            // app.UseStaticFiles();
+            app.UseRouting();
 
             app.UseAuthorization();
 
@@ -186,18 +189,21 @@ namespace Elsa.SKS
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapFallbackToFile("index.html");
             });
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
             }
             else
             {
-                //TODO: Enable production exception handling (https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling)
+                // TODO: Enable production exception handling (https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling)
                 app.UseExceptionHandler("/Error");
-
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             
