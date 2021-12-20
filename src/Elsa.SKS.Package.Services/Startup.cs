@@ -69,9 +69,6 @@ namespace Elsa.SKS
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-
             // Add business layer components
             services.AddTransient<IWarehouseLogic, WarehouseLogic>();
             services.AddTransient<IParcelTrackingLogic, ParcelTrackingLogic>();
@@ -167,9 +164,6 @@ namespace Elsa.SKS
         /// <param name="loggerFactory"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseBlazorFrameworkFiles();
-            app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthorization();
@@ -189,9 +183,7 @@ namespace Elsa.SKS
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
-                endpoints.MapFallbackToFile("index.html");
             });
 
             if (env.IsDevelopment())
