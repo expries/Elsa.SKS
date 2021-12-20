@@ -9,7 +9,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
   backendProjectName: "Elsa.SKS.Package.Services"
-  frontendProjectName: "Elsa.SKS.Frontend"
+  frontendProjectName: "Elsa.SKS.Frontend.Server"
 
 steps:
 
@@ -33,7 +33,7 @@ steps:
     publishTestResults: true
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish backend application'
+  displayName: 'Publish backend'
   inputs:
     command: 'publish'
     publishWebProjects: false
@@ -41,7 +41,7 @@ steps:
     arguments: '--configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish frontend application'
+  displayName: 'Publish frontend'
   inputs:
     command: 'publish'
     publishWebProjects: false
