@@ -1,6 +1,7 @@
 ﻿@page "/tracking"
 @using Elsa.SKS.Frontend.Configuration
 @using Elsa.SKS.Backend.Services.DTOs
+@using Newtonsoft.Json
 @inject HttpClient _httpClient
 @inject AppConfiguration _appConfiguration
 
@@ -8,7 +9,7 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (_parcel is null)
 {
     <p><em>Loading...</em></p>
 }
@@ -30,15 +31,13 @@ else
 }
 
 @code {
-    private object[] forecasts = null;
-
-    private Warehouse _warehouse = null;
-
-    protected override async Task OnInitializedAsync()
+    private Parcel _parcel;
+    
+    private async Task LoadParcel(string trackingId)
     {
-        string url = $"{_appConfiguration.AppUrl}/warehouse";
-        _warehouse = await _httpClient.GetFromJsonAsync<Warehouse>(url);
-        Console.WriteLine($"Loaded warehouse level {_warehouse.Level}");
+        var url = $"{_appConfiguration.AppUrl}/parcel/{trackingId}";
+        var response = await _httpClient.GetAsync(url);
+        var stringContent = await response.Content.ReadAsStringAsync();
+        _parcel = JsonConvert.DeserializeObject<Parcel>(stringContent);
     }
-
 }

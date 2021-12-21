@@ -1,16 +1,20 @@
 ﻿@page "/submit"
+@using Elsa.SKS.Backend.Services.DTOs
+@using Elsa.SKS.Frontend.Configuration
+@using Newtonsoft.Json
+@using System.Text
+@inject HttpClient _httpClient
+@inject AppConfiguration _appConfiguration
 
-<h1>Counter</h1>
-
-<p>Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<SubmitParcelForm CallbackAsync="@SubmitParcel"/>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    private async Task SubmitParcel(Parcel parcel)
     {
-        currentCount++;
+        Console.WriteLine("Callback for parcel submit called");
+        var url = $"{_appConfiguration.AppUrl}/parcel/";
+        var json = JsonConvert.SerializeObject(parcel);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await _httpClient.PostAsync(url, content);
     }
 }
