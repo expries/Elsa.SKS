@@ -1,9 +1,7 @@
 @using Elsa.SKS.Backend.Services.DTOs
 @using Newtonsoft.Json
-<h3 class="text-sm">Submit Parcel</h3>
 
 <EditForm Model="@Parcel" OnValidSubmit="@ValidFormSubmitted">
-  <h4 class="d-inline-block mt-4 mb-4">Parcel Info</h4>
   <div class="form-row">
       <div class="col-md-6 mb-3">
         <label for="weight">Weight</label>
@@ -13,7 +11,7 @@
         </div>
       </div>
   </div>
-  <h4 class="d-inline-block mt-4 mb-4">Sender</h4>
+  <h5 class="d-inline-block mt-4 mb-4">Sender</h5>
   <div class="form-row">
     <div class="col-md-6 mb-3">
       <label for="nameSender">Name</label>
@@ -57,7 +55,7 @@
         </div>
       </div>
     </div>
-  <h4 class="d-inline-block mt-4 mb-4">Recipient</h4>
+  <h5 class="d-inline-block mt-4 mb-4">Recipient</h5>
   <div class="form-row">
     <div class="col-md-12 mb-3">
       <label for="nameRecipient">Name</label>

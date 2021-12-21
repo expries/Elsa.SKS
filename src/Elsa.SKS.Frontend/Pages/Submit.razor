@@ -7,7 +7,11 @@
 @inject HttpClient _httpClient
 @inject AppConfiguration _appConfiguration
 
-<SubmitParcelForm CallbackAsync="@SubmitParcel"/>
+<h3 class="text-sm mt-4 mb-4">Submit Parcel</h3>
+
+<div class="mb-5">
+    <SubmitParcelForm CallbackAsync="@SubmitParcel"/>
+</div>
 
 @code {
     private async Task SubmitParcel(Parcel parcel)
