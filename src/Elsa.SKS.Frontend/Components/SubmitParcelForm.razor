@@ -133,6 +133,7 @@
   private void ValidFormSubmitted(EditContext context)
   {
     Parcel.Weight = float.Parse(_parcelWeight);
+    Console.WriteLine("Parcel form submitted:");
     Console.WriteLine(JsonConvert.SerializeObject(Parcel));
     CallbackAsync?.Invoke(Parcel);
   }
