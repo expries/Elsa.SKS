@@ -1,8 +1,5 @@
 ﻿@page "/submit"
-@using Elsa.SKS.Backend.Services.DTOs
 @using Elsa.SKS.Frontend.Configuration
-@using Newtonsoft.Json
-@using System.Text
 @inject NavigationManager _navManager;
 @inject HttpClient _httpClient
 @inject AppConfiguration _appConfiguration
@@ -10,24 +7,6 @@
 <h3 class="text-sm mt-4 mb-4">Submit Parcel</h3>
 
 <div class="mb-5">
-    <SubmitParcelForm CallbackAsync="@SubmitParcel"/>
+    <SubmitParcelForm />
 </div>
 
-@code {
-    private async Task SubmitParcel(Parcel parcel)
-    {
-        Console.WriteLine("Submitting parcel to backend");
-        
-        // submitting parcel
-        var url = $"{_appConfiguration.AppUrl}/parcel/";
-        var json = JsonConvert.SerializeObject(parcel);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync(url, content);
-        
-        // navigating to tracking page
-        var stringContent = await response.Content.ReadAsStringAsync();
-        var parcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(stringContent);
-        Console.WriteLine("Navigating to tracking screen");
-        _navManager.NavigateTo($"/tracking/{parcelInfo.TrackingId}");
-    }
-}

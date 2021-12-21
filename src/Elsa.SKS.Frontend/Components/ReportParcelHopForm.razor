@@ -1,5 +1,47 @@
-<h3>ReportParcelHop</h3>
+@using Elsa.SKS.Backend.Services.DTOs
+@using Newtonsoft.Json
+@using System.Text
+@using Elsa.SKS.Frontend.Configuration
+@inject HttpClient _httpClient;
+@inject AppConfiguration _appConfiguration
+
+<form action="#" onsubmit="return false;">
+    <div class="form-row">
+      <div class="col-md-6 mb-3">
+        <label for="trackingId">Tracking Id</label>
+        <input @Value="TrackingId" type="text" class="form-control" id="trackingId" placeholder="tracking id" required />
+        <div class="invalid-feedback">
+          Please provide a valid tracking Id.
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="hopCode">Hop Code</label>
+        <input @Value="HopCode" type="text" class="form-control" id="hopCode" placeholder="Hop code" required />
+        <div class="invalid-feedback">
+          Please provide a valid hop code.
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" type="submit" @onclick="@ReportHop">Report hop</button>
+</form>
 
 @code {
-    
+
+    private string? TrackingId { get; set; }
+
+    private string? HopCode { get; set; }
+
+    private async Task ReportHop()
+    {
+        if (string.IsNullOrEmpty(TrackingId) || string.IsNullOrEmpty(HopCode))
+        {
+          return;
+        }
+      
+        Console.WriteLine($"Reporting parcel {TrackingId} has arrived at hop {HopCode}");
+        var url = $"{_appConfiguration.AppUrl}/parcel/{TrackingId}/reportHop/{HopCode}";
+        var json = JsonConvert.SerializeObject(new {});
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await _httpClient.PostAsync(url, content);
+    }
 }

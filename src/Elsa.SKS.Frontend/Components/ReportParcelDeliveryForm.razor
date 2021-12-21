@@ -1,5 +1,37 @@
-<h3>ReportParcelDelivery</h3>
+@using Newtonsoft.Json
+@using System.Text
+@using Elsa.SKS.Frontend.Configuration
+@inject HttpClient _httpClient;
+@inject AppConfiguration _appConfiguration;
+
+<form action="#" onsubmit="return false;">
+    <div class="form-row">
+        <div class="col-md-12 mb-3">
+            <label for="trackingId">Tracking Id</label>
+            <input @bind="TrackingId" type="text" class="form-control" id="trackingId" placeholder="tracking id" required />
+            <div class="invalid-feedback">
+                Please provide a valid tracking Id.
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit" @onclick="@ReportDelivery">Report delivery</button>
+</form>
 
 @code {
     
+    private string? TrackingId { get; set; }
+
+    private async Task ReportDelivery()
+    {
+        if (string.IsNullOrEmpty(TrackingId))
+        {
+            return;
+        }
+        
+        Console.WriteLine($"Reporting parcel {TrackingId} was delivered");
+        var url = $"{_appConfiguration.AppUrl}/parcel/{TrackingId}/reportDelivery";
+        var json = JsonConvert.SerializeObject(new {});
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await _httpClient.PostAsync(url, content);
+    }
 }
