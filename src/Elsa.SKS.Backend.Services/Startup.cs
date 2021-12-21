@@ -70,17 +70,16 @@ namespace Elsa.SKS.Backend.Services
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            var corsConfiguration = new CorsConfiguration();
+            Configuration.GetSection("Cors").Bind(corsConfiguration);
             
             services.AddCors(options =>
             {
                 options.AddPolicy(CorsPolicy.Frontend, builder =>
                 {
-                    builder.WithOrigins(
-                        "http://localhost:6000", 
-                        "https://www.localhost:6001",
-                        "https://elsa-frontend.azurewebsites.net",
-                        "https://www.elsa-frontend.azurewebsites.net"
-                    );
+                    builder.WithOrigins(corsConfiguration.AllowedOriginsArray);
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
                 });
             });
 
