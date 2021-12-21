@@ -1,16 +1,37 @@
 ﻿@page "/reporting"
+@using Elsa.SKS.Frontend.Configuration
+@using Newtonsoft.Json
+@using System.Text
+@inject HttpClient _httpClient;
+@inject AppConfiguration _appConfiguration;
 
-<h3 class="text-sm mt-4 mb-4">Reporting Parcel checkpoint or delivery</h3>
+<h3 class="text-sm mt-4 mb-4">Reporting parcel checkpoint or delivery</h3>
 
-<p>Current count: @currentCount</p>
+<div class="mb-5">
+    <ReportParcelDeliveryForm CallbackAsync="@ReportParcelDelivery" />
+</div>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<div>
+    <ReportParcelHopForm CallbackAsync="@ReportParcelHop" />
+</div>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    
+    private async Task ReportParcelHop(string trackingId, string hopCode)
     {
-        currentCount++;
+        Console.WriteLine($"Reporting parcel {trackingId} has arrived at hop {hopCode}");
+        var url = $"{_appConfiguration.AppUrl}/parcel/{trackingId}/reportHop/{hopCode}";
+        var json = JsonConvert.SerializeObject(new {});
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await _httpClient.PostAsync(url, content);
+    }
+    
+    private async Task ReportParcelDelivery(string trackingId)
+    {
+        Console.WriteLine($"Reporting parcel {trackingId} was delivered");
+        var url = $"{_appConfiguration.AppUrl}/parcel/{trackingId}/reportDelivery";
+        var json = JsonConvert.SerializeObject(new {});
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await _httpClient.PostAsync(url, content);
     }
 }

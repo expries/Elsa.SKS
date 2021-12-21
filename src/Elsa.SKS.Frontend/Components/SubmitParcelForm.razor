@@ -99,7 +99,7 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-primary mt-4" type="submit">Submit form</button>
+  <button class="btn btn-primary mt-4" type="submit">Submit parcel</button>
 </EditForm>
 
 @code {
@@ -108,7 +108,7 @@
   
   private string _parcelWeight = "30";
   
-  public Parcel Parcel = new Parcel
+  private Parcel Parcel { get; set; } = new Parcel
   {
     Sender = new Recipient
     {

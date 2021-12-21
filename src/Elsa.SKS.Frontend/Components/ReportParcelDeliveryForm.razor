@@ -1,5 +1,35 @@
-<h3>ReportParcelDelivery</h3>
+
+<form action="#" onsubmit="return false;">
+    <div class="form-row">
+        <div class="col-md-12 mb-3">
+            <label for="trackingId">Tracking Id</label>
+            <input @bind="TrackingId" type="text" class="form-control" id="trackingId" placeholder="tracking id" required />
+            <div class="invalid-feedback">
+                Please provide a valid tracking Id.
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit" @onclick="@ReportDelivery">Report delivery</button>
+</form>
 
 @code {
-    
+  
+    [Parameter]
+    public Func<string, Task>? CallbackAsync { get; set; }
+
+    private string? TrackingId { get; set; }
+
+    private async Task ReportDelivery()
+    {
+        if (string.IsNullOrEmpty(TrackingId))
+        {
+            return;
+        }
+        
+        if (CallbackAsync is not null)
+        {
+            Console.WriteLine("Report delivery form submitted");
+            await CallbackAsync(TrackingId);
+        }
+    }
 }
