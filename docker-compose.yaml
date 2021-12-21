@@ -1,9 +1,27 @@
 # docker-compose up -d (muss im Folder dieser datei sein und die datei muss docker-compose.yaml heißen)
 version: '3'
 services:
+  elsa-backend:
+    image: elsa-backend
+    build:
+      context: .
+      dockerfile: src/Elsa.SKS.Backend.Services/Dockerfile
+    ports:
+      - "5000:80"
+      - "5001:443"
+    depends_on:
+      - "sqlserver"
+    environment:
+      - DOTNET_RUNNING_IN_CONTAINER=true
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
   sqlserver:
     image: elsa-db
     build:
+      context: .
       dockerfile: database/docker/Dockerfile
     ports: 
       - "1433:1433"
@@ -14,6 +32,8 @@ services:
     image: adminer
     ports:
       - 8080:8080
+    depends_on:
+      - "sqlserver"
     environment:
       - ADMINER_PLUGINS=tinymce
       - ADMINER_DESIGN=flat

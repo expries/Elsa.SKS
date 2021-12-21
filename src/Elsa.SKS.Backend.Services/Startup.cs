@@ -153,8 +153,11 @@ namespace Elsa.SKS.Backend.Services
             services
                 .AddDbContextPool<AppDbContext>(options =>
                 {
-                    options.UseSqlServer(Configuration.GetConnectionString("ElsaDbConnection"),
-                        x => x.UseNetTopologySuite());
+                    var connectionString = Configuration.GetConnectionString("ElsaDbConnection");
+                    options.UseSqlServer(connectionString, x =>
+                    {
+                        x.UseNetTopologySuite();
+                    });
                     options.UseLazyLoadingProxies();
                 });
         }
