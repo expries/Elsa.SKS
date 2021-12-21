@@ -19,6 +19,7 @@ using Elsa.SKS.Backend.DataAccess.Interfaces;
 using Elsa.SKS.Backend.DataAccess.Sql;
 using Elsa.SKS.Backend.ServiceAgents;
 using Elsa.SKS.Backend.ServiceAgents.Interfaces;
+using Elsa.SKS.Backend.Services.Configuration;
 using Elsa.SKS.Backend.Webhooks;
 using Elsa.SKS.Backend.Webhooks.Interfaces;
 using FluentValidation;
@@ -69,8 +70,19 @@ namespace Elsa.SKS.Backend.Services
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy(CorsPolicy.Frontend, builder =>
+                {
+                    builder.WithOrigins(
+                        "http://localhost:6000", 
+                        "https://www.localhost:6001",
+                        "https://elsa-frontend.azurewebsites.net",
+                        "https://www.elsa-frontend.azurewebsites.net"
+                    );
+                });
+            });
 
             // Add business layer components
             services.AddTransient<IWarehouseLogic, WarehouseLogic>();
@@ -174,6 +186,8 @@ namespace Elsa.SKS.Backend.Services
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors(CorsPolicy.Frontend);
 
             app.UseAuthorization();
 
