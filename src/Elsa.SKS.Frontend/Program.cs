@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Elsa.SKS.Frontend.Configuration;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,15 +14,20 @@ namespace Elsa.SKS.Frontend
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            ConfigureServices(builder);
             await builder.Build().RunAsync();
         }
 
-        public static void ConfigureServices(IServiceCollection services)
+        private static void ConfigureServices(WebAssemblyHostBuilder builder)
         {
-            services.AddSingleton<AppConfiguration>(sp =>
+            var services = builder.Services;
+            
+            services.AddScoped(sp => new HttpClient
+            {
+                BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+            });
+            
+            services.AddSingleton(sp =>
             {
                 var config = sp.GetService<IConfiguration>();
                 return config.GetSection("App").Get<AppConfiguration>();
