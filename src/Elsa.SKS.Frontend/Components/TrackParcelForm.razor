@@ -1,0 +1,28 @@
+@using Elsa.SKS.Backend.Services.DTOs
+@using Elsa.SKS.Frontend.Configuration
+@using Newtonsoft.Json
+@using System.Text
+@inject HttpClient _httpClient;
+@inject AppConfiguration _appConfiguration
+@inject NavigationManager _navManager;
+
+<form action="#" onsubmit="return false;">
+    <div class="form-row">
+        <div class="col-md-12 mb-3">
+            <label for="trackingId">Tracking Id</label>
+            <input @bind="TrackingId" type="text" class="form-control" id="trackingId" placeholder="Enter your TrackingId" required />
+            <div class="invalid-feedback">
+                Please provide a valid tracking Id.
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Track parcel</button>
+</form>
+
+
+
+@code {
+    
+    private string? TrackingId { get; set; }
+    
+}

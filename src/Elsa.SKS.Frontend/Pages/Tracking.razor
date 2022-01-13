@@ -2,45 +2,28 @@
 @page "/tracking/{trackingId}"
 @using Elsa.SKS.Frontend.Configuration
 @using Elsa.SKS.Backend.Services.DTOs
-@using Newtonsoft.Json
 @inject HttpClient _httpClient
 @inject AppConfiguration _appConfiguration
 
 <h3 class="text-sm mt-4 mb-4">Parcel Tracking</h3>
 
-@if (_parcel is null)
-{
-    <p class="mt-4"><em>Loading...</em></p>
-}
-else
-{
-    <p class="mt-4">Tracking for parcel loaded! Check the console logs for more info.</p>
-}
+<div class="mb-5">
+    <TrackParcelForm />
+</div>
+
+<div class="mb-5">
+    <TrackingInformationTable />
+</div>
 
 @code {
+    
     [Parameter]
     public string? TrackingId { get; set; }
+
+    private TrackingInformation? _parcel { get; set; }
     
-    private TrackingInformation? _parcel;
-
-    protected override async Task OnInitializedAsync()
+    protected async override Task OnInitializedAsync()
     {
-        if (TrackingId is not null)
-        {
-            await LoadParcel(TrackingId);
-        }
-    }
-
-    private async Task LoadParcel(string trackingId)
-    {
-        Console.WriteLine($"Loading tracking for parcel with tracking id {trackingId}");
-        
-        var url = $"{_appConfiguration.AppUrl}/parcel/{trackingId}";
-        var response = await _httpClient.GetAsync(url);
-        var stringContent = await response.Content.ReadAsStringAsync();
-        _parcel = JsonConvert.DeserializeObject<TrackingInformation>(stringContent);
-        
-        Console.WriteLine("Loaded parcel tracking information:");
-        Console.WriteLine(JsonConvert.SerializeObject(_parcel));
+        TrackingId ??= "";
     }
 }
