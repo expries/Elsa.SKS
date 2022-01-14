@@ -9,14 +9,14 @@
     <div class="form-row">
       <div class="col-md-6 mb-3">
         <label for="trackingId">Tracking Id</label>
-        <input @Value="TrackingId" type="text" class="form-control" id="trackingId" placeholder="tracking id" required />
+        <input @bind="@TrackingId" type="text" class="form-control" id="trackingId" placeholder="tracking id" required />
         <div class="invalid-feedback">
           Please provide a valid tracking Id.
         </div>
       </div>
       <div class="col-md-6 mb-3">
         <label for="hopCode">Hop Code</label>
-        <input @Value="HopCode" type="text" class="form-control" id="hopCode" placeholder="Hop code" required />
+        <input @bind="@HopCode" type="text" class="form-control" id="hopCode" placeholder="Hop code" required />
         <div class="invalid-feedback">
           Please provide a valid hop code.
         </div>

@@ -151,6 +151,5 @@
     var parcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(stringContent);
     Console.WriteLine("Navigating to tracking screen");
     _navManager.NavigateTo($"/tracking/{parcelInfo.TrackingId}");
-    //_navManager.NavigateTo($"/tracking");
   }
 }

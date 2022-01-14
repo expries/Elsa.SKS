@@ -8,12 +8,15 @@
 <h3 class="text-sm mt-4 mb-4">Parcel Tracking</h3>
 
 <div class="mb-5">
-    <TrackParcelForm />
+    <TrackParcelForm TrackingId="@TrackingId" />
 </div>
 
-<div class="mb-5">
-    <TrackingInformationTable />
-</div>
+@if (TrackingId != "")
+{
+    <div class="mb-5">
+        <TrackingInformationTable TrackingId="@TrackingId" />
+    </div>
+}
 
 @code {
     
@@ -25,5 +28,6 @@
     protected async override Task OnInitializedAsync()
     {
         TrackingId ??= "";
+        Console.WriteLine(TrackingId);
     }
 }

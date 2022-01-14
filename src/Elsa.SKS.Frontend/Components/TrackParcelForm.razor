@@ -6,7 +6,7 @@
 @inject AppConfiguration _appConfiguration
 @inject NavigationManager _navManager;
 
-<form action="#" onsubmit="return false;">
+<EditForm Model="@TrackingId" OnValidSubmit="@ValidFormSubmitted">
     <div class="form-row">
         <div class="col-md-12 mb-3">
             <label for="trackingId">Tracking Id</label>
@@ -16,13 +16,33 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-primary" type="submit">Track parcel</button>
-</form>
+    <button class="btn btn-primary" @onclick="@ShowTrackingInformation" type="submit">Track parcel</button>
+</EditForm>
 
 
 
 @code {
     
-    private string? TrackingId { get; set; }
+    [Parameter]
+    public string? TrackingId { get; set; }
+    
+    private async Task ValidFormSubmitted(EditContext context)
+    {
+        // navigating to tracking page
+        Console.WriteLine("Navigating to tracking screen");
+        //_navManager.NavigateTo($"/tracking/{parcelInfo.TrackingId}");
+        //_navManager.NavigateTo($"/tracking");
+    }
+    
+    private async Task ShowTrackingInformation()
+    {
+        if (string.IsNullOrEmpty(TrackingId))
+        {
+            return;
+        }
+        
+        Console.WriteLine($"Show Tracking Information from parcel with ID: {TrackingId}");
+        _navManager.NavigateTo($"/tracking/{TrackingId}", forceLoad: true);
+    }
     
 }

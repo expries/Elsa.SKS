@@ -5,26 +5,37 @@
 @inject AppConfiguration _appConfiguration
 @inject NavigationManager _navManager;
 
-
-@if (_parcel is null)
+<p class="mt-4"><em>Your Tracking Data:</em></p>
+@if (_parcel is null || _parcel.State is null)
 {
-    <p class="mt-4"><em>Your Tracking Data:</em></p>
+    <p class="mt-4"><em>No Data available. Check if you have entered the right TrackingId.</em></p>
 }
 else
 {
-    <p class="mt-4">Parcel State: @_parcel.State</p>
+    <p class="mt-4">Parcel State: <b>@_parcel.State</b></p>
     <table class="table">
         <thead>
-            <tr>
-                <th>Code</th>
-                <th>Description</th>
-                <th>Date</th>
-            </tr>
+        <tr>
+            <th>Status</th>
+            <th>Code</th>
+            <th>Description</th>
+            <th>Date</th>
+        </tr>
         </thead>
         <tbody>
+        @foreach (var info in _parcel.VisitedHops)
+        {
+            <tr style="background-color:#B1FF9A">
+                <td>Visited</td>
+                <td>@info.Code</td>
+                <td>@info.Description</td>
+                <td>@info.DateTime</td>
+            </tr>
+        }
         @foreach (var info in _parcel.FutureHops)
         {
-            <tr>
+            <tr style="background-color:#FEFEBE">
+                <td>Not Visited</td>
                 <td>@info.Code</td>
                 <td>@info.Description</td>
                 <td>@info.DateTime</td>
@@ -38,7 +49,8 @@ else
 {
     private TrackingInformation? _parcel;
     
-    private string? TrackingId { get; set; }
+    [ParameterAttribute]
+    public string? TrackingId { get; set; }
 
     
     protected override async Task OnInitializedAsync()
@@ -56,8 +68,7 @@ else
         var url = $"{_appConfiguration.AppUrl}/parcel/{trackingId}";
         var response = await _httpClient.GetAsync(url);
         var stringContent = await response.Content.ReadAsStringAsync();
-        _parcel = JsonConvert.DeserializeObject<TrackingInformation>(stringContent);
-        
+        _parcel = JsonConvert.DeserializeObject<TrackingInformation>(stringContent) ?? new TrackingInformation();
         Console.WriteLine("Loaded parcel tracking information:");
         Console.WriteLine(JsonConvert.SerializeObject(_parcel));
     }
