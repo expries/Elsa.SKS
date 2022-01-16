@@ -7,8 +7,8 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /build
 COPY . .
 
-RUN dotnet restore
-RUN dotnet build --no-restore
+RUN dotnet restore ./src/Elsa.SKS.Backend.Services/Elsa.SKS.Backend.Services.csproj
+RUN dotnet build --no-restore ./src/Elsa.SKS.Backend.Services/Elsa.SKS.Backend.Services.csproj
 
 FROM build as publish
 RUN dotnet publish ./src/Elsa.SKS.Backend.Services/Elsa.SKS.Backend.Services.csproj -c Release -o /app/publish

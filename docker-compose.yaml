@@ -15,9 +15,18 @@ services:
       - DOTNET_RUNNING_IN_CONTAINER=true
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings:ElsaDbConnection=Server=sqlserver,1433;Initial Catalog=ElsaDb;User ID=sa;Password=P@ssword;Connection Timeout=30;
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  elsa-frontend:
+    image: elsa-frontend
+    build:
+      context: .
+      dockerfile: src/Elsa.SKS.Frontend/Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
   sqlserver:
     image: elsa-db
     build:
