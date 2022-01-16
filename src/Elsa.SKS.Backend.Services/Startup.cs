@@ -70,8 +70,11 @@ namespace Elsa.SKS.Backend.Services
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            var corsConfiguration = new CorsConfiguration();
-            Configuration.GetSection("Cors").Bind(corsConfiguration);
+            string allowedOrigins = Configuration.GetValue<string>("Cors:AllowedOrigins");
+            var corsConfiguration = new CorsConfiguration
+            {
+                AllowedOrigins = allowedOrigins
+            };
             
             services.AddCors(options =>
             {

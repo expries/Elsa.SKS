@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Elsa.SKS.Frontend.Configuration;
@@ -30,7 +31,9 @@ namespace Elsa.SKS.Frontend
             services.AddSingleton(sp =>
             {
                 var config = sp.GetService<IConfiguration>();
-                return config.GetSection("App").Get<AppConfiguration>();
+                string appUrl = builder.Configuration.GetValue<string>("App:AppUrl");
+                var appConfiguration = new AppConfiguration { AppUrl = appUrl };
+                return appConfiguration;
             });
         }
     }
