@@ -31,7 +31,7 @@ namespace Elsa.SKS.Frontend
             services.AddSingleton(sp =>
             {
                 var config = sp.GetService<IConfiguration>();
-                var appUrl = builder.Configuration.GetValue<string?>("App:AppUrl") ?? Environment.GetEnvironmentVariable("App__AppUrl");
+                var appUrl = builder.Configuration.GetValue<string?>("App:AppUrl") ?? "https://elsa-backend.azurewebsites.net";
                 var appConfiguration = new AppConfiguration { AppUrl = appUrl };
                 return appConfiguration;
             });
